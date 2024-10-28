@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "module": "NodeNext",
+    "target": "ESNext",
+    "allowJs": true,
+    "checkJs": true
+  },
+  "files": ["src/index.ts"],
+  "include": ["custom.d.ts"]
+}
