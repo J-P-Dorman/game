@@ -61,9 +61,11 @@ export type PlayerPaint = any;
 export type State = {
   paused: boolean;
   actionQueue: BaseAction[];
+  updateQueue: BaseAction[];
   paintHistory: {
     player: PlayerPaint[];
-    shore: number;
+    shoreUp: number;
+    shoreUpLeft: number;
   };
   gameSize: {
     width: number;
@@ -76,5 +78,16 @@ export type State = {
 declare global {
   interface Window {
     state: State;
+    scene: any;
   }
 }
+
+export type AnimationKey = "shoreUp" | "shoreUpLeft";
+
+export type CellElsAnimated = Record<
+  AnimationKey,
+  {
+    cellEl: HTMLDivElement;
+    frameEls: HTMLDivElement[];
+  }[]
+>;

@@ -1,5 +1,10 @@
 import { chunksPerLine, size } from "../../../../constants";
-import { ChunkData, RowData } from "../../../../types";
+import {
+  ChunkData,
+  RowData,
+  CellElsAnimated,
+  AnimationKey,
+} from "../../../../types";
 import { getClosestIndex, forIncrement } from "../../../../utils";
 import { V, textureShoreUp } from "../../../../data/mapData";
 import { createAction } from "../../../Core/Core";
@@ -104,7 +109,16 @@ const MapChunk = (
         cellElsAnimated: {
           ...acc.cellElsAnimated,
           ...Object.entries(cellElsAnimated).reduce(
-            (accumulator, [key, value]) => ({
+            (
+              accumulator,
+              [key, value]: [
+                key: AnimationKey,
+                value: {
+                  cellEl: HTMLDivElement;
+                  frameEls: HTMLDivElement[];
+                }[],
+              ]
+            ) => ({
               ...accumulator,
               [key]: [...(acc.cellElsAnimated[key] ?? []), ...value],
             }),
@@ -117,108 +131,13 @@ const MapChunk = (
     {
       rowEls: [],
       cellEls: [],
-      cellElsAnimated: {} as Record<
-        string,
-        {
-          cellEl: HTMLDivElement;
-          frameEls: HTMLDivElement[];
-        }[]
-      >,
+      cellElsAnimated: {} as CellElsAnimated,
     }
   );
 
-  // console.log("rowEls: ", rowEls);
-  // console.log("cellEls: ", cellEls);
-  // console.log("cellElsAnimated: ", cellElsAnimated);
-
-  window.state.actionQueue.push(
-    createAction({
-      id: "sceneryFrame",
-      func: ({ action }) => {
-        const { payload } = action;
-        const { cellElsAnimated } = payload;
-
-        Object.entries(cellElsAnimated).forEach(([key, data]) => {
-          const tempSolution = (() => {
-            if (key === "shoreUp") return textureShoreUp;
-            return false;
-          })();
-
-          if (tempSolution) {
-            console.log("tempSolution");
-            console.log("data: ", data);
-            console.log("textureShoreUp: ", textureShoreUp);
-            const prevPaint = window.state.paintHistory.shore ?? 0;
-            const hasNextFrame = Boolean(textureShoreUp.images[prevPaint + 1]);
-
-            console.log("prevPaint: ", prevPaint);
-            console.log("hasNextFrame: ", hasNextFrame);
-
-            data.forEach((frame) => {
-              const { cellEl, frameEls } = frame;
-              const nextFrameEl = hasNextFrame
-                ? frameEls[prevPaint + 1]
-                : frameEls[0];
-
-              frameEls.forEach((frameEl) => {
-                frameEl.style.opacity = "0";
-              });
-
-              nextFrameEl.style.opacity = "1";
-            });
-
-            if (hasNextFrame) window.state.paintHistory.shore += 1;
-            if (!hasNextFrame) window.state.paintHistory.shore = 0;
-          }
-        });
-      },
-      maxTime: 2000,
-      payload: { cellElsAnimated },
-      repeat: true,
-    })
-  );
-
   chunkContainerEl.appendChild(chunkEl);
+
+  return { rowEls, cellEls, cellElsAnimated };
 };
 
 export default MapChunk;
-
-// for (let i = 0; i <= size - 1; i++) {
-//   const rowData: RowData =
-//     chunkData[i] ?? forIncrement((_i, acc) => [...acc, V], i);
-//   const rowEl = document.createElement("div");
-//   rowEl.classList.add("row");
-
-//   for (let j = 0; j <= size - 1; j++) {
-//     const cellData = rowData[j];
-//     const { id, texture, item } = cellData ?? V;
-//     const { color, images = [], speed } = texture;
-//     const cellEl = document.createElement("div");
-
-//     cellEl.classList.add("cell");
-//     cellEl.style.backgroundColor = color;
-
-//     const frameEls = images.map((image, i) => {
-//       const frameEl = document.createElement("div");
-//       frameEl.classList.add("cell-frame");
-//       frameEl.classList.add(`cell-frame-${i}`);
-//       frameEl.style.backgroundImage = `url('${image}')`;
-
-//       cellEl.appendChild(frameEl);
-//       return frameEl;
-//     });
-
-//     if (item) {
-//       const itemEl = document.createElement("div");
-//       itemEl.classList.add("item");
-//       itemEl.style.backgroundImage = `url('${item.image}')`;
-//       itemEl.style.width = `${item.width * 100}%`;
-//       itemEl.style.height = `${item.height * 100}%`;
-//       cellEl.appendChild(itemEl);
-//     }
-
-//     rowEl.appendChild(cellEl);
-//   }
-
-//   chunkEl.appendChild(rowEl);
-// }
