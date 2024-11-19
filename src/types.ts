@@ -1,28 +1,14 @@
-export type Anchor =
-  | "left"
-  | "right"
-  | "top"
-  | "bottom"
-  | "center"
-  | "bottomLeft"
-  | "bottomRight"
-  | "topLeft"
-  | "topRight";
+import { RenderAction } from "./views/Game/components/GameLoops/RenderLoop/types";
+import { LogicAction } from "./views/Game/components/GameLoops/LogicLoop/types";
 
-export type Item = {
-  image?: string;
-  width: number;
-  height: number;
-  anchor: Anchor;
-  align: Anchor;
+export type TileData = any;
+export type RowData = TileData[];
+export type ChunkData = {
+  id: string;
+  position: { x: number; z: number };
+  rows: RowData[];
 };
-
-export type Texture = { color: string; images?: string[]; speed?: number };
-
-export type CellData = { id: string; texture: Texture; item: Item };
-export type RowData = CellData[];
-export type ChunkData = RowData[];
-export type MapData = ChunkData[];
+export type MapData = Record<string, ChunkData>;
 
 export type CreatureData = {
   id: "player";
@@ -32,36 +18,13 @@ export type CreatureData = {
 
 export type Tag = any;
 
-export type Action<T extends string, S extends Record<string, unknown>> = {
-  id: T;
-  func: (props: { action: Action<T, S>; actionQueue: Action<T, S>[] }) => void;
-  time?: number;
-  maxTime?: number;
-  repeat?: boolean;
-  tags?: Tag[];
-  pause?: boolean;
-  payload?: S;
-};
-
-export type WalkActionId =
-  | "moveLeft"
-  | "moveRight"
-  | "moveUp"
-  | "moveDown"
-  | "moveLeftDown"
-  | "moveLeftUp"
-  | "moveRightDown"
-  | "moveRightUp";
-export type WalkAction = Action<WalkActionId, { speed: number }>;
-
-export type BaseAction = Action<string, {}>;
-
 export type PlayerPaint = any;
 
 export type State = {
+  fps: number;
   paused: boolean;
-  actionQueue: BaseAction[];
-  updateQueue: BaseAction[];
+  logicQueue: LogicAction<string, Record<string, unknown>>[];
+  renderQueue: RenderAction<string, Record<string, unknown>>[];
   paintHistory: {
     player: PlayerPaint[];
     shoreUp: number;

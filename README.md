@@ -1,15 +1,12 @@
-# 🚀 Welcome to your new awesome project!
+# JavaScript Game engine
 
-This project has been created using **webpack-cli**, you can now run
+This project uses WebGL through Three.js to render a top down 2D game
+
+## Getting Started
+
+This project uses pnpm
+https://pnpm.io
 
 ```
-npm run build
+pnpm i && pnpm run serve
 ```
-
-or
-
-```
-yarn build
-```
-
-to bundle your application
