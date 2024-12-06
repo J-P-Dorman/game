@@ -13,7 +13,14 @@ export type MapData = Record<string, ChunkData>;
 export type CreatureData = {
   id: "player";
   defaultState: string;
-  states: Record<string, { image: string; onShow: () => void }>;
+  spriteSheet: {
+    image: string;
+    frameWidth: number;
+    frameHeight: number;
+    sheetWidth: number;
+    sheetHeight: number;
+  };
+  states: Record<string, { coordinates: { x: number; y: number } }>;
 };
 
 export type Tag = any;

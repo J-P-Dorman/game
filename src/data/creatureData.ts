@@ -1,128 +1,88 @@
 import { CreatureData } from "../types";
-import imgUp from "../assets/sprites/creatures/player/turn/up.svg";
-import imgDown from "../assets/sprites/creatures/player/turn/down.svg";
-import imgLeft from "../assets/sprites/creatures/player/turn/left.svg";
-import imgRight from "../assets/sprites/creatures/player/turn/right.svg";
-import imgDownLeft from "../assets/sprites/creatures/player/turn/down_left.svg";
-import imgUpLeft from "../assets/sprites/creatures/player/turn/up_left.svg";
-import imgDownRight from "../assets/sprites/creatures/player/turn/down_right.svg";
-import imgUpRight from "../assets/sprites/creatures/player/turn/up_right.svg";
-import imgUpWalk1 from "../assets/sprites/creatures/player/walk/up/up_walk_1.svg";
-import imgUpWalk2 from "../assets/sprites/creatures/player/walk/up/up_walk_2.svg";
-import imgDownWalk1 from "../assets/sprites/creatures/player/walk/down/down_walk_1.svg";
-import imgDownWalk2 from "../assets/sprites/creatures/player/walk/down/down_walk_2.svg";
-import imgLeftWalk1 from "../assets/sprites/creatures/player/walk/left/left_walk_1.svg";
-import imgLeftWalk2 from "../assets/sprites/creatures/player/walk/left/left_walk_2.svg";
-import imgRightWalk1 from "../assets/sprites/creatures/player/walk/right/right_walk_1.svg";
-import imgRightWalk2 from "../assets/sprites/creatures/player/walk/right/right_walk_2.svg";
-import imgUpLeftWalk1 from "../assets/sprites/creatures/player/walk/up_left/up_left_walk_1.svg";
-import imgUpLeftWalk2 from "../assets/sprites/creatures/player/walk/up_left/up_left_walk_2.svg";
-import imgDownLeftWalk1 from "../assets/sprites/creatures/player/walk/down_left/down_left_walk_1.svg";
-import imgDownLeftWalk2 from "../assets/sprites/creatures/player/walk/down_left/down_left_walk_2.svg";
-import imgUpRightWalk1 from "../assets/sprites/creatures/player/walk/up_right/up_right_walk_1.svg";
-import imgUpRightWalk2 from "../assets/sprites/creatures/player/walk/up_right/up_right_walk_2.svg";
-import imgDownRightWalk1 from "../assets/sprites/creatures/player/walk/down_right/down_right_walk_1.svg";
-import imgDownRightWalk2 from "../assets/sprites/creatures/player/walk/down_right/down_right_walk_2.svg";
+import spriteSheet from "../assets/sprites/creatures/player.svg";
 
 export const playerData: CreatureData = {
   id: "player",
   defaultState: "turnDown",
+  spriteSheet: {
+    image: spriteSheet,
+    frameWidth: 20,
+    frameHeight: 30,
+    sheetWidth: 160,
+    sheetHeight: 270,
+  },
   states: {
-    turnUp: {
-      image: imgUp,
-      onShow: () => {},
-    },
     turnDown: {
-      image: imgDown,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
+    },
+    turnUp: {
+      coordinates: { x: 0, y: 0 },
     },
     turnLeft: {
-      image: imgLeft,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     turnRight: {
-      image: imgRight,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     turnDownLeft: {
-      image: imgDownLeft,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     turnUpLeft: {
-      image: imgUpLeft,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     turnDownRight: {
-      image: imgDownRight,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     turnUpRight: {
-      image: imgUpRight,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUp1: {
-      image: imgUpWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUp2: {
-      image: imgUpWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDown1: {
-      image: imgDownWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDown2: {
-      image: imgDownWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkLeft1: {
-      image: imgLeftWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkLeft2: {
-      image: imgLeftWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkRight1: {
-      image: imgRightWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkRight2: {
-      image: imgRightWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUpRight1: {
-      image: imgUpRightWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUpRight2: {
-      image: imgUpRightWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDownRight1: {
-      image: imgDownRightWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDownRight2: {
-      image: imgDownRightWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUpLeft1: {
-      image: imgUpLeftWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkUpLeft2: {
-      image: imgUpLeftWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDownLeft1: {
-      image: imgDownLeftWalk1,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
     walkDownLeft2: {
-      image: imgDownLeftWalk2,
-      onShow: () => {},
+      coordinates: { x: 0, y: 0 },
     },
   },
 };

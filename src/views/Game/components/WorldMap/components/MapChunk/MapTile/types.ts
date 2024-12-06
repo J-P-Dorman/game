@@ -19,7 +19,14 @@ export type Item = {
   align: Anchor;
 };
 
-export type Texture = { color: string; images?: string[]; speed?: number };
+export type Texture = {
+  color: string;
+  spriteSheet?: {
+    image: string;
+    frameWidth: number;
+    sheetWidth: number;
+  };
+};
 
 export type Tile = { id: string; texture: Texture; item: Item };
 

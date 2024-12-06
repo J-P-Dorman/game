@@ -11,39 +11,33 @@ export const initEntity = ({
   startPosition?: any;
   parentElement: HTMLDivElement;
 }): void => {
-  const { id: entityId, states } = entity;
-  const stateKey = startState ?? entity.defaultState;
-  const state = states[stateKey];
-
-  const entityEl = document.createElement("div");
-  const stateContainerEl = document.createElement("div");
-  stateContainerEl.classList.add("state-container");
-
-  if (entity.id.includes("{X}")) {
-    const className = entityId.replace("{X}", "");
-    const instanceCount = document.querySelectorAll(`.${className}`).length;
-    const specificId = entityId.replace("{X}", `${instanceCount}`);
-
-    entityEl.classList.add(className);
-    entityEl.id = specificId;
-  } else {
-    entityEl.id = entityId;
-  }
-
-  Object.entries(states).forEach(([id, state]) => {
-    const { image } = state;
-    const stateEl = document.createElement("div");
-    stateEl.classList.add("state");
-    stateEl.id = id;
-    stateEl.style.backgroundImage = `url(${image})`;
-
-    if (stateKey === id) stateEl.classList.add("active");
-    stateContainerEl.appendChild(stateEl);
-  });
-
-  entityEl.appendChild(stateContainerEl);
-  parentElement.appendChild(entityEl);
-  window.state.paintHistory[entityId] = [{ entityId, state }];
+  // const { id: entityId, states } = entity;
+  // const stateKey = startState ?? entity.defaultState;
+  // const state = states[stateKey];
+  // const entityEl = document.createElement("div");
+  // const stateContainerEl = document.createElement("div");
+  // stateContainerEl.classList.add("state-container");
+  // if (entity.id.includes("{X}")) {
+  //   const className = entityId.replace("{X}", "");
+  //   const instanceCount = document.querySelectorAll(`.${className}`).length;
+  //   const specificId = entityId.replace("{X}", `${instanceCount}`);
+  //   entityEl.classList.add(className);
+  //   entityEl.id = specificId;
+  // } else {
+  //   entityEl.id = entityId;
+  // }
+  // Object.entries(states).forEach(([id, state]) => {
+  //   const { image } = state;
+  //   const stateEl = document.createElement("div");
+  //   stateEl.classList.add("state");
+  //   stateEl.id = id;
+  //   stateEl.style.backgroundImage = `url(${image})`;
+  //   if (stateKey === id) stateEl.classList.add("active");
+  //   stateContainerEl.appendChild(stateEl);
+  // });
+  // entityEl.appendChild(stateContainerEl);
+  // parentElement.appendChild(entityEl);
+  // window.state.paintHistory[entityId] = [{ entityId, state }];
 };
 
 // const paintPlayer = (direction: string, isWalking: boolean) => {

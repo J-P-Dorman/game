@@ -9,19 +9,26 @@ import { TileData } from "../../../../../../../types";
 const MapTile = () => {
   let data: Tile2 = undefined;
   let frameIndex = 0;
-  const offset = 1 / 60; // Hacky but works for now
 
-  console.log("offset: ", offset);
+  const getOffset = (frameWidth: number, sheetWidth: number) => {
+    const frameCount = sheetWidth / frameWidth;
+    return 1 / frameCount;
+  };
 
   const load = (tile: Tile) => {
     const { texture, item } = tile;
-    const { color, images } = texture;
+    const { color, spriteSheet } = texture;
 
     const [threeTexture, threeMaterial] = (() => {
-      if (images?.length) {
-        const threeTexture = new THREE.TextureLoader().load(images[0]);
+      if (spriteSheet) {
+        const { image, frameWidth, sheetWidth } = spriteSheet;
+        const offset = getOffset(frameWidth, sheetWidth);
+        const threeTexture = new THREE.TextureLoader().load(image);
         threeTexture.colorSpace = THREE.SRGBColorSpace;
-        threeTexture.repeat.set(offset, 1);
+
+        // Use 0.002 to zoom in a little to stop frame bleeding
+        threeTexture.repeat.set(offset - 0.002, 1);
+
         const threeMaterial = new THREE.MeshBasicMaterial({
           map: threeTexture,
         });
@@ -42,27 +49,26 @@ const MapTile = () => {
     return threeMesh;
   };
 
+  // TODO: Optimise this by not offsetting single image tiles
   const animate = () => {
     // console.log("tile: ", data);
     const { texture, item, threeGeometry, threeTexture } = data;
-    const { color, images } = texture;
-    if (!images?.length) return;
-    // console.log("frameIndex: ", frameIndex);
-    var img = new Image();
+    const { color, spriteSheet } = texture;
+    if (!spriteSheet) return;
+    const { frameWidth, sheetWidth } = spriteSheet;
+    const offset = getOffset(frameWidth, sheetWidth);
 
     frameIndex += 1;
 
-    img.onload = function () {
-      var width = img.width;
+    // Have to minus one frame for zero indexing
+    const maxWidth = sheetWidth - frameWidth;
 
-      if (frameIndex * 150 > width) {
-        frameIndex = 0;
-      }
-    };
+    if (frameIndex * frameWidth >= maxWidth) {
+      frameIndex = 0;
+    }
 
-    img.src = images[0];
-
-    threeTexture.offset.set(offset * frameIndex, 0);
+    // Move half of 0.002 to stop frame bleeding
+    threeTexture.offset.set(offset * frameIndex + 0.001, 0);
   };
 
   return { load, animate };

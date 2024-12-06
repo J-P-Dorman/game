@@ -54,7 +54,7 @@ export const Game = (): any => {
     logicLoop.start();
     renderLoop.start({ renderer, scene, camera: cameraObj });
 
-    player.load();
+    player.load(cameraObj);
     pauseMenu.load();
 
     return { scene };
