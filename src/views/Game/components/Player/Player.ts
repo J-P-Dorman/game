@@ -1,8 +1,6 @@
-import { initEntity } from "../../../../utils";
+import { loadSvg } from "../../../../utils";
 import { playerData } from "../../../../data/creatureData";
 import THREE from "three";
-// @ts-ignore
-import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 const Player = () => {
   const load = (camera: THREE.OrthographicCamera) => {
@@ -21,55 +19,10 @@ const Player = () => {
       return { offsetX: 1 / frameCountX, offsetY: 1 / frameCountY };
     };
 
-    const loadSvg = (url: string, callback: (group: THREE.Group) => void) => {
-      const svgLoader = new SVGLoader();
-
-      svgLoader.load(
-        // resource URL
-        image,
-        // called when the resource is loaded
-        function (data) {
-          const paths = data.paths;
-          const group = new THREE.Group();
-
-          for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-
-            const material = new THREE.MeshBasicMaterial({
-              color: path.color,
-              side: THREE.DoubleSide,
-              depthWrite: false,
-            });
-
-            const shapes = SVGLoader.createShapes(path);
-
-            for (let j = 0; j < shapes.length; j++) {
-              const shape = shapes[j];
-              const geometry = new THREE.ShapeGeometry(shape);
-              geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1));
-              const mesh = new THREE.Mesh(geometry, material);
-
-              group.add(mesh);
-            }
-          }
-
-          callback(group);
-        },
-        // called when loading is in progresses
-        function (xhr) {
-          // console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-        },
-        // called when loading has errors
-        function (error) {
-          // console.log("An error happened");
-        }
-      );
-    };
-
-    loadSvg(image, (group: THREE.Group) => {
+    loadSvg(image, (svgGroup: THREE.Group) => {
       // group.rotation.set(0, 0, 0);
-      group.position.set(-2, -2, -9);
-      camera.add(group);
+      svgGroup.position.set(-2, -2, -9);
+      camera.add(svgGroup);
     });
 
     // const [threeTexture, threeMaterial] = (() => {
