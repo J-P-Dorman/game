@@ -1,29 +1,40 @@
-export type RenderActionPartial<
-  ActionId extends string,
-  Payload extends Record<string, unknown>,
-> = {
-  id: ActionId;
-  func: (props: {
-    action: RenderAction<ActionId, Payload>;
-    actionQueue: RenderAction<ActionId, Payload>[];
-  }) => void;
-  repeat?: boolean;
-  tags?: string[];
-  pause?: boolean;
-};
+export type RenderActionId =
+| "renderMapChunk"
+| "playerTurn"
+| "playerWalk"
+| "playerStopWalk"
+| "playerRun"
+| "cameraMove"
+| "cameraSnap";
 
-export type RenderAction<
-  ActionId extends string,
-  Payload extends Record<string, unknown>,
-> = {
-  id: ActionId;
+export type RenderAction = {
+  id: RenderActionId;
   func: (props: {
-    action: RenderAction<ActionId, Payload>;
-    actionQueue: RenderAction<ActionId, Payload>[];
+    action: RenderAction;
+    actionQueue: RenderAction[];
   }) => void;
   repeat: boolean;
-  tags: string[];
+  stack: boolean;
+  payload: any[];
   pause: boolean;
+  time: number;
+  maxTime: number;
 };
 
-export type RenderActionAny = RenderAction<string, Record<string, unknown>>;
+export type RenderActionPartial = {
+  id: RenderActionId;
+  func: (props: {
+    action: RenderAction;
+    actionQueue: RenderAction[];
+  }) => void;
+  repeat?: boolean;
+  stack?: boolean;
+  payload?: any[];
+  pause?: boolean;
+  time?: number;
+  maxTime?: number;
+};
+
+export type RenderActionAny = RenderAction;
+
+export type RenderActionList = Record<RenderActionId, RenderAction> | {};

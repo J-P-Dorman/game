@@ -18,8 +18,15 @@ const App = () => {
       width: 0,
       height: 0,
     },
-    x: 0,
-    y: 0,
+    player: {
+      position: {
+        x: 0,
+        y: 0,
+      },
+      direction: 'down',
+      isWalking: false,
+      isRunning: false
+    }
   };
 
   window.onload = () => {

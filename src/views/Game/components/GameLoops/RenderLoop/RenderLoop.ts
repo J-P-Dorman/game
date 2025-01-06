@@ -33,7 +33,7 @@ const RenderLoop = () => {
         isRendering = true;
 
         // If the previous frame is still processing, drop this frame
-        if (!shouldSkipFrame) renderFrame(renderQueue, renderer, scene, camera);
+        if (!shouldSkipFrame) renderFrame(renderQueue, renderer, scene, camera, fps);
 
         delta = delta % interval;
 

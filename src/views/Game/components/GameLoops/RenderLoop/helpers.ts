@@ -8,14 +8,19 @@ export const renderFrame = (
   renderQueue: RenderActionAny[],
   renderer: THREE.Renderer,
   scene: THREE.Scene,
-  camera: THREE.Camera
+  camera: THREE.Camera,
+  fps: number
 ) => {
+  const delay = Math.round(1000 / fps);
+
   const newRenderQueue = renderQueue.reduce((acc: any[], action: any) => {
-    const { func, repeat } = action;
+    const { id, func, time, maxTime, repeat } = action;
+    const timeElapsed = time >= maxTime;
+    const newTime = timeElapsed ? 0 : time + delay;
 
-    func({ action, renderQueue });
+    if(timeElapsed) func({ action, renderQueue });
 
-    if (repeat) return [...acc, action];
+    if (repeat) return [...acc, { ...action, time: newTime }];
     return acc;
   }, []);
 

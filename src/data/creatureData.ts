@@ -9,7 +9,7 @@ export const playerData: CreatureData = {
     frameWidth: 20,
     frameHeight: 30,
     sheetWidth: 160,
-    sheetHeight: 270,
+    sheetHeight: 510,
   },
   states: {
     turnDown: {

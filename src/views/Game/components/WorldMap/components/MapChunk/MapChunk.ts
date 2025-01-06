@@ -36,15 +36,12 @@ const MapChunk = () => {
       return renderedTiles;
     });
 
-    // console.log("mapChunk: ", mapChunk);
-
     scene.add(mapChunk);
 
     return { renderedRows };
   };
 
   const animate = () => {
-    // console.log("renderedRows: ", renderedRows);
     renderedRows.forEach((row: RowData) => {
       row.forEach((tile: any) => {
         tile.animate();

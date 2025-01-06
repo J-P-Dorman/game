@@ -1,21 +1,28 @@
-import { LogicActionAny, LogicAction } from "./types";
+import { LogicAction } from "./types";
 
-const LogicLoop = (fps = 60) => {
+const LogicLoop = () => {
   let interval: number | undefined = undefined;
 
   const start = () => {
-    const delay = Math.round(1000 / fps);
+    const delay = 20;
 
     interval = setInterval(() => {
       const queue = window.state.logicQueue;
 
       const newLogicQueue = queue.reduce(
-        (acc: LogicActionAny[], action: LogicActionAny) => {
+        (acc: LogicAction[], action: LogicAction) => {
           const { id, func, time, maxTime, repeat } = action;
+          const timeElapsed = time >= maxTime;
+          const newTime = timeElapsed ? 0 : time + delay;
 
-          func({ action, logicQueue: queue });
+          // const func2 = ({ action, logicQueue: queue }) => {
+          //   console.log('action: ', action);
+          //   func({ action, logicQueue: queue });
+          // }
 
-          if (repeat) return [...acc, { ...action }];
+          if(timeElapsed) func({ action, logicQueue: queue });
+
+          if (repeat) return [...acc, { ...action, time: newTime }];
           return acc;
         },
         []
@@ -36,6 +43,7 @@ const LogicLoop = (fps = 60) => {
 
   const stop = () => {
     if (interval) clearInterval(interval);
+    interval = undefined;
     window.state.logicQueue = [];
   };
 

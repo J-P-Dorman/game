@@ -30,8 +30,8 @@ export type PlayerPaint = any;
 export type State = {
   fps: number;
   paused: boolean;
-  logicQueue: LogicAction<string, Record<string, unknown>>[];
-  renderQueue: RenderAction<string, Record<string, unknown>>[];
+  logicQueue: LogicAction[];
+  renderQueue: RenderAction[];
   paintHistory: {
     player: PlayerPaint[];
     shoreUp: number;
@@ -41,8 +41,15 @@ export type State = {
     width: number;
     height: number;
   };
-  x: number;
-  y: number;
+  player: {
+    position: {
+      x: number;
+      y: number;
+    },
+    direction: 'down' | 'up' | 'left' | 'right' | 'leftDown' | 'leftUp' | 'rightDown' | 'rightUp',
+    isWalking: boolean,
+    isRunning: boolean
+  }
 };
 
 declare global {

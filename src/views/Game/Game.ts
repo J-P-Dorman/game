@@ -9,8 +9,13 @@ import PauseMenu from "./components/PauseMenu/PauseMenu";
 import Player from "./components/Player/Player";
 import WorldMap from "./components/WorldMap/WorldMap";
 import { disableRightClick } from "./helpers";
+import { LogicAction, LogicActionId, LogicActionList } from "./components/GameLoops/LogicLoop/types";
+import { RenderAction, RenderActionId, RenderActionList } from "./components/GameLoops/RenderLoop/types";
+import { dispatchLogic } from "./components/GameLoops/LogicLoop/utils";
 
 export const Game = (): any => {
+  // Components
+  // ===========================================================================
   const worldMap = WorldMap();
   const camera = Camera();
   const controls = Controls();
@@ -19,6 +24,8 @@ export const Game = (): any => {
   const player = Player();
   const pauseMenu = PauseMenu();
 
+  // Methods
+  // ===========================================================================
   const load = ({ gameEl }: { gameEl: HTMLDivElement }) => {
     const [gameWidth, gameHeight] = getElementSize(gameEl);
 
@@ -44,8 +51,9 @@ export const Game = (): any => {
     worldMap.load({ scene, mapData: mapStart });
 
     // Add a camera to the scene
-    const { camera: cameraObj } = camera.load({ x: 40, z: 42 }, gameEl);
+    const { camera: cameraObj } = camera.load(gameEl);
     scene.add(cameraObj);
+    dispatchLogic(camera.logicActions.cameraSnap, [40, -42]);
 
     // Start input controls
     controls.load({ camera: cameraObj });
@@ -54,7 +62,7 @@ export const Game = (): any => {
     logicLoop.start();
     renderLoop.start({ renderer, scene, camera: cameraObj });
 
-    player.load(cameraObj);
+    player.load({camera: cameraObj});
     pauseMenu.load();
 
     return { scene };
@@ -62,6 +70,11 @@ export const Game = (): any => {
 
   const start = ({ gameEl }: { gameEl: HTMLDivElement }) => {
     worldMap.animate();
+
+    controls.start(
+      {...player.logicActions, ...camera.logicActions},
+      {...player.renderActions, ...camera.renderActions}
+    );
   };
 
   return { load, start };

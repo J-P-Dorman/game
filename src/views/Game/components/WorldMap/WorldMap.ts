@@ -17,11 +17,8 @@ const WorldMap = () => {
   const load = ({ scene, mapData }: Props) => {
     const rows: any = [];
 
-    console.log("mapData: ", mapData);
-
     Object.values(mapData).forEach((chunkData: ChunkData) => {
       const mapChunk = MapChunk();
-      // console.log("chunkData: ", chunkData);
       mapChunk.load(scene, chunkData);
       loadedChunks.push(mapChunk);
     });
@@ -30,7 +27,6 @@ const WorldMap = () => {
   };
 
   const animate = () => {
-    console.log("loadedChunks: ", loadedChunks);
     pushToRenderQueue(
       createRenderAction({
         id: "renderMapChunk",

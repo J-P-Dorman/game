@@ -1,11 +1,16 @@
 import * as THREE from "three";
 import { updateCameraPosition } from "./helpers";
+import { createRenderAction, dispatchRender } from "../GameLoops/RenderLoop/utils";
+import { createLogicAction } from "../GameLoops/LogicLoop/utils";
 
 export const Camera = () => {
-  const load = (
-    startPosition: { x: number; z: number },
-    gameWindow: HTMLElement
-  ) => {
+  // Local state
+  // ===========================================================================
+  let camera: THREE.OrthographicCamera = undefined;
+
+  // Public Methods
+  // ===========================================================================
+  const load = (gameWindow: HTMLElement) => {
     const width = gameWindow.offsetWidth;
     const height = gameWindow.offsetHeight;
     const aspect = width / height;
@@ -16,7 +21,7 @@ export const Camera = () => {
     const top = zoom;
     const bottom = -zoom;
 
-    const camera = new THREE.OrthographicCamera(
+    camera = new THREE.OrthographicCamera(
       left,
       right,
       top,
@@ -25,12 +30,70 @@ export const Camera = () => {
       1000
     );
 
-    updateCameraPosition(camera, startPosition);
+    updateCameraPosition(camera, {x: 0, z: 0});
 
     return { camera };
   };
 
-  const start = () => {};
+  // Actions
+  // ===========================================================================
+  const logicActions = {
+    cameraSnap: createLogicAction({
+      id: 'cameraSnap',
+      func: ({action}) => {
+        const [ x, y ] = action.payload;
 
-  return { load, start };
+        window.state.player.position.x = x;
+        window.state.player.position.y = y;
+
+        dispatchRender(renderActions.cameraSnap);
+      },
+      repeat: false,
+      stack: false,
+      payload: [0, 0]
+    }),
+    cameraMove: createLogicAction({
+      id: 'cameraMove',
+      func: ({action}) => {
+        const [ speedX, speedY ] = action.payload;
+
+        window.state.player.position.x += speedX;
+        window.state.player.position.y += speedY;
+
+        dispatchRender(renderActions.cameraMove);
+      },
+      repeat: true,
+      stack: false,
+      payload: [0, 0]
+    })
+  };
+    
+  const renderActions = {
+    cameraSnap: createRenderAction({
+      id: 'cameraSnap',
+      func: () => {
+        const { x, y } = window.state.player.position;
+        
+        updateCameraPosition(camera, { x: x, z: -y });
+      },
+      repeat: false,
+      stack: false,
+      payload: [],
+      maxTime: 0
+    }),
+    cameraMove: createRenderAction({
+      id: 'cameraMove',
+      func: () => {
+        const { x, y } = window.state.player.position;
+        
+        updateCameraPosition(camera, { x: x, z: -y });
+      },
+      repeat: true,
+      stack: false,
+      payload: [],
+      maxTime: 0
+    })
+  }
+
+  return { load, logicActions, renderActions };
 };

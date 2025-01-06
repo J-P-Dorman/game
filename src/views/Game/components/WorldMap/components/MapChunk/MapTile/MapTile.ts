@@ -51,7 +51,6 @@ const MapTile = () => {
 
   // TODO: Optimise this by not offsetting single image tiles
   const animate = () => {
-    // console.log("tile: ", data);
     const { texture, item, threeGeometry, threeTexture } = data;
     const { color, spriteSheet } = texture;
     if (!spriteSheet) return;

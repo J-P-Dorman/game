@@ -1,64 +1,230 @@
-import { loadSvg } from "../../../../utils";
+import { arrayToObject, filterObject, loadSvgSheet, numberFromString } from "../../../../utils";
 import { playerData } from "../../../../data/creatureData";
 import THREE from "three";
+import { AnimationKey, Direction } from "./types";
+import { sheetMap, animationMap } from '../../../../data/playerData';
+import { createLogicAction } from "../GameLoops/LogicLoop/utils";
+import { createRenderAction, dispatchRender, removeAllFromRenderQueue, renderNow } from "../GameLoops/RenderLoop/utils";
+import { playerRunSpeed } from './constants';
 
 const Player = () => {
-  const load = (camera: THREE.OrthographicCamera) => {
+  // Local state
+  // ===========================================================================
+  let playerSprites: Record<string, THREE.Group> = {};
+  let playerSpriteGroup = undefined;
+  let currentSpriteKey = "";
+  let currentSprite: THREE.Group = undefined;
+
+  // Private Methods
+  // ===========================================================================
+  const directionToKey = (
+    direction: Direction,
+    prefix?: string
+  ) => `${prefix}${direction[0].toUpperCase()}${direction.slice(1)}`;
+
+  // Public Methods
+  // ===========================================================================
+  const load = ({camera}:{camera: THREE.OrthographicCamera}) => {
     const { id, defaultState, spriteSheet, states } = playerData;
     const { image, frameWidth, frameHeight, sheetWidth, sheetHeight } =
       spriteSheet;
 
-    const getOffset = (
-      frameWidth: number,
-      sheetWidth: number,
-      frameHeight: number,
-      sheetHeight: number
-    ) => {
-      const frameCountX = sheetWidth / frameWidth;
-      const frameCountY = sheetHeight / frameHeight;
-      return { offsetX: 1 / frameCountX, offsetY: 1 / frameCountY };
-    };
+    loadSvgSheet(
+      image,
+      sheetWidth,
+      sheetHeight,
+      frameWidth,
+      frameHeight,
+      true,
+      (svgGroup) => {
+        const spriteGroup = new THREE.Group();
+        const sprites = svgGroup
+          .flat()
+          .filter((sprite) => sprite !== undefined);
 
-    loadSvg(image, (svgGroup: THREE.Group) => {
-      // group.rotation.set(0, 0, 0);
-      svgGroup.position.set(-2, -2, -9);
-      camera.add(svgGroup);
-    });
+        const keys = sheetMap.flat();
+        const spriteList = arrayToObject(keys, sprites);
 
-    // const [threeTexture, threeMaterial] = (() => {
-    //   const { image, frameWidth, frameHeight, sheetWidth, sheetHeight } =
-    //     spriteSheet;
-    //   const { offsetX, offsetY } = getOffset(
-    //     frameWidth,
-    //     sheetWidth,
-    //     frameHeight,
-    //     sheetHeight
-    //   );
-    //   const threeTexture = new THREE.TextureLoader().load(image);
-    //   threeTexture.colorSpace = THREE.SRGBColorSpace;
+        sprites.forEach((sprite) => {
+          spriteGroup.add(sprite);
+        });
 
-    //   // Use 0.002 to zoom in a little to stop frame bleeding
-    //   threeTexture.repeat.set(offsetX - 0.002, offsetY - 0.002);
+        // Initialise the player as the top left sprite
+        sprites.forEach((sprite, i) => {
+          if (i !== 0) sprite.visible = false;
+        });
+        currentSpriteKey = keys[0];
+        currentSprite = sprites[0];
 
-    //   const threeMaterial = new THREE.MeshBasicMaterial({
-    //     map: threeTexture,
-    //   });
+        spriteGroup.position.set(-2, -2, -9);
+        spriteGroup.scale.set(0.05, 0.05, 0.05);
+        camera.add(spriteGroup);
 
-    //   return [threeTexture, threeMaterial];
-    // })();
-
-    // const threeGeometry = new THREE.PlaneGeometry(1, 1.5);
-    // const threeMesh = new THREE.Mesh(threeGeometry, threeMaterial);
-
-    // threeMesh.rotation.set(0, 0, 0);
-    // threeMesh.position.set(-2, -2, -9);
-
-    // camera.add(threeMesh);
+        playerSpriteGroup = spriteGroup;
+        playerSprites = spriteList;
+      }
+    );
   };
 
-  const start = () => {};
+  // Actions
+  // ===========================================================================
+  const logicActions = {
+    playerTurn: createLogicAction({
+      id: 'playerTurn',
+      func: ({action}) => {
+        const [ direction ] = action.payload;
 
-  return { load, start };
+        window.state.player.direction = direction;
+        window.state.player.isWalking = false;
+        window.state.player.isRunning = false;
+
+        renderNow(renderActions.playerTurn);
+      },
+      stack: false,
+      payload: ['down']
+    }),
+    // Always turn before you move
+    playerMove: createLogicAction({
+      id: 'playerMove',
+      func: ({action}) => {
+        const [ speedX, speedY, isRunning ] = action.payload;
+        const isAlreadyRunning = window.state.player.isRunning;
+        const isAlreadyWalking = window.state.player.isWalking;
+
+        window.state.player.isWalking = !isRunning
+        window.state.player.isRunning = !!isRunning;
+
+        if(!isRunning && !isAlreadyWalking) {
+          removeAllFromRenderQueue(['playerTurn', 'playerRun', 'playerStopWalk']);
+          dispatchRender(renderActions.playerWalk);
+        }
+        if(isRunning && !isAlreadyRunning) {
+          removeAllFromRenderQueue(['playerTurn', 'playerWalk', 'playerStopWalk']);
+          dispatchRender(renderActions.playerRun);
+        }
+      },
+      repeat: true,
+      stack: false,
+      payload: [0, 0]
+    }),
+    playerStop: createLogicAction({
+      id: 'playerStop',
+      func: () => {
+        window.state.player.isWalking = false;
+        window.state.player.isRunning = false;
+      },
+      repeat: false,
+      stack: false,
+      payload: [0, 0]
+    })
+  };
+
+  const playerTurnAction = createRenderAction({
+    id: 'playerTurn',
+    func: () => {
+      const direction = window.state.player.direction;
+      const key = directionToKey(direction, "turn");
+  
+      currentSprite.visible = false;
+  
+      currentSpriteKey = key;
+      currentSprite = playerSprites[key];
+  
+      playerSprites[key].visible = true;
+    },
+    stack: false,
+    payload: [],
+    maxTime: 0
+  });
+
+  const playerWalkAction = createRenderAction({
+    id: 'playerWalk',
+    func: () => {
+      const direction = window.state.player.direction;
+      const keyPartial = directionToKey(direction, "walk") as AnimationKey;
+      const animation = animationMap[keyPartial];
+      const { frames, end } = animation;
+    
+      const currentFrameIndex = frames.findIndex((frame) => frame === currentSpriteKey);
+      const nextFrameIndex = frames[currentFrameIndex + 1] ? currentFrameIndex + 1 : 0;
+      const nextFrameKey = frames[nextFrameIndex];
+
+      // Don't double up running and walking
+      removeAllFromRenderQueue(['playerRun', 'playerStopWalk']);
+  
+      // Hide current frame
+      currentSprite.visible = false;
+  
+      // Add next frame
+      currentSpriteKey = nextFrameKey;
+      currentSprite = playerSprites[nextFrameKey];
+      playerSprites[nextFrameKey].visible = true;
+    },
+    repeat: true,
+    stack: false,
+    payload: [],
+    maxTime: 250
+  });
+
+  const playerRunAction = createRenderAction({
+    id: 'playerRun',
+    func: () => {
+      const direction = window.state.player.direction;
+      const keyPartial = directionToKey(direction, "run") as AnimationKey;
+      const animation = animationMap[keyPartial];
+      const { frames, end } = animation;
+    
+      const currentFrameIndex = frames.findIndex((frame) => frame === currentSpriteKey);
+      const nextFrameIndex = frames[currentFrameIndex + 1] ? currentFrameIndex + 1 : 0;
+      const nextFrameKey = frames[nextFrameIndex];
+
+      // Don't double up running and walking
+      removeAllFromRenderQueue(['playerWalk', 'playerStopWalk']);
+  
+      // Hide current frame
+      currentSprite.visible = false;
+  
+      // Add next frame
+      currentSpriteKey = nextFrameKey;
+      currentSprite = playerSprites[nextFrameKey];
+      playerSprites[nextFrameKey].visible = true;
+    },
+    repeat: true,
+    stack: false,
+    payload: [],
+    maxTime: 100
+  });
+
+  const renderActions = {
+    playerTurn: playerTurnAction,
+    playerWalk: playerWalkAction,
+    playerRun: playerRunAction,
+    playerStopWalk: createRenderAction({
+      id: 'playerStopWalk',
+      func: () => {
+        // console.log('STOPPING');
+        const keyPartial = currentSpriteKey.replace(/[0-9]/g, '') as AnimationKey;
+        const animation = animationMap[keyPartial] ?? {frames: [], end: undefined};
+        const { end } = animation;
+    
+        if(end) {
+          // Hide current frame
+          currentSprite.visible = false;
+    
+          // Add next frame
+          currentSpriteKey = end;
+          currentSprite = playerSprites[end];
+          playerSprites[end].visible = true;
+        }
+      },
+      repeat: false,
+      stack: false,
+      payload: [],
+      maxTime: 0
+    })
+  }
+
+  return { load, logicActions, renderActions };
 };
 
 export default Player;
