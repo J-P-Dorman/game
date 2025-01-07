@@ -67,7 +67,7 @@ export const Camera = () => {
       payload: [0, 0]
     })
   };
-    
+
   const renderActions = {
     cameraSnap: createRenderAction({
       id: 'cameraSnap',

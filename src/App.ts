@@ -5,7 +5,7 @@ import { Game } from "./views/Game/Game";
 
 const App = () => {
   window.state = {
-    fps: 30,
+    fps: 120,
     paused: false,
     logicQueue: [],
     renderQueue: [],
