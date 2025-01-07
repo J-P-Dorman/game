@@ -1,4 +1,4 @@
-export type LogicActionId = 'playerMove' | 'playerTurn' | 'playerStop' | 'cameraMove' | 'cameraSnap';
+export type LogicActionId = 'playerMove' | 'playerTurn' | 'playerStop' | 'cameraMove' | 'cameraSnap' | 'cameraStopMove';
 
 /**
  * Each logic action is something to be done on a tick of the logic cycle

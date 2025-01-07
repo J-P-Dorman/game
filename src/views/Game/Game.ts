@@ -11,7 +11,7 @@ import WorldMap from "./components/WorldMap/WorldMap";
 import { disableRightClick } from "./helpers";
 import { LogicAction, LogicActionId, LogicActionList } from "./components/GameLoops/LogicLoop/types";
 import { RenderAction, RenderActionId, RenderActionList } from "./components/GameLoops/RenderLoop/types";
-import { dispatchLogic } from "./components/GameLoops/LogicLoop/utils";
+import { dispatchLogic, logicNow } from "./components/GameLoops/LogicLoop/utils";
 
 export const Game = (): any => {
   // Components
@@ -53,7 +53,7 @@ export const Game = (): any => {
     // Add a camera to the scene
     const { camera: cameraObj } = camera.load(gameEl);
     scene.add(cameraObj);
-    dispatchLogic(camera.logicActions.cameraSnap, [40, -42]);
+    logicNow(camera.logicActions.cameraSnap, [40, -42]);
 
     // Start input controls
     controls.load({ camera: cameraObj });

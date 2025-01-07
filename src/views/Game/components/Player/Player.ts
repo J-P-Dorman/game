@@ -163,7 +163,7 @@ const Player = () => {
     repeat: true,
     stack: false,
     payload: [],
-    maxTime: 250
+    maxTime: 150
   });
 
   const playerRunAction = createRenderAction({
@@ -192,7 +192,7 @@ const Player = () => {
     repeat: true,
     stack: false,
     payload: [],
-    maxTime: 100
+    maxTime: 80
   });
 
   const renderActions = {
