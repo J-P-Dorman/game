@@ -2,50 +2,52 @@ import THREE from "three";
 import MapTile from "./MapTile/MapTile";
 import { ChunkData, RowData, TileData } from "../../../../../../types";
 import { chunkSize } from "../../../../../../constants";
-import { renderChunk } from "./helpers";
+import { loadRows, loadTiles, renderChunk } from "./helpers";
+
+type State = {
+  tileComponents: any[];
+  chunkGroupFloor: THREE.Group;
+  chunkGroupItems: THREE.Group;
+  chunkGroup: THREE.Group;
+};
 
 const MapChunk = () => {
-  let renderedRows: any[] = [];
+  const state: State = {
+    tileComponents: [],
+    chunkGroupFloor: new THREE.Group(),
+    chunkGroupItems: new THREE.Group(),
+    chunkGroup: new THREE.Group()
+  };
 
-  const load = (scene: THREE.Scene, chunkData: ChunkData) => {
-    const { position, rows } = chunkData;
-    const { x, z } = position;
-    const mapChunk = new THREE.Group();
+  const load = (chunkData: ChunkData, chunkIndexX: number, chunkIndexY: number) => {
+    const chunkStartX = chunkIndexX * chunkSize;
+    const chunkStartY = chunkIndexY * chunkSize;
+    
+    // Turn row data into THREE groups
+    const  { tileComponents, chunkGroupFloor, chunkGroupItems } = loadRows(chunkData, MapTile);
 
-    mapChunk.position.set(x * chunkSize, 0, z * chunkSize);
+    // Save the data for future methods
+    state.tileComponents = tileComponents;
+    state.chunkGroupFloor = chunkGroupFloor;
+    state.chunkGroupItems = chunkGroupItems;
 
-    renderedRows = rows.map((row: RowData, rowIndex: number) => {
-      const groupRow = new THREE.Group();
-      const rowData = [];
-      groupRow.position.set(0, 0, rowIndex);
-      mapChunk.add(groupRow);
+    // Move items above the floor visually
+    chunkGroupItems.position.set(0, 4, 0);
 
-      const renderedTiles = row.map((tileData: TileData, tileIndex: number) => {
-        const mapTile = MapTile();
-        const tileMesh = mapTile.load(tileData);
+    // Compile the map chunk
+    state.chunkGroup.add(chunkGroupFloor);
+    state.chunkGroup.add(chunkGroupItems);
 
-        rowData.push(mapTile);
-        tileMesh.position.set(tileIndex, 0, 0);
-        groupRow.add(tileMesh);
-
-        return mapTile;
-      });
-
-      renderedRows.push(groupRow);
-
-      return renderedTiles;
-    });
-
-    scene.add(mapChunk);
-
-    return { renderedRows };
+    // Set the top left corner of the chunk
+    state.chunkGroup.position.set(chunkStartX, 0, chunkStartY);
+  
+    // Return final chunk for map to initialise with
+    return state.chunkGroup;
   };
 
   const animate = () => {
-    renderedRows.forEach((row: RowData) => {
-      row.forEach((tile: any) => {
-        tile.animate();
-      });
+    state.tileComponents.forEach((tile: any) => {
+      tile.animate();
     });
   };
 

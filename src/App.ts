@@ -26,6 +26,9 @@ const App = () => {
       direction: 'down',
       isWalking: false,
       isRunning: false
+    },
+    flags: {
+      hasSpokenToSasha: false
     }
   };
 

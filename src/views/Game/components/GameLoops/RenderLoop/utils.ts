@@ -1,5 +1,6 @@
 import { RenderAction, RenderActionPartial } from "./types";
 import { State } from "../../../../../types";
+import { includesEvery } from "../../../../../utils";
 
 declare global {
   interface Window {
@@ -31,7 +32,9 @@ export const createRenderAction = ({
 export const pushToRenderQueue = (renderAction: RenderAction) => {
   const { stack } = renderAction;
   const existsInQueue = Boolean(
-    window.state.renderQueue.find((queueItem) => queueItem.id === renderAction.id)
+    window.state.renderQueue.find(
+      (queueItem) => queueItem.id === renderAction.id
+    )
   );
 
   if (!existsInQueue || (existsInQueue && stack))
@@ -44,20 +47,42 @@ export const removeAllFromRenderQueue = (ids: string[]) => {
   );
 };
 
-export const replaceAllInRenderQueue = (idFrom: string, actionTo: RenderAction) => {
+// TODO: Replace every instance of removeAllFromRenderQueue with this
+export const removeAllFromRenderQueue2 = (
+  criteria: { id: string; payload?: string[] }[]
+) => {
+  window.state.renderQueue = window.state.renderQueue.filter(
+    (renderAction) =>
+      criteria.find(({ id, payload }) => {
+        if (!payload || !payload.length) return id !== renderAction.id;
+        return (
+          id !== renderAction.id ||
+          (id === renderAction.id &&
+            !includesEvery(renderAction.payload, payload))
+        );
+      })
+  );
+};
+
+export const replaceAllInRenderQueue = (
+  idFrom: string,
+  actionTo: RenderAction
+) => {
   removeAllFromRenderQueue([idFrom]);
   pushToRenderQueue(actionTo);
 };
 
 export const isInRenderQueue = (id: string, payload?: any[]) => {
-  return Boolean(window.state.renderQueue.find((action) => {
-    if (payload)
-      return (
-        action.id === id &&
-        JSON.stringify(payload) === JSON.stringify(action.payload)
-      );
-    return action.id === id;
-  }));
+  return Boolean(
+    window.state.renderQueue.find((action) => {
+      if (payload)
+        return (
+          action.id === id &&
+          JSON.stringify(payload) === JSON.stringify(action.payload)
+        );
+      return action.id === id;
+    })
+  );
 };
 
 export const dispatchRender = (action: RenderAction, payload: any[] = []) => {
@@ -68,6 +93,6 @@ export const dispatchRender = (action: RenderAction, payload: any[] = []) => {
 };
 
 export const renderNow = (action: RenderAction, payload: any[] = []) => {
-  const newAction = {...action, payload};
-  action.func({action: newAction, actionQueue: window.state.renderQueue})
+  const newAction = { ...action, payload };
+  action.func({ action: newAction, actionQueue: window.state.renderQueue });
 };

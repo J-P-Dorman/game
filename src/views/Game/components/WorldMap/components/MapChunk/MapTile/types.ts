@@ -16,15 +16,27 @@ export type Item = {
   width: number;
   height: number;
   anchor: Anchor;
-  align: Anchor;
 };
 
 export type Texture = {
   color: string;
-  spriteSheet?: {
+  spriteSheet: {
     image: string;
-    frameWidth: number;
+    textureWidth: number;
+    textureHeight: number;
     sheetWidth: number;
+    sheetHeight: number;
+    defaultTexture: string;
+    defaultAnimation: string;
+    sheetMap: string[][];
+    animationMap: Record<
+      string,
+      {
+        frames: string[];
+        duration: number;
+        repeat: boolean;
+      }
+    >;
   };
 };
 

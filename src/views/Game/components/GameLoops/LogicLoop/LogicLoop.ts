@@ -15,11 +15,6 @@ const LogicLoop = () => {
           const timeElapsed = time >= maxTime;
           const newTime = timeElapsed ? 0 : time + delay;
 
-          // const func2 = ({ action, logicQueue: queue }) => {
-          //   console.log('action: ', action);
-          //   func({ action, logicQueue: queue });
-          // }
-
           if(timeElapsed) func({ action, logicQueue: queue });
 
           if (repeat) return [...acc, { ...action, time: newTime }];

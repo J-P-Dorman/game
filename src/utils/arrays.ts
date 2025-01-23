@@ -8,3 +8,6 @@ export const arrayToObject = <T extends any>(
 		return { ...acc, [key]: value };
 	}, {});
 };
+
+export const includesEvery = (bigArray: unknown[], smallArray: unknown[]) =>
+	smallArray.every((smallItem) => bigArray.includes(smallItem));

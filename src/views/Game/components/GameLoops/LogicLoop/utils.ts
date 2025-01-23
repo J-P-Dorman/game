@@ -1,5 +1,6 @@
-import { LogicAction, LogicActionPartial } from "./types";
+import { LogicAction, LogicActionId, LogicActionPartial } from "./types";
 import { State } from "../../../../../types";
+import { includesEvery } from "../../../../../utils";
 
 declare global {
   interface Window {
@@ -41,6 +42,23 @@ export const pushToLogicQueue = (logicAction: LogicAction) => {
 export const removeAllFromLogicQueue = (ids: string[]) => {
   window.state.logicQueue = window.state.logicQueue.filter(
     (logicAction) => !ids.includes(logicAction.id)
+  );
+};
+
+// TODO: Replace every instance of removeAllFromLogicQueue with this
+export const removeAllFromLogicQueue2 = (
+  criteria: { id: LogicActionId; payload?: string[] }[]
+) => {
+  window.state.logicQueue = window.state.logicQueue.filter(
+    (renderAction) =>
+      criteria.find(({ id, payload }) => {
+        if (!payload || !payload.length) return id !== renderAction.id;
+        return (
+          id !== renderAction.id ||
+          (id === renderAction.id &&
+            !includesEvery(renderAction.payload, payload))
+        );
+      })
   );
 };
 
