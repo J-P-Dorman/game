@@ -1,4 +1,14 @@
-export type LogicActionId = 'playerMove' | 'playerTurn' | 'playerStop' | 'cameraMove' | 'cameraSnap' | 'cameraStopMove';
+export type LogicActionId =
+  | "playerMove"
+  | "playerTurn"
+  | "playerStop"
+  | "cameraMove"
+  | "cameraSnap"
+  | "cameraStopMove"
+  | "npcMove"
+  | "npcTurn"
+  | "npcStop"
+  | 'initMap';
 
 /**
  * Each logic action is something to be done on a tick of the logic cycle
@@ -17,10 +27,7 @@ export type LogicActionId = 'playerMove' | 'playerTurn' | 'playerStop' | 'camera
  */
 export type LogicAction = {
   id: LogicActionId;
-  func: (props: {
-    action: LogicAction;
-    logicQueue: LogicAction[];
-  }) => void;
+  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
   repeat: boolean;
   stack: boolean;
   payload: any[];
@@ -31,10 +38,7 @@ export type LogicAction = {
 
 export type LogicActionPartial = {
   id: LogicActionId;
-  func: (props: {
-    action: LogicAction;
-    logicQueue: LogicAction[];
-  }) => void;
+  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
   repeat?: boolean;
   stack?: boolean;
   payload?: any[];

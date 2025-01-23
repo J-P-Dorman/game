@@ -2,6 +2,8 @@ import THREE from "three";
 // @ts-ignore
 import { SVGLoader } from "three/addons/loaders/SVGLoader";
 import { forIncrement } from "./loops";
+import { SpriteSheet } from "../types";
+import { arrayToObject } from "./arrays";
 
 export const loadSvg = (
   imageUrl: string,
@@ -45,7 +47,7 @@ export const loadSvg = (
   );
 };
 
-export const loadSvgSheet = (
+export const loadSvgSheet = async (
   imageUrl: string,
   sheetWidth: number,
   sheetHeight: number,
@@ -53,10 +55,11 @@ export const loadSvgSheet = (
   spriteHeight: number,
   shouldCollapse = true,
   callback: (svgGroup: THREE.Group[][]) => void
-) => {
+): Promise<any> => {
+  let result = undefined;
   const svgLoader = new SVGLoader();
 
-  svgLoader.load(
+  await svgLoader.load(
     imageUrl,
     (data: any) => {
       const paths = data.paths;
@@ -120,11 +123,34 @@ export const loadSvgSheet = (
           sprites[spriteIndexY][spriteIndexX].add(mesh);
         }
       }
-      callback(sprites);
+      result = callback(sprites);
     },
     // called when loading is in progresses
     function (xhr: any) {},
     // called when loading has errors
     function (error: any) {}
   );
+
+  return result;
 };
+
+export const flattenSpriteSheet = (spriteSheet: SpriteSheet) => spriteSheet.flat().filter((sprite) => sprite !== undefined);
+
+export const initialiseSprites = (spriteSheet: SpriteSheet, keys: string[], keyDefault: string) => {
+  const spriteGroup = new THREE.Group();
+
+  const spritesArray = flattenSpriteSheet(spriteSheet);
+  const spritesObj = arrayToObject(keys, spritesArray);
+
+  // Add sprites to single parent group
+  spritesArray.forEach((sprite) => {
+    spriteGroup.add(sprite);
+  });
+
+  // Initialise the player as default sprite
+  spritesArray.forEach((sprite, i) => {
+    if (keys[i] !== keyDefault) sprite.visible = false;
+  });
+
+  return { spritesArray, spritesObj };
+}

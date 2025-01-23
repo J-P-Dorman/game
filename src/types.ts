@@ -1,26 +1,31 @@
 import { RenderAction } from "./views/Game/components/GameLoops/RenderLoop/types";
 import { LogicAction } from "./views/Game/components/GameLoops/LogicLoop/types";
+import THREE from "three";
 
 export type TileData = any;
 export type RowData = TileData[];
-export type ChunkData = {
+export type ChunkDataOld = {
   id: string;
   position: { x: number; z: number };
   rows: RowData[];
 };
-export type MapData = Record<string, ChunkData>;
+export type ChunkData = RowData[][];
+export type MapDataOld = Record<string, ChunkData>;
+export type MapData = ChunkData[][];
 
 export type CreatureData = {
-  id: "player";
-  defaultState: string;
+  id: string;
   spriteSheet: {
     image: string;
-    frameWidth: number;
-    frameHeight: number;
+    spriteWidth: number;
+    spriteHeight: number;
     sheetWidth: number;
     sheetHeight: number;
+    defaultSprite: string;
+    sheetMap: string[][];
+    animationMap: Record<string, {frames: string[]; end: string;}>;
   };
-  states: Record<string, { coordinates: { x: number; y: number } }>;
+  dialogue?: {}
 };
 
 export type Tag = any;
@@ -49,6 +54,9 @@ export type State = {
     direction: 'down' | 'up' | 'left' | 'right' | 'leftDown' | 'leftUp' | 'rightDown' | 'rightUp',
     isWalking: boolean,
     isRunning: boolean
+  };
+  flags: {
+    hasSpokenToSasha: boolean;
   }
 };
 
@@ -68,3 +76,5 @@ export type CellElsAnimated = Record<
     frameEls: HTMLDivElement[];
   }[]
 >;
+
+export type SpriteSheet = (THREE.Group | undefined)[][];

@@ -123,13 +123,6 @@ export const decideAction = (
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
 
-    console.log('isShift: ', isShift);
-    console.log('shiftKey: ', shiftKey);
-    console.log('allPressedKeys.includes("Shift"): ', allPressedKeys.includes("Shift"));
-    console.log('allPressedKeys: ', allPressedKeys);
-    console.log(': ', );
-    console.log(': ', );
-    console.log(': ', );
     move(lastMovementKey, isShift, allPressedKeys, logicActions, renderActions);
   }
 

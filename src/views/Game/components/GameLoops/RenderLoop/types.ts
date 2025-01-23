@@ -5,7 +5,12 @@ export type RenderActionId =
 | "playerStopWalk"
 | "playerRun"
 | "cameraMove"
-| "cameraSnap";
+| "cameraSnap"
+| "npcTurn"
+| "npcWalk"
+| "npcStopWalk"
+| "npcRun"
+| 'initMap';
 
 export type RenderAction = {
   id: RenderActionId;
