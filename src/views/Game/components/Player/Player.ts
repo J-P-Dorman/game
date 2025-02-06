@@ -5,7 +5,7 @@ import {
   numberFromString,
 } from "../../../../utils";
 import { playerData } from "../../../../data/creatures/player";
-import THREE from "three";
+import * as THREE from "three";
 import { AnimationKey, Direction } from "./types";
 import { createLogicAction } from "../GameLoops/LogicLoop/utils";
 import {

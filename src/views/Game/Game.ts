@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import { mapStart } from "../../data/mapData";
 import { getElementSize } from "../../utils";
 import { Camera } from "./components/Camera/Camera";
@@ -7,6 +7,7 @@ import LogicLoop from "./components/GameLoops/LogicLoop/LogicLoop";
 import RenderLoop from "./components/GameLoops/RenderLoop/RenderLoop";
 import PauseMenu from "./components/PauseMenu/PauseMenu";
 import Player from "./components/Player/Player";
+import Dialogue from "./components/Dialogue/Dialogue";
 import WorldMap from "./components/WorldMap/WorldMap";
 import { disableRightClick } from "./helpers";
 import { LogicAction, LogicActionId, LogicActionList } from "./components/GameLoops/LogicLoop/types";
@@ -23,6 +24,7 @@ export const Game = (): any => {
   const renderLoop = RenderLoop();
   const player = Player();
   const pauseMenu = PauseMenu();
+  const dialogue = Dialogue();
 
   // Methods
   // ===========================================================================
@@ -32,6 +34,9 @@ export const Game = (): any => {
     // Start Scene
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x212121);
+
+    // DELETE ME - Only exists for testing
+    window.scene = scene;
 
     // Start renderer
     const renderer = new THREE.WebGLRenderer();
@@ -54,6 +59,9 @@ export const Game = (): any => {
     const { camera: cameraObj } = camera.load(gameEl);
     scene.add(cameraObj);
     logicNow(camera.logicActions.cameraSnap, [40, -42]);
+
+    // Load the dialogue box
+    dialogue.load({ fitToCamera: camera.fitToCamera });
 
     // Start input controls
     controls.load({ camera: cameraObj });

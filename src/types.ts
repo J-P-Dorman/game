@@ -1,6 +1,6 @@
 import { RenderAction } from "./views/Game/components/GameLoops/RenderLoop/types";
 import { LogicAction } from "./views/Game/components/GameLoops/LogicLoop/types";
-import THREE from "three";
+import * as THREE from "three";
 
 export type TileData = any;
 export type RowData = TileData[];

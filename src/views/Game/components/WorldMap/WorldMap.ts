@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import { ChunkData, MapData } from "../../../../types";
 import MapChunk from "./components/MapChunk/MapChunk";
 import {

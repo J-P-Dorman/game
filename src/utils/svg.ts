@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 // @ts-ignore
 import { SVGLoader } from "three/addons/loaders/SVGLoader";
 import { forIncrement } from "./loops";
@@ -115,6 +115,8 @@ export const loadSvgSheet = async (
           geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1));
 
           const mesh = new THREE.Mesh(geometry, material);
+
+          mesh.scale.set(0.001, 0.001, 0.001);
 
           // If group is undefinded, define it
           if(sprites[spriteIndexY][spriteIndexX] === undefined) sprites[spriteIndexY][spriteIndexX] = new THREE.Group();
