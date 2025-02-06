@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import MapTile from "./MapTile/MapTile";
 import { ChunkData, RowData, TileData } from "../../../../../../types";
 import { chunkSize } from "../../../../../../constants";
@@ -32,7 +32,7 @@ const MapChunk = () => {
     state.chunkGroupItems = chunkGroupItems;
 
     // Move items above the floor visually
-    chunkGroupItems.position.set(0, 4, 0);
+    chunkGroupItems.position.set(0, 1, 0);
 
     // Compile the map chunk
     state.chunkGroup.add(chunkGroupFloor);

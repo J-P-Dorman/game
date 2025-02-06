@@ -2,7 +2,8 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "module": "NodeNext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "target": "ESNext",
     "allowJs": true,
     "checkJs": true

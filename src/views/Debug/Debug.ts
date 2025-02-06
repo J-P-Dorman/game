@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import { CameraDebug } from "./components/CameraDebug/CameraDebug";
 import ControlsDebug from "./components/ControlsDebug/ControlsDebug";
 

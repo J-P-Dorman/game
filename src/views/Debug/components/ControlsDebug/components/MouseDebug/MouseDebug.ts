@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import {
   MOUSE_BUTTON_LEFT,
   MOUSE_BUTTON_MIDDLE,

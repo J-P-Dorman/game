@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 
 interface Props {
   camera: THREE.OrthographicCamera;

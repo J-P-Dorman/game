@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import { CreatureData } from "../../../../types";
 
 export type State = {

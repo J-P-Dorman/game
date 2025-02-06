@@ -3,7 +3,7 @@ import {
   createRenderAction,
   pushToRenderQueue,
 } from "../../../GameLoops/RenderLoop/utils";
-import THREE from "three";
+import * as THREE from "three";
 
 type RowMutations = { rowGroupFloor: THREE.Group, rowGroupItems: THREE.Group, rowIndex: number };
 type TileMutations = { tileMesh: any, itemMesh: any, rowGroupFloor: THREE.Group, rowGroupItems: THREE.Group, tileIndex: number };

@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 
 export const updateCameraPosition = (
   camera: THREE.OrthographicCamera,

@@ -1,4 +1,4 @@
-import THREE from "three";
+import * as THREE from "three";
 import { Item, Tile, Tile2 } from "./types";
 import {
   pushToRenderQueue,
