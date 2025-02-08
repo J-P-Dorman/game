@@ -39,7 +39,10 @@ export const Game = (): any => {
     window.scene = scene;
 
     // Start renderer
-    const renderer = new THREE.WebGLRenderer();
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'high-performance'
+    });
     renderer.setSize(gameWidth, gameHeight);
 
     // Start canvas
@@ -61,7 +64,10 @@ export const Game = (): any => {
     logicNow(camera.logicActions.cameraSnap, [40, -42]);
 
     // Load the dialogue box
-    dialogue.load({ fitToCamera: camera.fitToCamera });
+    dialogue.load({
+      attachToCamera: camera.attachToCamera,
+      fitToCamera: camera.fitToCamera
+    });
 
     // Start input controls
     controls.load({ camera: cameraObj });
@@ -70,7 +76,7 @@ export const Game = (): any => {
     logicLoop.start();
     renderLoop.start({ renderer, scene, camera: cameraObj });
 
-    player.load({camera: cameraObj});
+    player.load({attachToCamera: camera.attachToCamera});
     pauseMenu.load();
 
     return { scene };

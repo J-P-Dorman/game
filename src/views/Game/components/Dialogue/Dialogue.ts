@@ -3,8 +3,11 @@ import { createLogicAction } from "../GameLoops/LogicLoop/utils";
 import { createRenderAction } from "../GameLoops/RenderLoop/utils";
 import * as THREE from "three";
 import textBackgroundImage from "../../../../assets/sprites/scenery/house.svg";
-import { FitToCamera } from "../Camera/types";
+import { AttachToCamera, FitToCamera } from "../Camera/types";
 import DialogueBox from "./components/DialogueBox/DialogueBox";
+import  DialogueBackground from "./components/DialogueBackground/DialogueBackground";
+import  DialogueText from "./components/DialogueText/DialogueText";
+import sashaImage from "../../../../assets/images/sasha.png"
 
 type State = {
   dialogueGroup: THREE.Group;
@@ -15,6 +18,7 @@ type State = {
 
 type Load = {
   fitToCamera: FitToCamera;
+  attachToCamera: AttachToCamera;
 };
 
 const Dialogue = () => {
@@ -25,60 +29,88 @@ const Dialogue = () => {
     image: undefined,
   };
 
-  const dialogueBox =  DialogueBox();
+  const textSize = 0.6;
+  const textGroupScaleY = 0.4;
+  const imageGroupScaleY = 0.6;
+
+  const imageHeight = 1448;
+  const imageWidth = 878;
+
+  const calcPercent = (part: number, total: number) => (part / total) * 100;
+
+  // Components
+  // ===========================================================================
+  const dialogueBackground = DialogueBackground();
+  const dialogueText = DialogueText();
+  // const dialogueBox =  DialogueBox();
 
   // Private Methods
   // ===========================================================================
 
   // Public Methods
   // ===========================================================================
-  const load = async ({ fitToCamera }: Load) => {
+  const load = async ({ fitToCamera, attachToCamera }: Load) => {
 
     // Attach the parts the the main container
     state.dialogueGroup.add(state.textGroup);
     state.dialogueGroup.add(state.imageGroup);
 
-    // DELETE ME Apply test colours to groups
-    // ===================================================================
-    const imageMaterial = new THREE.MeshBasicMaterial({color: '#00ff00'});
-    const imageGeometry = new THREE.PlaneGeometry(1, 1);
-    const imageMesh = new THREE.Mesh(imageGeometry, imageMaterial);
-    state.imageGroup.add(imageMesh);
-    imageMesh.position.x = 0;
-    imageMesh.position.z = -0.1;
-    imageMesh.position.y = 0;
+    // Image area
+    // ================================================
+    const sashaTexture = new THREE.TextureLoader().load(sashaImage);
+    sashaTexture.colorSpace = THREE.SRGBColorSpace;
+    const sashaMaterial = new THREE.MeshBasicMaterial({
+      map: sashaTexture,
+      transparent: true
+    });
+    const sashaGeometry = new THREE.PlaneGeometry(1,1);
+    const sashaMesh = new THREE.Mesh(sashaGeometry, sashaMaterial);
+    
+    attachToCamera(sashaMesh, ({ right, top, bottom }) => {
+      const padding = 1;
 
-    const textMaterial = new THREE.MeshBasicMaterial({color: '#0000ff'});
-    const textGeometry = new THREE.PlaneGeometry(1, 1);
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    state.textGroup.add(textMesh);
-    textMesh.position.x = 0;
-    textMesh.position.z = -0.1;
-    textMesh.position.y = 0;
-    // ===================================================================
+      // Figure out height
+      const diffY = top - bottom;
+      const scaleY = diffY * imageGroupScaleY;
 
-    fitToCamera(state.dialogueGroup, (camera) => {
-      state.imageGroup.scale.y = 0.6;
-      state.imageGroup.position.y = 0.2;
+      // Figure out width
+      const differencePx = calcPercent(imageWidth, imageHeight);
+      const scaleX = (scaleY / 100) * differencePx;
 
-      state.textGroup.scale.y = 0.4;
-      state.textGroup.position.y = -0.3;
-
-      state.dialogueGroup.position.z = -2;
+      // Apply transformations
+      sashaMesh.scale.y = scaleY;
+      sashaMesh.scale.x = scaleX;
+      sashaMesh.position.x = right - scaleX / 2 - padding;
+      sashaMesh.position.y = top - scaleY / 2
+      sashaMesh.position.z = -1;
     });
 
-    // Delete me - failed dialogue box group test
-    // ===================================================================
-    // const { dialogueBoxGroup } = await dialogueBox.load({
-    //   config: { fill: '#8c2d81', text: '#ffffff' }
-    // });
-    // state.textGroup.add(dialogueBoxGroup);  
-  };
+    // Text area
+    // ================================================
 
-  // HELLO START HERE
-  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-  // Split dialogue box into background component which is stretched and text which is not
-  // Render the background first and use that to decide the start position and max width of the text before wrapping
+    
+    // Arrange image group above text group and 
+    state.imageGroup.scale.y = imageGroupScaleY;
+    state.imageGroup.position.y = 0.2;
+    state.textGroup.scale.y = textGroupScaleY;
+    state.textGroup.position.y = -0.3;
+    state.dialogueGroup.position.z = -2;
+    fitToCamera(state.dialogueGroup, () => {});
+   
+    const backgroundMesh = await dialogueBackground.load('#8c2d81');
+    const textMesh = await dialogueText.load({ color:'#ffffff', size: textSize });
+
+    state.textGroup.add(backgroundMesh);
+    // state.textGroup.add(textGroup);
+    textMesh.position.z = -1;
+
+    attachToCamera(textMesh, ({left, bottom}) => {
+      const padding = 1;
+      textMesh.position.x = left + padding;
+      textMesh.position.y = bottom + ((textGroupScaleY * 10) * 2) - textSize - padding;
+    });
+
+  };
 
   return { load };
 };

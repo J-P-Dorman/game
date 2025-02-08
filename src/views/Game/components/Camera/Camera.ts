@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { updateCameraPosition } from "./helpers";
 import { createRenderAction, dispatchRender } from "../GameLoops/RenderLoop/utils";
 import { createLogicAction } from "../GameLoops/LogicLoop/utils";
-import { FitToCamera } from './types';
+import { AttachToCamera, FitToCamera } from './types';
 
 type State = {
   camera: THREE.OrthographicCamera;
@@ -10,6 +10,8 @@ type State = {
   right: number;
   top: number;
   bottom: number;
+  width: number;
+  height: number;
 }
 
 export const Camera = () => {
@@ -20,15 +22,17 @@ export const Camera = () => {
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0
+    bottom: 0,
+    width: 0,
+    height: 0
   };
 
   // Public Methods
   // ===========================================================================
   const load = (gameWindow: HTMLElement) => {
-    const width = gameWindow.offsetWidth;
-    const height = gameWindow.offsetHeight;
-    const aspect = width / height;
+    state.width = gameWindow.offsetWidth;
+    state.height = gameWindow.offsetHeight;
+    const aspect = state.width / state.height;
 
     const zoom = 10; // Controls how zoomed-in/out the orthographic view is
     state.left = -zoom * aspect;
@@ -45,13 +49,28 @@ export const Camera = () => {
       1000
     );
 
+    // const testMaterial = new THREE.MeshBasicMaterial({color: '#ff0000'});
+    // const testGeometry = new THREE.BoxGeometry(1, 1);
+    // const testMesh = new THREE.Mesh(testGeometry, testMaterial);
+    // testMesh.position.z = -2;
+    // state.camera.add(testMesh);
+
     updateCameraPosition(state.camera, {x: 0, z: 0});
 
     return { camera: state.camera };
   };
 
-  const attachToCamera = (group: THREE.Group) => {
+  const attachToCamera: AttachToCamera = (group, callback) => {
     state.camera.add(group);
+    callback({
+      camera: state.camera,
+      left: state.left,
+      right: state.right,
+      top: state.top,
+      bottom: state.bottom,
+      width: state.width,
+      height: state.height
+    });
   }
 
 /**
@@ -61,7 +80,7 @@ export const Camera = () => {
  * @param callbaack Add stuff to the group inside this callback
  */
   const fitToCamera: FitToCamera = (group, callback) => {
-    attachToCamera(group);
+    attachToCamera(group, () => {});
 
     const maxWidth = state.right + state.left;
     const maxHeight = state.top - state.bottom;
@@ -74,16 +93,24 @@ export const Camera = () => {
 
     // DELETE ME Apply test colours to groups
     // ===================================================================
-    const testMaterial = new THREE.MeshBasicMaterial({color: '#ff0000'});
-    const testGeometry = new THREE.PlaneGeometry(1, 1);
-    const testMesh = new THREE.Mesh(testGeometry, testMaterial);
-    group.add(testMesh);
-    testMesh.position.x = 0;
-    testMesh.position.z = -1;
-    testMesh.position.y = 0;
+    // const testMaterial = new THREE.MeshBasicMaterial({color: '#ff0000'});
+    // const testGeometry = new THREE.PlaneGeometry(1, 1);
+    // const testMesh = new THREE.Mesh(testGeometry, testMaterial);
+    // group.add(testMesh);
+    // testMesh.position.x = 0;
+    // testMesh.position.z = -1;
+    // testMesh.position.y = 0;
     // ===================================================================
 
-    callback(state.camera);
+    callback({
+      camera: state.camera,
+      left: state.left,
+      right: state.right,
+      top: state.top,
+      bottom: state.bottom,
+      width: state.width,
+      height: state.height
+    });
   }
 
   // Actions
