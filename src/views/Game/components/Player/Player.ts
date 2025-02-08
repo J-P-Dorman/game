@@ -15,6 +15,7 @@ import {
   renderNow,
 } from "../GameLoops/RenderLoop/utils";
 import { playerRunSpeed } from "./constants";
+import { AttachToCamera } from "../Camera/types";
 
 const Player = () => {
   // Local state
@@ -31,7 +32,7 @@ const Player = () => {
 
   // Public Methods
   // ===========================================================================
-  const load = ({ camera }: { camera: THREE.OrthographicCamera }) => {
+  const load = ({attachToCamera}: { attachToCamera: AttachToCamera } ) => {
     const { id, spriteSheet } = playerData;
     const { image, spriteWidth, spriteHeight, sheetWidth, sheetHeight } =
       spriteSheet;
@@ -57,6 +58,8 @@ const Player = () => {
           spriteGroup.add(sprite);
         });
 
+        console.log('sprites: ', sprites);
+
         // Initialise the player as the top left sprite
         sprites.forEach((sprite, i) => {
           if (i !== 0) sprite.visible = false;
@@ -64,9 +67,9 @@ const Player = () => {
         currentSpriteKey = keys[0];
         currentSprite = sprites[0];
 
-        spriteGroup.position.set(-2, -2, -9);
+        spriteGroup.position.set(-2, -2, -2);
         spriteGroup.scale.set(0.05, 0.05, 0.05);
-        camera.add(spriteGroup);
+        attachToCamera(spriteGroup, () => {});
 
         playerSpriteGroup = spriteGroup;
         playerSprites = spriteList;

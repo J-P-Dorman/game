@@ -116,8 +116,6 @@ export const loadSvgSheet = async (
 
           const mesh = new THREE.Mesh(geometry, material);
 
-          mesh.scale.set(0.001, 0.001, 0.001);
-
           // If group is undefinded, define it
           if(sprites[spriteIndexY][spriteIndexX] === undefined) sprites[spriteIndexY][spriteIndexX] = new THREE.Group();
 

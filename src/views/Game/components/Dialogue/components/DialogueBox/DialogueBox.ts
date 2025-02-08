@@ -3,6 +3,7 @@ import { Load, State } from "./types";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
+// DELETE MEEEEEEEEEEEEEEEEEEEEE
 const DialogueBox = () => {
   const state: State = {
     dialogueBoxGroup: new THREE.Group(),
