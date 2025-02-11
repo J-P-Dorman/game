@@ -60,9 +60,8 @@ export const Camera = () => {
     return { camera: state.camera };
   };
 
-  const attachToCamera: AttachToCamera = (group, callback) => {
-    state.camera.add(group);
-    callback({
+  const attachToCamera: AttachToCamera = (callback) => {
+    const group = callback({
       camera: state.camera,
       left: state.left,
       right: state.right,
@@ -71,6 +70,8 @@ export const Camera = () => {
       width: state.width,
       height: state.height
     });
+
+    state.camera.add(group);
   }
 
 /**
@@ -79,30 +80,14 @@ export const Camera = () => {
  * @param group The THREE group to append to camera
  * @param callbaack Add stuff to the group inside this callback
  */
-  const fitToCamera: FitToCamera = (group, callback) => {
-    attachToCamera(group, () => {});
-
+  const fitToCamera: FitToCamera = (callback) => {
     const maxWidth = state.right + state.left;
     const maxHeight = state.top - state.bottom;
 
-    group.scale.x = state.right - state.left;
-    group.position.x = 0;
 
-    group.scale.y = state.top - state.bottom;
-    group.position.y = 0;
 
-    // DELETE ME Apply test colours to groups
-    // ===================================================================
-    // const testMaterial = new THREE.MeshBasicMaterial({color: '#ff0000'});
-    // const testGeometry = new THREE.PlaneGeometry(1, 1);
-    // const testMesh = new THREE.Mesh(testGeometry, testMaterial);
-    // group.add(testMesh);
-    // testMesh.position.x = 0;
-    // testMesh.position.z = -1;
-    // testMesh.position.y = 0;
-    // ===================================================================
 
-    callback({
+    const group = callback({
       camera: state.camera,
       left: state.left,
       right: state.right,
@@ -111,6 +96,14 @@ export const Camera = () => {
       width: state.width,
       height: state.height
     });
+
+    group.scale.x = state.right - state.left;
+    group.position.x = 0;
+
+    group.scale.y = state.top - state.bottom;
+    group.position.y = 0;
+
+    attachToCamera(() => group);
   }
 
   // Actions

@@ -69,7 +69,7 @@ const Player = () => {
 
         spriteGroup.position.set(-2, -2, -2);
         spriteGroup.scale.set(0.05, 0.05, 0.05);
-        attachToCamera(spriteGroup, () => {});
+        attachToCamera(() => spriteGroup);
 
         playerSpriteGroup = spriteGroup;
         playerSprites = spriteList;
