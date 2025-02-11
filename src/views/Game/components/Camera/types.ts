@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 export type FitToCamera = (
-  group: THREE.Group | THREE.Mesh,
   callback: (props: {
     camera: THREE.OrthographicCamera;
     left: number;
@@ -10,11 +9,10 @@ export type FitToCamera = (
     bottom: number;
     width: number;
     height: number;
-  }) => void
+  }) => THREE.Group | THREE.Mesh
 ) => void;
 
 export type AttachToCamera = (
-  group: THREE.Group | THREE.Mesh,
   callback: (props: {
     camera: THREE.OrthographicCamera;
     left: number;
@@ -23,5 +21,5 @@ export type AttachToCamera = (
     bottom: number;
     width: number;
     height: number;
-  }) => void
+  }) => THREE.Group | THREE.Mesh
 ) => void;
