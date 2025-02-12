@@ -15,7 +15,8 @@ export const renderFrame = (
 
   const newRenderQueue = renderQueue.reduce((acc: any[], action: any) => {
     const { id, func, time, maxTime, repeat } = action;
-    const timeElapsed = time >= maxTime;
+    const finalTime = typeof maxTime === 'function' ? maxTime() : maxTime;
+    const timeElapsed = time >= finalTime;
     const newTime = timeElapsed ? 0 : time + delay;
 
     if(timeElapsed) func({ action, renderQueue });

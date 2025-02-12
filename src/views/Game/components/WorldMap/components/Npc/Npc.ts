@@ -1,16 +1,16 @@
-import { playerData } from "../../../../data/creatures/player";
+import { playerData } from "../../../../../../data/creatures/player";
 import {
   initialiseSprites,
   loadSvgSheet
-} from "../../../../utils/index";
-import { createLogicAction, removeAllFromLogicQueue, removeAllFromLogicQueue2 } from "../GameLoops/LogicLoop/utils";
+} from "../../../../../../utils/index";
+import { createLogicAction, removeAllFromLogicQueue, removeAllFromLogicQueue2 } from "../../../GameLoops/LogicLoop/utils";
 import {
   createRenderAction,
   dispatchRender,
   removeAllFromRenderQueue,
   removeAllFromRenderQueue2,
   renderNow,
-} from "../GameLoops/RenderLoop/utils";
+} from "../../../GameLoops/RenderLoop/utils";
 import { AnimationKey, Direction, LoadArgs, State } from "./types";
 
 const Npc = () => {

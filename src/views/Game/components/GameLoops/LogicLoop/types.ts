@@ -8,7 +8,8 @@ export type LogicActionId =
   | "npcMove"
   | "npcTurn"
   | "npcStop"
-  | 'initMap';
+  | 'initMap'
+  | 'placeItem';
 
 /**
  * Each logic action is something to be done on a tick of the logic cycle

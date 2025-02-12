@@ -10,7 +10,10 @@ export type RenderActionId =
 | "npcWalk"
 | "npcStopWalk"
 | "npcRun"
-| 'initMap';
+| 'initMap'
+| 'itemPlace'
+| 'itemAnimate'
+| 'itemAnimateDefault';
 
 export type RenderAction = {
   id: RenderActionId;
@@ -23,7 +26,7 @@ export type RenderAction = {
   payload: any[];
   pause: boolean;
   time: number;
-  maxTime: number;
+  maxTime: number | (() => number);
 };
 
 export type RenderActionPartial = {
@@ -37,7 +40,7 @@ export type RenderActionPartial = {
   payload?: any[];
   pause?: boolean;
   time?: number;
-  maxTime?: number;
+  maxTime?: number | (() => number);
 };
 
 export type RenderActionAny = RenderAction;
