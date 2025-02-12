@@ -13,7 +13,8 @@ export type RenderActionId =
 | 'initMap'
 | 'itemPlace'
 | 'itemAnimate'
-| 'itemAnimateDefault';
+| 'itemAnimateDefault'
+| 'npcPlace';
 
 export type RenderAction = {
   id: RenderActionId;

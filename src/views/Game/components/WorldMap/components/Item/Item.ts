@@ -48,10 +48,10 @@ const Item = () => {
     width: 0,
     height: 0,
     onInteract: () => {},
-		currentSpriteKey: undefined,
-		currentSprite: undefined,
-		spriteGroup: undefined,
-		spriteList: undefined,
+	currentSpriteKey: undefined,
+	currentSprite: undefined,
+	spriteGroup: undefined,
+	spriteList: undefined,
   };
 
   const load = ({ spriteSheet, width, height, onInteract }: Item) => {

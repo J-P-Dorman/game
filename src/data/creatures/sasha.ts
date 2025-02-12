@@ -95,8 +95,10 @@ const dialogueOptions: DialogueOptions = {
   }
 };
 
-export const sasha: CreatureData = {
+export const sashaData: CreatureData = {
   id: "sasha",
+  width: 1.8,
+  height: 1.6,
   spriteSheet: {
     image: spriteSheet,
     spriteWidth: 20,
@@ -139,5 +141,6 @@ export const sasha: CreatureData = {
       }
     }
   },
-  dialogue: dialogueOptions
+  dialogue: dialogueOptions,
+  onInteract: () => {}
 };

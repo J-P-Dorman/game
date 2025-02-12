@@ -5,7 +5,7 @@ import imageFlowers from '../assets/sprites/scenery/flowers.png';
 import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in.png';
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';
-import { sasha } from './creatures/sasha';
+import { sashaData } from './creatures/sasha';
 
 // Textures
 // =================================================================
@@ -253,7 +253,7 @@ const itemSasha: Item & {creatureData: CreatureData} = {
   height: 2,
   anchor: "topLeft",
   creatureData: {
-    ...sasha
+    ...sashaData
   }
 };
 

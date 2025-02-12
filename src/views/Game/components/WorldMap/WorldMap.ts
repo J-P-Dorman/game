@@ -2,15 +2,17 @@ import * as THREE from "three";
 import { ChunkData, MapData } from "../../../../types";
 import MapChunk from "./components/MapChunk/MapChunk";
 import Item from "./components/Item/Item";
+import Npc from "./components/Npc/Npc";
 import {
   createRenderAction,
   dispatchRender,
   pushToRenderQueue,
   renderNow,
 } from "../GameLoops/RenderLoop/utils";
-import { createLogicAction } from "../GameLoops/LogicLoop/utils";
+import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
 import { AttachToCamera } from "../Camera/types";
 import { bucketData } from './components/Item/itemData'
+import { sashaData } from "../../../../data/creatures/sasha";
 
 interface Props {
   scene: THREE.Scene;
@@ -38,6 +40,12 @@ const WorldMap = () => {
     bucket.load(bucketData);
     dispatchRender(bucket.renderActions.itemPlace, [40, 40]);
     dispatchRender(bucket.renderActions.itemAnimateDefault);
+
+    // TEST - load test npc
+    const sasha = Npc();
+    sasha.load({creatureData: sashaData});
+    dispatchLogic(sasha.logicActions.npcPlace, [42, 42]);
+    // dispatchLogic(sasha.renderActions.npcAnimateDefault);
 
     // Loop through each row of chunks in the map
     mapData.forEach((chunksData: ChunkData[], chunkIndexY: number) => {
