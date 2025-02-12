@@ -2,21 +2,29 @@ import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
 
 export type State = {
-    npcData?: CreatureData;
-    spriteGroup?: THREE.Group;
-    sprites: Record<string, THREE.Group>;
-    currentSpriteKey: string;
-    currentSprite?: THREE.Group;
-    isWalking: boolean;
-    isRunning: boolean;
-    position: { x: number, y: number },
-    direction: 'down' | 'up' | 'left' | 'right';
-  };
+  spriteSheet: any;
+  width: number;
+  height: number;
+  onInteract: () => void;
+  currentSpriteKey: string;
+  currentSprite: THREE.Group;
+  spriteGroup: THREE.Group;
+  spriteList: Record<string, THREE.Group>;
+  position: { x: number; y: number; }
+  // data?: CreatureData;
+  // spriteGroup?: THREE.Group;
+  // sprites: Record<string, THREE.Group>;
+  // currentSpriteKey: string;
+  // currentSprite?: THREE.Group;
+  // isWalking: boolean;
+  // isRunning: boolean;
+  // position: { x: number, y: number },
+  // direction: 'down' | 'up' | 'left' | 'right';
+};
   
-  export type LoadArgs = {
-    camera: THREE.OrthographicCamera,
-    npcData: CreatureData
-  };
+export type LoadArgs = {
+  creatureData: CreatureData;
+};
 
 export   type Direction =
 | "down"

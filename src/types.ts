@@ -15,17 +15,21 @@ export type MapData = ChunkData[][];
 
 export type CreatureData = {
   id: string;
+  width: number;
+  height: number;
   spriteSheet: {
     image: string;
     spriteWidth: number;
     spriteHeight: number;
     sheetWidth: number;
     sheetHeight: number;
-    defaultSprite: string;
+    defaultSprite?: string;
+    defaultAnimation?: string;
     sheetMap: string[][];
     animationMap: Record<string, {frames: string[]; end: string;}>;
   };
-  dialogue?: {}
+  dialogue?: {},
+  onInteract?: () => void;
 };
 
 export type Tag = any;
