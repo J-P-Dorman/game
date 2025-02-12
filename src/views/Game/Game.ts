@@ -64,10 +64,10 @@ export const Game = (): any => {
     logicNow(camera.logicActions.cameraSnap, [40, -42]);
 
     // Load the dialogue box
-    dialogue.load({
-      attachToCamera: camera.attachToCamera,
-      fitToCamera: camera.fitToCamera
-    });
+    // dialogue.load({
+    //   attachToCamera: camera.attachToCamera,
+    //   fitToCamera: camera.fitToCamera
+    // });
 
     // Start input controls
     controls.load({ camera: cameraObj });

@@ -4,15 +4,16 @@ import imageAngry from '../../assets/sprites/creatures/sasha/chat/sasha_angry.pn
 import imageHappy from '../../assets/sprites/creatures/sasha/chat/sasha_happy.png';
 import imageSad from '../../assets/sprites/creatures/sasha/chat/sasha_sad.png';
 import imageTalking from '../../assets/sprites/creatures/sasha/chat/sasha_talking.png';
+import { DialogueOptions } from './types';
 
 
-const dialogueOptions = {
+const dialogueOptions: DialogueOptions = {
   hello: {
     messages: [{
       text: 'Hi! This is a nice beach, isn\'t it?',
       image: imageTalking,
     }],
-    player_responses: [
+    playerResponses: [
       { text:'Not really...', onChoose: function () { return this.iSuppose }},
       { text: 'Yeah!', onChoose: function () { return this.right } }
     ]
@@ -22,7 +23,7 @@ const dialogueOptions = {
       text: 'Oh, okay. I suppose the beach isn\'t for everyone. What about those flowers over there?',
       image: imageSad,
     }],
-    player_responses: [
+    playerResponses: [
       { text: 'I don\'t like them...', onChoose: () => dialogueOptions.bruh },
       { text: 'Those are nice I guess', onChoose: () => dialogueOptions.iSuppose }
     ]
@@ -33,7 +34,7 @@ const dialogueOptions = {
       image: imageAngry,
       effect: 'shake_small',
     }],
-    player_responses: [
+    playerResponses: [
       { text: 'Yeah, maybe?', onChoose: () => dialogueOptions.ohMan },
       { text: 'Whoah, sorry..', onChoose: () => dialogueOptions.intro }
     ]
@@ -82,15 +83,14 @@ const dialogueOptions = {
       {
         text: 'I\'m Sasha, what\'s your name?',
         image: imageTalking,
-        responses: [],
         onNext: () => { console.log('Name input goes here!') }
       },
       {
         text: 'Kidding, that feature hasn\'t been added yet!',
         image: imageTalking,
-        responses: []
       }
     ],
+    playerResponses: [],
     onEnd: () => { window.state.flags.hasSpokenToSasha = true }
   }
 };

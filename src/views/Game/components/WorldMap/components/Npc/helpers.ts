@@ -1,4 +1,4 @@
-import { BaseAction, WalkAction } from "../../types";
+import { BaseAction, WalkAction } from "../../../../types";
 
 export const turnPlayer = ({ action }: { action: BaseAction }): void => {
   const { id: actionId } = action;

@@ -1,10 +1,11 @@
 import treeImg from "../assets/sprites/scenery/tree.png";
-import { TileData, ChunkData, MapData } from "../types";
+import { TileData, ChunkData, MapData, CreatureData } from "../types";
 import { Item, Texture } from "../views/Game/components/WorldMap/components/MapChunk/MapTile/types";
 import imageFlowers from '../assets/sprites/scenery/flowers.png';
 import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in.png';
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';
+import { sasha } from './creatures/sasha';
 
 // Textures
 // =================================================================
@@ -247,6 +248,18 @@ const itemTree: Item = {
   anchor: "topLeft"
 };
 
+const itemSasha: Item & {creatureData: CreatureData} = {
+  width: 2,
+  height: 2,
+  anchor: "topLeft",
+  creatureData: {
+    ...sasha
+  }
+};
+
+
+// Tiles
+// =================================================================
 export const S: TileData = { id: "sand", texture: textureSand, item: undefined };
 export const G: TileData = {
   id: "grass",
@@ -288,6 +301,11 @@ export const H: TileData = {
   id: "grassHouse",
   texture: textureGrassFlowers,
   item: itemTree,
+};
+export const GS: TileData = {
+  id: "grassSasha",
+  texture: textureGrass,
+  item: itemSasha,
 };
 
 const chunk0_0: ChunkData = [
@@ -440,7 +458,7 @@ const chunk1_1: ChunkData = [
   [G,G,G,G,G,G,G1,G1,G1,G1,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
   [G,G,G,G,G,G,G,G,G,G,S,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
   [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,S,G,S,S,G,G,G,S,S,S,G,G,G,G,G,G,G,S,G,G,G,G],
+  [G,G,G,G,G,G,G,G,S,G,S,S,G,G,GS,S,S,S,G,G,G,G,G,G,G,S,G,G,G,G],
   [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
   [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,SHULI,SHU],
   [SHU,SHU,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,SHULI,SHU,SHULO,W],

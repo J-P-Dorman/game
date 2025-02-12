@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CreatureData } from "../../../../types";
+import { CreatureData } from "../../../../../../types";
 
 export type State = {
     npcData?: CreatureData;
