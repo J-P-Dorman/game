@@ -9,8 +9,8 @@ import {
   renderNow,
 } from "../GameLoops/RenderLoop/utils";
 import { createLogicAction } from "../GameLoops/LogicLoop/utils";
-import bucketSpriteSheet from '../../../../assets/sprites/Items/bucket.svg';
 import { AttachToCamera } from "../Camera/types";
+import { bucketData } from './components/Item/itemData'
 
 interface Props {
   scene: THREE.Scene;
@@ -35,33 +35,9 @@ const WorldMap = () => {
 
     // TEST - load test item
     const bucket = Item();
-    bucket.load({
-      width: 0.5,
-      height: 0.5,
-      spriteSheet: {
-        image: bucketSpriteSheet,
-        spriteWidth: 14,
-        spriteHeight: 14,
-        sheetWidth: 42,
-        sheetHeight: 14,
-        defaultSprite: 'water1',
-        defaultAnimation: 'water',
-        sheetMap: [['water1', 'water2', 'water3']],
-        animationMap: {
-          water: {
-            frames: ['water1', 'water2', 'water3'],
-            fps: 3,
-            loop: true,
-            end: undefined
-          }
-        }
-      },
-      onInteract: () => { alert('DON\'T TOUCH THE BUCKET'); }
-    });
-
+    bucket.load(bucketData);
     dispatchRender(bucket.renderActions.itemPlace, [40, 40]);
     dispatchRender(bucket.renderActions.itemAnimateDefault);
-    
 
     // Loop through each row of chunks in the map
     mapData.forEach((chunksData: ChunkData[], chunkIndexY: number) => {
