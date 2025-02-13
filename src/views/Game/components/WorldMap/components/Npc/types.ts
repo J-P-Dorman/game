@@ -11,6 +11,12 @@ export type State = {
   spriteGroup: THREE.Group;
   spriteList: Record<string, THREE.Group>;
   position: { x: number; y: number; }
+  movement: {
+    path: { x: number, y: number }[],
+    currentIndex: number;
+    speed: number;
+    loop: boolean;
+  }
   // data?: CreatureData;
   // spriteGroup?: THREE.Group;
   // sprites: Record<string, THREE.Group>;
@@ -37,3 +43,5 @@ export   type Direction =
 | "rightUp";
 
 export type AnimationKey = 'walkDown' | 'walkUp' | 'walkLeft' | 'walkRight' | 'walkLeftDown' | 'walkLeftUp' | 'walkRightDown' | 'walkRightUp'
+
+export type PathPoint = { x: number; y: number };

@@ -243,8 +243,8 @@ export const textureShoreUpLeftOut: Texture = {
 // =================================================================
 const itemTree: Item = {
   image: treeImg,
-  width: 2,
-  height: 2,
+  width: 3.5,
+  height: 3.5,
   anchor: "topLeft"
 };
 

@@ -45,7 +45,62 @@ const WorldMap = () => {
     const sasha = Npc();
     sasha.load({creatureData: sashaData});
     dispatchLogic(sasha.logicActions.npcPlace, [42, 42]);
-    // dispatchLogic(sasha.renderActions.npcAnimateDefault);
+    dispatchLogic(sasha.logicActions.npcNewPath, [
+      [
+        {x: 42, y: 43},
+        {x: 42, y: 44},
+        {x: 42, y: 45},
+        {x: 43, y: 45},
+        {x: 44, y: 45},
+        {x: 45, y: 45},
+        {x: 45, y: 44},
+        {x: 45, y: 43},
+        {x: 45, y: 42},
+        {x: 44, y: 42},
+        {x: 43, y: 42},
+        {x: 42, y: 42},
+        {x: 42, y: 43},
+        {x: 42, y: 44},
+        {x: 42, y: 45},
+        {x: 43, y: 45},
+        {x: 44, y: 45},
+        {x: 45, y: 45},
+        {x: 45, y: 44},
+        {x: 45, y: 43},
+        {x: 45, y: 42},
+        {x: 44, y: 42},
+        {x: 43, y: 42},
+        {x: 42, y: 42},
+        {x: 42, y: 43},
+        {x: 42, y: 44},
+        {x: 42, y: 45},
+        {x: 43, y: 45},
+        {x: 44, y: 45},
+        {x: 45, y: 45},
+        {x: 45, y: 44},
+        {x: 45, y: 43},
+        {x: 45, y: 42},
+        {x: 44, y: 42},
+        {x: 43, y: 42},
+        {x: 42, y: 42},
+        {x: 42, y: 43},
+        {x: 42, y: 44},
+        {x: 42, y: 45},
+        {x: 43, y: 45},
+        {x: 44, y: 45},
+        {x: 45, y: 45},
+        {x: 45, y: 44},
+        {x: 45, y: 43},
+        {x: 45, y: 42},
+        {x: 44, y: 42},
+        {x: 43, y: 42},
+        {x: 42, y: 42},
+      ],
+      0.3,
+      true
+    ]);
+    dispatchLogic(sasha.logicActions.npcMove);
+    dispatchRender(sasha.renderActions.npcMove);
 
     // Loop through each row of chunks in the map
     mapData.forEach((chunksData: ChunkData[], chunkIndexY: number) => {

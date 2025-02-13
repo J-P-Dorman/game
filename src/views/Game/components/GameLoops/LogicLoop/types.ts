@@ -10,7 +10,8 @@ export type LogicActionId =
   | "npcStop"
   | 'initMap'
   | 'placeItem'
-  | 'npcPlace';
+  | 'npcPlace'
+  | 'npcMove';
 
 /**
  * Each logic action is something to be done on a tick of the logic cycle
@@ -28,7 +29,7 @@ export type LogicActionId =
  * @param maxTime How much time should be waited before invoking the action
  */
 export type LogicAction = {
-  id: LogicActionId;
+  id: string;
   func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
   repeat: boolean;
   stack: boolean;
@@ -39,7 +40,7 @@ export type LogicAction = {
 };
 
 export type LogicActionPartial = {
-  id: LogicActionId;
+  id: string;
   func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
   repeat?: boolean;
   stack?: boolean;
