@@ -14,6 +14,7 @@ import {
   renderNow,
 } from "../../../GameLoops/RenderLoop/utils";
 import { AnimationKey, Direction, LoadArgs, State } from "./types";
+import { calculateReachablePoints, getBetweenCoordinates } from './helpers';
 
 type SpriteSheet = {
 	image: string;
@@ -46,6 +47,12 @@ const Npc = () => {
     spriteGroup: undefined,
     spriteList: undefined,
     position: { x: 0, y: 0 },
+    movement: {
+      path: [],
+      currentIndex: 0,
+      speed: 0,
+      loop: false
+    }
 
         // data: undefined,
     // sprites: {},
@@ -134,6 +141,86 @@ const Npc = () => {
 
         dispatchRender(renderActions.npcPlace);
       }
+    }),
+    npcNewPath: createLogicAction({
+      id: "npcNewPath",
+      func: ({ action }) => {
+        const { payload } = action;
+        const [ path, speed, loop ] = payload;
+
+        state.movement.path = path;
+        state.movement.currentIndex = 0;
+        state.movement.speed = speed;
+        state.movement.loop = loop;
+      }
+    }),
+    npcMove: createLogicAction({
+      id: "npcMove",
+      func: ({ action }) => {
+        const { position, movement } = state;
+        const { x, y } = position;
+        const { path, speed } = movement;
+
+        if(speed > path.length + 3) {
+          console.error(
+            'Cannot set such a high speed with so few path points. Please add more path points or reduce speed'
+          )
+          return;
+        }
+
+        const startingPoint = {x, y};
+
+        const [
+          reachablePoints,
+          lastReachableIndex,
+          leftoverSpeed,
+          destinationPoint
+        ] = calculateReachablePoints({
+          x,
+          y,
+          startIndex: state.movement.currentIndex,
+          path,
+          speed
+        });
+
+        const [ nextX, nextY ] = getBetweenCoordinates(
+          reachablePoints.at(-1) ?? startingPoint,
+          destinationPoint,
+          leftoverSpeed
+        );
+
+        state.position.x = nextX;
+        state.position.y = nextY;
+        state.movement.currentIndex = lastReachableIndex &&
+        lastReachableIndex > 0 ? lastReachableIndex :  0;
+
+
+        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        // HELLO, SO WE HAVE A LIST OF ALL POINTS THAT ARE FULLY REACHABLE WITHIN THE SPEED LIMIT
+        // NOW WE NEED TO FIGURE OUT HOW TO GET A LITTLE BIT INTO THE NEXT POINT
+        // THEN WE NEED TO FIGURE OUT HOW TO CONTINUE THAT PROGRESS ON THE NEXT LOOP
+
+        // console.log('reachablePoints: ', reachablePoints);
+        // console.log('leftover: ', leftoverSpeed);
+        console.log('==============================================================================')
+ 
+   
+
+        // const hasNextKeyFrame = Boolean(path[state.movement.currentIndex + 1]);
+        // const nextKeyFrame = hasNextKeyFrame ? path[state.movement.currentIndex + 1] : path[0];
+        
+        // state.position.x = nextKeyFrame.x;
+        // state.position.y = nextKeyFrame.y;
+        // state.movement.currentIndex = hasNextKeyFrame ? state.movement.currentIndex + 1 : 0;
+
+        // console.log('state.position.x: ', state.position.x);
+        // console.log('state.position.y: ', state.position.y);
+        // console.log('currentIndex: ', state.movement.currentIndex);
+
+        
+      },
+      repeat: true,
+      maxTime: 2000
     })
   };
 
@@ -157,6 +244,22 @@ const Npc = () => {
     
         window.scene.add(state.spriteGroup);
       }
+    }),
+    npcMove: createRenderAction({
+      id: "npcMove",
+      func: ({ action }) => {
+        const { payload } = action;
+
+        // console.log('state.position.x: ', state.position.x);
+        // console.log('state.position.y: ', state.position.y);
+        // console.log(': ', );
+        // console.log(': ', );
+        // console.log(': ', );
+  
+        state.spriteGroup.position.x = state.position.x;
+        state.spriteGroup.position.z = state.position.y;
+      },
+      repeat: true
     })
   };
 

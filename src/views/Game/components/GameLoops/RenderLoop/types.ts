@@ -17,7 +17,7 @@ export type RenderActionId =
 | 'npcPlace';
 
 export type RenderAction = {
-  id: RenderActionId;
+  id: string;
   func: (props: {
     action: RenderAction;
     actionQueue: RenderAction[];
@@ -31,7 +31,7 @@ export type RenderAction = {
 };
 
 export type RenderActionPartial = {
-  id: RenderActionId;
+  id: string;
   func: (props: {
     action: RenderAction;
     actionQueue: RenderAction[];
