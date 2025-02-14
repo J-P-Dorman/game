@@ -62,7 +62,24 @@ export const calculateReachablePoints = ({ x, y, path, startIndex, speed, loop }
   if(!loop) return [points, path.length - 1, 0, path.at(-1)];
 
   // If looping, keep going, starting from the beginning of the path
+  for(var i = 0; i < path.length - points.length; i++) {
+    const point = path[i];
+    const pointX = point.x;
+    const pointY = point.y;
+    const distanceToGo = speed - distanceTravelled;
+    const distanceDifference = Math.abs(
+      (Math.abs(pointX) + Math.abs(pointY)) - (Math.abs(lastPosition.x) + Math.abs(lastPosition.y))
+    );
 
+    const isWithinReach = distanceToGo - distanceDifference > 0;
+
+    // Once we hit the speed limit, end the function
+    if(!isWithinReach) return [points, i, distanceToGo, point];
+  
+    points.push(point);
+    distanceTravelled += distanceDifference;
+    lastPosition = { x: pointX, y: pointY };
+  }
 }
 
 export const getBetweenCoordinates = (
@@ -91,3 +108,6 @@ export const getBetweenCoordinates = (
 
   return [ finalX, finalY ];
 }
+
+
+
