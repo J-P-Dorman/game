@@ -30,8 +30,8 @@ export type LogicActionId =
  */
 export type LogicAction = {
   id: string;
-  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
-  repeat: boolean;
+  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => any[] | void;
+  repeat: boolean | ((funcReturn: any[]) => boolean);
   stack: boolean;
   payload: any[];
   pause: boolean;
@@ -41,8 +41,8 @@ export type LogicAction = {
 
 export type LogicActionPartial = {
   id: string;
-  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => void;
-  repeat?: boolean;
+  func: (props: { action: LogicAction; logicQueue: LogicAction[] }) => any[] | void;
+  repeat?: boolean | ((funcReturn: any[]) => boolean);
   stack?: boolean;
   payload?: any[];
   pause?: boolean;

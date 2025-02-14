@@ -15,10 +15,20 @@ const LogicLoop = () => {
           const timeElapsed = time >= maxTime;
           const newTime = timeElapsed ? 0 : time + delay;
 
-          if(timeElapsed) func({ action, logicQueue: queue });
+          if(timeElapsed) {
+            const maybeVoid = func({ action, logicQueue: queue });
+            const funcReturn = Array.isArray(maybeVoid) ? maybeVoid : [];
+            const shouldRepeat = typeof repeat === 'function' ? repeat(funcReturn) : repeat;
 
-          if (repeat) return [...acc, { ...action, time: newTime }];
-          return acc;
+            // If we should repeat throw this action back into the queue at 0 time
+            if (shouldRepeat) return [...acc, { ...action, time: newTime }];
+
+            // Clear this action from the queue
+            return acc;
+          }
+         
+          // Keep counting time to execution of callback
+          return [...acc, { ...action, time: newTime }];
         },
         []
       );

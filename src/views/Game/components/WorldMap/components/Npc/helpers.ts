@@ -1,3 +1,4 @@
+import { numberToPercent, percentToNumber } from "../../../../../../utils";
 import { PathPoint } from "./types";
 
 /**
@@ -14,12 +15,13 @@ import { PathPoint } from "./types";
  * character to walk
  * @param speed How many points to walk in a given tick
  */
-export const calculateReachablePoints = ({ x, y, path, startIndex, speed }: {
+export const calculateReachablePoints = ({ x, y, path, startIndex, speed, loop }: {
   x: number;
   y: number;
   path: { x: number, y:number }[],
   startIndex: number;
-  speed: number
+  speed: number,
+  loop: boolean
 }): [
   reachablePoints: PathPoint[],
   lastReachableIndex: number,
@@ -29,12 +31,6 @@ export const calculateReachablePoints = ({ x, y, path, startIndex, speed }: {
   const points = [];
   let distanceTravelled = 0;
   let lastPosition = { x, y };
-
-  console.log('x: ', x);
-  console.log('y: ', y);
-  console.log('path: ', path);
-  console.log('startIndex: ', startIndex);
-  console.log('speed: ', speed);
 
   for(var i = startIndex; i < path.length; i++) {
     const point = path[i];
@@ -54,45 +50,27 @@ export const calculateReachablePoints = ({ x, y, path, startIndex, speed }: {
     distanceTravelled += distanceDifference;
     lastPosition = { x: pointX, y: pointY };
   }
+
+  // If we reach here, we've run out of points in the path, but still have speed to spend
+
+  // If not looping, return the last point in the path, as the npc has reached the end
+  // console.log('points: ', points);
+  // console.log('path.length - 1: ', path.length - 1);
+  // console.log('path.at(-1): ', path.at(-1));
+
+  console.log('bababa: ')
+  if(!loop) return [points, path.length - 1, 0, path.at(-1)];
+
+  // If looping, keep going, starting from the beginning of the path
+
 }
-
-
-/**
- * Figure out what % a number is of another number
- * @example
- * const part = 20;
- * const total = 200;
- * const percent = calcPercentOfTotal(part, total);
- * console.log(percent) // 10
- *
- * @param part the number you're trying to find the % of
- * @param total the number representing 100%
- */
-const numberToPercent = (part: number, total: number) => (part / total) * 100;
-
-/**
- * Figure out the numerical value from a percent and total
- * @example
- * const percent = 10;
- * const total = 200;
- * const part = calcPercentOfTotal(percent, total);
- * console.log(percent) // 20
- * 
- * @param percent the percent value
- * @param total the number representing 100%
- */
-const percentToNumber = (percent: number, total: number) => (percent / 100) * total;
 
 export const getBetweenCoordinates = (
   startPoint: PathPoint,
   endPoint: PathPoint,
   speed: number
 ) => {
-  // console.log('startPoint: ', startPoint);
-  // console.log('endPoint: ', endPoint);
-  // console.log('speed: ', speed);
-
-  // console.log(': ', );
+  if(speed === 0) return [endPoint.x, endPoint.y];
 
   const normalDifferenceX = Math.abs(Math.abs(endPoint.x) - Math.abs(startPoint.x));
   const normalDifferenceY = Math.abs(Math.abs(endPoint.y) - Math.abs(startPoint.y));
@@ -102,29 +80,14 @@ export const getBetweenCoordinates = (
   const percentDifferenceX = numberToPercent(normalDifferenceX, totalDifference);
   const percentDifferenceY = numberToPercent(normalDifferenceY, totalDifference);
 
-  
-
   const extraX = percentToNumber(percentDifferenceX, speed);
   const extraY = percentToNumber(percentDifferenceY, speed);
-
 
   const modifierX = endPoint.x > startPoint.x ? 1 : -1;
   const modifierY = endPoint.y > startPoint.y ? 1 : -1;
 
   const finalX = (startPoint.x + (extraX * modifierX));
   const finalY = (startPoint.y + (extraY * modifierY));
-
-
-  // console.log('percentDifferenceX: ', percentDifferenceX);
-  // console.log('percentDifferenceY: ', percentDifferenceY);
-  // console.log('totalDifference: ', totalDifference);
-  // console.log('extraX: ', extraX);
-  // console.log('extraY: ', extraY);
-  // console.log('finalX: ', finalX);
-  // console.log('finalY: ', finalY);
-  // console.log(': ', );
- 
-
 
   return [ finalX, finalY ];
 }
