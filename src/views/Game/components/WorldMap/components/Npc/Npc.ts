@@ -166,13 +166,13 @@ const Npc = () => {
           lastReachableIndex,
           leftoverSpeed,
           destinationPoint
-        ] = calculateReachablePoints({
+         ] = calculateReachablePoints({
           x,
           y,
           startIndex: currentIndex,
           path,
           speed,
-          loop: false
+          loop
         });
 
         // Take the speed remainder and calculate the current
@@ -192,7 +192,7 @@ const Npc = () => {
 
         const isLastTickHighSpeed = speed >= 1 && index + speed > path.length -1;
         const isLastTickLowSpeed = speed < 1 && index === path.length -1 && leftoverSpeed === 0;
-        const isLastTick = isLastTickHighSpeed || isLastTickLowSpeed;
+        const isLastTick = !loop && (isLastTickHighSpeed || isLastTickLowSpeed);
 
         return [isLastTick];
       },
