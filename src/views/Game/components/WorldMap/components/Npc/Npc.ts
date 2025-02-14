@@ -53,16 +53,6 @@ const Npc = () => {
       speed: 0,
       loop: false
     }
-
-        // data: undefined,
-    // sprites: {},
-    // spriteGroup: undefined,
-    // currentSpriteKey: "",
-    // currentSprite: undefined,
-    // isWalking: false,
-    // isRunning: false,
-    // position: { x: 0, y: 0 },
-    // direction: 'down'
   };
 
   // Private Methods
@@ -159,7 +149,7 @@ const Npc = () => {
       func: ({ action }) => {
         const { position, movement } = state;
         const { x, y } = position;
-        const { path, speed } = movement;
+        const { path, currentIndex, speed, loop } = movement;
 
         if(speed > path.length + 3) {
           console.error(
@@ -168,8 +158,9 @@ const Npc = () => {
           return;
         }
 
-        const startingPoint = {x, y};
+        const startingPoint = { x, y };
 
+        // Figure out how much of the path you can traverse this tick
         const [
           reachablePoints,
           lastReachableIndex,
@@ -178,49 +169,37 @@ const Npc = () => {
         ] = calculateReachablePoints({
           x,
           y,
-          startIndex: state.movement.currentIndex,
+          startIndex: currentIndex,
           path,
-          speed
+          speed,
+          loop: false
         });
 
+        // Take the speed remainder and calculate the current
+        // between coodinates this frame
         const [ nextX, nextY ] = getBetweenCoordinates(
           reachablePoints.at(-1) ?? startingPoint,
           destinationPoint,
           leftoverSpeed
         );
 
+        const index = lastReachableIndex &&
+        lastReachableIndex > 0 ? lastReachableIndex : 0;
+
         state.position.x = nextX;
         state.position.y = nextY;
-        state.movement.currentIndex = lastReachableIndex &&
-        lastReachableIndex > 0 ? lastReachableIndex :  0;
+        state.movement.currentIndex = index;
 
+        const isLastTickHighSpeed = speed >= 1 && index + speed > path.length -1;
+        const isLastTickLowSpeed = speed < 1 && index === path.length -1 && leftoverSpeed === 0;
+        const isLastTick = isLastTickHighSpeed || isLastTickLowSpeed;
 
-        // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-        // HELLO, SO WE HAVE A LIST OF ALL POINTS THAT ARE FULLY REACHABLE WITHIN THE SPEED LIMIT
-        // NOW WE NEED TO FIGURE OUT HOW TO GET A LITTLE BIT INTO THE NEXT POINT
-        // THEN WE NEED TO FIGURE OUT HOW TO CONTINUE THAT PROGRESS ON THE NEXT LOOP
-
-        // console.log('reachablePoints: ', reachablePoints);
-        // console.log('leftover: ', leftoverSpeed);
-        console.log('==============================================================================')
- 
-   
-
-        // const hasNextKeyFrame = Boolean(path[state.movement.currentIndex + 1]);
-        // const nextKeyFrame = hasNextKeyFrame ? path[state.movement.currentIndex + 1] : path[0];
-        
-        // state.position.x = nextKeyFrame.x;
-        // state.position.y = nextKeyFrame.y;
-        // state.movement.currentIndex = hasNextKeyFrame ? state.movement.currentIndex + 1 : 0;
-
-        // console.log('state.position.x: ', state.position.x);
-        // console.log('state.position.y: ', state.position.y);
-        // console.log('currentIndex: ', state.movement.currentIndex);
-
-        
+        return [isLastTick];
       },
-      repeat: true,
-      maxTime: 2000
+      repeat: ([isLastTick]) => {
+        return !isLastTick;
+      },
+      maxTime: 20
     })
   };
 
@@ -232,7 +211,7 @@ const Npc = () => {
   
         // If item hasn't loaded yet, do nothing
         if(!state.spriteGroup) {
-          console.log('FUCK.');
+          console.log('Race condition error');
           return;
         }
   
@@ -249,12 +228,6 @@ const Npc = () => {
       id: "npcMove",
       func: ({ action }) => {
         const { payload } = action;
-
-        // console.log('state.position.x: ', state.position.x);
-        // console.log('state.position.y: ', state.position.y);
-        // console.log(': ', );
-        // console.log(': ', );
-        // console.log(': ', );
   
         state.spriteGroup.position.x = state.position.x;
         state.spriteGroup.position.z = state.position.y;
@@ -267,195 +240,3 @@ const Npc = () => {
 };
 
 export default Npc;
-
-
-
-// const logicActions = {
-//   npcTurn: createLogicAction({
-//     id: "npcTurn",
-//     func: ({ action }) => {
-//       const [npcId, direction] = action.payload;
-
-//       state.direction = direction;
-//       state.isWalking = false;
-//       state.isRunning = false;
-
-//       renderNow(renderActions.npcTurn, [npcId]);
-//     },
-//     stack: false,
-//     payload: [state.data.id, "down"],
-//   }),
-//   npcMove: createLogicAction({
-//     id: "npcMove",
-//     func: ({ action }) => {
-//       const { id: npcId } = state.data;
-
-//       const [speedX, speedY, isRunning] = action.payload;
-//       const isAlreadyRunning = state.isRunning;
-//       const isAlreadyWalking = state.isWalking;
-
-//       state.isWalking = !isRunning;
-//       state.isRunning = !!isRunning;
-
-//       state.position.x += speedX;
-//       state.position.y += speedY;
-
-//       if (!isRunning && !isAlreadyWalking) {
-//         removeAllFromRenderQueue2([
-//           {id: "npcTurn", payload: [npcId]},
-//           {id: "npcRun", payload: [npcId]},
-//           {id: "npcStopWalk", payload: [npcId]},
-//         ]);
-//         dispatchRender(renderActions.npcWalk, [npcId]);
-//       }
-
-//       if (isRunning && !isAlreadyRunning) {
-//         removeAllFromRenderQueue2([
-//           {id: "npcTurn", payload: [npcId]},
-//           {id: "npcWalk", payload: [npcId]},
-//           {id: "npcStop", payload: [npcId]},
-//         ]);
-//         dispatchRender(renderActions.npcRun, [npcId]);
-//       }
-//     },
-//     repeat: true,
-//     stack: false,
-//     payload: [0, 0],
-//   }),
-//   npcStop: createLogicAction({
-//     id: "npcStop",
-//     func: () => {
-//       const { id: npcId } = state.data;
-
-//       state.isWalking = false;
-//       state.isRunning = false;
-
-//       removeAllFromLogicQueue2([{id: "npcMove", payload: [npcId]}]);
-
-//       removeAllFromRenderQueue2([
-//         {id: "npcWalk", payload: [npcId]},
-//         {id: "npcRun", payload: [npcId]},
-//       ]);
-//     },
-//     repeat: false,
-//     stack: false,
-//     payload: [],
-//   }),
-// };
-
-// const renderActions = {
-//   npcTurn: createRenderAction({
-//     id: "npcTurn",
-//     func: () => {
-//       const key = directionToKey(state.direction, "turn");
-
-//       console.log('turn render!');
-//       console.log('key: ', key);
-
-//       // Hide the last frame
-//       state.currentSprite.visible = false;
-
-//       // Update values
-//       state.currentSpriteKey = key;
-//       state.currentSprite = state.sprites[key];
-
-//       // Show next frame
-//       state.sprites[key].visible = true;
-//     },
-//     stack: false,
-//     payload: [],
-//     maxTime: 0,
-//   }),
-//   npcWalk: createRenderAction({
-//     id: "npcWalk",
-//     func: () => {
-//       const direction = window.state.player.direction;
-//       const keyPartial = directionToKey(direction, "walk") as AnimationKey;
-//       const animation = playerData.spriteSheet.animationMap[keyPartial];
-//       const { frames, end } = animation;
-
-//       const currentFrameIndex = frames.findIndex(
-//         (frame: any) => frame === state.currentSpriteKey
-//       );
-//       const nextFrameIndex = frames[currentFrameIndex + 1]
-//         ? currentFrameIndex + 1
-//         : 0;
-//       const nextFrameKey = frames[nextFrameIndex];
-
-//       // Don't double up running and walking
-//       removeAllFromRenderQueue(["playerRun", "playerStopWalk"]);
-
-//       // Hide current frame
-//       state.currentSprite.visible = false;
-
-//       // Add next frame
-//       state.currentSpriteKey = nextFrameKey;
-//       state.currentSprite = state.sprites[nextFrameKey];
-//       state.sprites[nextFrameKey].visible = true;
-//     },
-//     repeat: true,
-//     stack: false,
-//     payload: [],
-//     maxTime: 150,
-//   }),
-//   npcRun: createRenderAction({
-//     id: "npcRun",
-//     func: () => {
-//       const direction = window.state.player.direction;
-//       const keyPartial = directionToKey(direction, "run") as AnimationKey;
-//       const animation = playerData.spriteSheet.animationMap[keyPartial];
-//       const { frames, end } = animation;
-
-//       const currentFrameIndex = frames.findIndex(
-//         (frame: any) => frame === state.currentSpriteKey
-//       );
-//       const nextFrameIndex = frames[currentFrameIndex + 1]
-//         ? currentFrameIndex + 1
-//         : 0;
-//       const nextFrameKey = frames[nextFrameIndex];
-
-//       // Don't double up running and walking
-//       removeAllFromRenderQueue(["playerWalk", "playerStopWalk"]);
-
-//       // Hide current frame
-//       state.currentSprite.visible = false;
-
-//       // Add next frame
-//       state.currentSpriteKey = nextFrameKey;
-//       state.currentSprite = state.sprites[nextFrameKey];
-//       state.sprites[nextFrameKey].visible = true;
-//     },
-//     repeat: true,
-//     stack: false,
-//     payload: [],
-//     maxTime: 80,
-//   }),
-//   npcStopWalk: createRenderAction({
-//     id: "npcStopWalk",
-//     func: () => {
-//       const keyPartial = state.currentSpriteKey.replace(
-//         /[0-9]/g,
-//         ""
-//       ) as AnimationKey;
-//       const animation = playerData.spriteSheet.animationMap[keyPartial] ?? {
-//         frames: [],
-//         end: undefined,
-//       };
-//       const { end } = animation;
-
-//       if (end) {
-//         // Hide current frame
-//         state.currentSprite.visible = false;
-
-//         // Add next frame
-//         state.currentSpriteKey = end;
-//         state.currentSprite = state.sprites[end];
-//         state.sprites[end].visible = true;
-//       }
-//     },
-//     repeat: false,
-//     stack: false,
-//     payload: [],
-//     maxTime: 0,
-//   }),
-// };
