@@ -1,9 +1,9 @@
 import spriteSheet from "../../assets/sprites/creatures/sasha/sasha.svg";
 import { CreatureData } from "../../types";
-import imageAngry from '../../assets/sprites/creatures/sasha/chat/sasha_angry.png';
-import imageHappy from '../../assets/sprites/creatures/sasha/chat/sasha_happy.png';
-import imageSad from '../../assets/sprites/creatures/sasha/chat/sasha_sad.png';
-import imageTalking from '../../assets/sprites/creatures/sasha/chat/sasha_talking.png';
+import imageAngry from '../../assets/images/creatures/sasha/sasha_angry.png';
+import imageHappy from '../../assets/images/creatures/sasha/sasha_laugh.png';
+import imageSad from '../../assets/images/creatures/sasha/sasha_sad.png';
+import imageTalking from '../../assets/images/creatures/sasha/sasha_default.png';
 import { DialogueOptions } from './types';
 
 

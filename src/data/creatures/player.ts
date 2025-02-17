@@ -1,5 +1,5 @@
 import { CreatureData } from "../../types";
-import spriteSheet from "../../assets/sprites/creatures/player.svg";
+import spriteSheet from "../../assets/sprites/creatures/player/player.svg";
 
 export const playerData: CreatureData = {
   id: "player",

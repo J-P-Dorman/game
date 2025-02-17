@@ -151,6 +151,9 @@ const Npc = () => {
         const { x, y } = position;
         const { path, currentIndex, speed, loop } = movement;
 
+        // If item hasn't loaded yet, do nothing
+        if(!state.spriteGroup) return;
+
         if(speed > path.length + 3) {
           console.error(
             'Cannot set such a high speed with so few path points. Please add more path points or reduce speed'
@@ -207,13 +210,8 @@ const Npc = () => {
     npcPlace: createRenderAction({
       id: "npcPlace",
       func: ({ action }) => {
-        const { payload } = action;
-  
         // If item hasn't loaded yet, do nothing
-        if(!state.spriteGroup) {
-          console.log('Race condition error');
-          return;
-        }
+        if(!state.spriteGroup) return;
   
         state.spriteGroup.position.x = state.position.x;
         state.spriteGroup.position.z = state.position.y;
@@ -227,7 +225,17 @@ const Npc = () => {
     npcMove: createRenderAction({
       id: "npcMove",
       func: ({ action }) => {
-        const { payload } = action;
+        if(!state.spriteGroup) return;
+  
+        state.spriteGroup.position.x = state.position.x;
+        state.spriteGroup.position.z = state.position.y;
+      },
+      repeat: true
+    }),
+    npcWalk: createRenderAction({
+      id: "npcMove",
+      func: ({ action }) => {
+        if(!state.spriteGroup) return;
   
         state.spriteGroup.position.x = state.position.x;
         state.spriteGroup.position.z = state.position.y;
