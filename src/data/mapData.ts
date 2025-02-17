@@ -1,7 +1,7 @@
 import treeImg from "../assets/sprites/scenery/tree.png";
 import { TileData, ChunkData, MapData, CreatureData } from "../types";
 import { Item, Texture } from "../views/Game/components/WorldMap/components/MapChunk/MapTile/types";
-import imageFlowers from '../assets/sprites/scenery/flowers.png';
+import imageFlowers from '../assets/sprites/scenery/tiling_flowers_daisy.svg';
 import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in.png';
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';

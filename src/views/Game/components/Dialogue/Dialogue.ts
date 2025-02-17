@@ -7,7 +7,7 @@ import { AttachToCamera, FitToCamera } from "../Camera/types";
 import DialogueBox from "./components/DialogueBox/DialogueBox";
 import  DialogueBackground from "./components/DialogueBackground/DialogueBackground";
 import  DialogueText from "./components/DialogueText/DialogueText";
-import sashaImage from "../../../../assets/images/sasha.png"
+import sashaImage from "../../../../assets/images/creatures/sasha/sasha_default.png"
 
 type State = {
   dialogueGroup: THREE.Group;
