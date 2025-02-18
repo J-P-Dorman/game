@@ -6,13 +6,402 @@ import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';
 import { sashaData } from './creatures/sasha';
+import imageGrass_1_1 from '../assets/sprites/scenery/tiling_grass_1_1.svg';
+import imageGrass_2_1 from '../assets/sprites/scenery/tiling_grass_2_1.svg';
+import imageGrass_1_2 from '../assets/sprites/scenery/tiling_grass_1_2.svg';
+import imageGrass_2_2 from '../assets/sprites/scenery/tiling_grass_2_2.svg';
+import imageSand_1_1 from '../assets/sprites/scenery/tiling_sand_1_1.svg';
+import imageSand_2_1 from '../assets/sprites/scenery/tiling_sand_2_1.svg';
+import imageSand_1_2 from '../assets/sprites/scenery/tiling_sand_1_2.svg';
+import imageSand_2_2 from '../assets/sprites/scenery/tiling_sand_2_2.svg';
+import imageGrassSandHorizontal from '../assets/sprites/scenery/tiling-grass-sand-horizontal.svg';
+import imageGrassSandHorizontal2 from '../assets/sprites/scenery/tiling-grass-sand-horizontal-2.svg';
+import imageGrassSandLeftDown from '../assets/sprites/scenery/tiling-grass-sand-left-down.svg';
+import imageGrassSandLeftUp from '../assets/sprites/scenery/tiling-grass-sand-left-up.svg';
+import imageGrassSandRightDown from '../assets/sprites/scenery/tiling-grass-sand-right-down.svg';
+import imageGrassSandRightUp from '../assets/sprites/scenery/tiling-grass-sand-right-up.svg';
+import imageSandGrassLeftDown from '../assets/sprites/scenery/tiling-sand-grass-left-down.svg';
+import imageSandGrassLeftUp from '../assets/sprites/scenery/tiling-sand-grass-left-up.svg';
+import imageSandGrassRightDown from '../assets/sprites/scenery/tiling-sand-grass-right-down.svg';
+import imageSandGrassRightUp from '../assets/sprites/scenery/tiling-sand-grass-right-up.svg';
+
 
 // Textures
 // =================================================================
 const textureSand: Texture = { color: "#dfd4a6", spriteSheet: undefined };
-const textureGrass: Texture = { color: "#8bb312", spriteSheet: undefined };
+const textureGrass: Texture = { color: "#8ec55a", spriteSheet: undefined };
 const textureVoid: Texture = { color: "#111111", spriteSheet: undefined };
 const textureWater: Texture = { color: "#2d6cab", spriteSheet: undefined };
+const textureGrass_1_1: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrass_1_1,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grass',
+    defaultAnimation: 'grass',
+    sheetMap: [["grass"]],
+    animationMap: {
+      grass: {
+        frames: ["grass"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureGrass_2_1: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrass_2_1,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grass',
+    defaultAnimation: 'grass',
+    sheetMap: [["grass"]],
+    animationMap: {
+      grass: {
+        frames: ["grass"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureGrass_1_2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrass_1_2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grass',
+    defaultAnimation: 'grass',
+    sheetMap: [["grass"]],
+    animationMap: {
+      grass: {
+        frames: ["grass"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureGrass_2_2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrass_2_2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grass',
+    defaultAnimation: 'grass',
+    sheetMap: [["grass"]],
+    animationMap: {
+      grass: {
+        frames: ["grass"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureSand_1_1: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSand_1_1,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sand',
+    defaultAnimation: 'sand',
+    sheetMap: [["sand"]],
+    animationMap: {
+      sand: {
+        frames: ["sand"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureSand_2_1: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSand_2_1,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sand',
+    defaultAnimation: 'sand',
+    sheetMap: [["sand"]],
+    animationMap: {
+      sand: {
+        frames: ["sand"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureSand_1_2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSand_1_2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sand',
+    defaultAnimation: 'sand',
+    sheetMap: [["sand"]],
+    animationMap: {
+      sand: {
+        frames: ["sand"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+const textureSand_2_2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSand_2_2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sand',
+    defaultAnimation: 'sand',
+    sheetMap: [["sand"]],
+    animationMap: {
+      sand: {
+        frames: ["sand"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandHorizontal: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandHorizontal,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandHorizontal',
+    defaultAnimation: 'grassSandHorizontal',
+    sheetMap: [["grassSandHorizontal"]],
+    animationMap: {
+      grassSandHorizontal: {
+        frames: ["grassSandHorizontal"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandHorizontal2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandHorizontal2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandHorizontal2',
+    defaultAnimation: 'grassSandHorizontal2',
+    sheetMap: [["grassSandHorizontal2"]],
+    animationMap: {
+      grassSandHorizontal: {
+        frames: ["grassSandHorizontal2"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandLeftDown: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandLeftDown,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandLeftDown',
+    defaultAnimation: 'grassSandLeftDown',
+    sheetMap: [["grassSandLeftDown"]],
+    animationMap: {
+      grassSandLeftDown: {
+        frames: ["grassSandLeftDown"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandLeftUp: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandLeftUp,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandLeftUp',
+    defaultAnimation: 'grassSandLeftUp',
+    sheetMap: [["grassSandLeftUp"]],
+    animationMap: {
+      grassSandLeftDown: {
+        frames: ["grassSandLeftUp"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandRightDown: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandRightDown,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandRightDown',
+    defaultAnimation: 'grassSandRightDown',
+    sheetMap: [["grassSandRightDown"]],
+    animationMap: {
+      grassSandLeftDown: {
+        frames: ["grassSandRightDown"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandRightUp: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandRightUp,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandRightUp',
+    defaultAnimation: 'grassSandRightUp',
+    sheetMap: [["grassSandRightUp"]],
+    animationMap: {
+      grassSandLeftDown: {
+        frames: ["grassSandRightUp"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureSandGrassLeftDown: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSandGrassLeftDown,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sandGrassLeftDown',
+    defaultAnimation: 'sandGrassLeftDown',
+    sheetMap: [["sandGrassLeftDown"]],
+    animationMap: {
+      sandGrassLeftDown: {
+        frames: ["sandGrassLeftDown"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureSandGrassLeftUp: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSandGrassLeftUp,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sandGrassLeftUp',
+    defaultAnimation: 'sandGrassLeftUp',
+    sheetMap: [["sandGrassLeftUp"]],
+    animationMap: {
+      sandGrassLeftDown: {
+        frames: ["sandGrassLeftUp"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureSandGrassRightDown: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSandGrassRightDown,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sandGrassRightDown',
+    defaultAnimation: 'sandGrassRightDown',
+    sheetMap: [["sandGrassRightDown"]],
+    animationMap: {
+      sandGrassLeftDown: {
+        frames: ["sandGrassRightDown"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureSandGrassRightUp: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageSandGrassRightUp,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'sandGrassRightUp',
+    defaultAnimation: 'sandGrassRightUp',
+    sheetMap: [["sandGrassRightUp"]],
+    animationMap: {
+      grassSandLeftDown: {
+        frames: ["sandGrassRightUp"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
 
 const textureGrassFlowers: Texture = {
   color: "#8bb312",
@@ -266,6 +655,101 @@ export const G: TileData = {
   texture: textureGrass,
   item: undefined,
 };
+export const G_1_1: TileData = {
+  id: "grass_1_1",
+  texture: textureGrass_1_1,
+  item: undefined,
+};
+export const G_2_1: TileData = {
+  id: "grass_2_1",
+  texture: textureGrass_2_1,
+  item: undefined,
+};
+export const G_1_2: TileData = {
+  id: "grass_1_2",
+  texture: textureGrass_1_2,
+  item: undefined,
+};
+export const G_2_2: TileData = {
+  id: "grass_2_2",
+  texture: textureGrass_2_2,
+  item: undefined,
+};
+export const S_1_1: TileData = {
+  id: "sand_1_1",
+  texture: textureSand_1_1,
+  item: undefined,
+};
+export const S_2_1: TileData = {
+  id: "sand_2_1",
+  texture: textureSand_2_1,
+  item: undefined,
+};
+export const S_1_2: TileData = {
+  id: "sand_1_2",
+  texture: textureSand_1_2,
+  item: undefined,
+};
+export const S_2_2: TileData = {
+  id: "sand_2_2",
+  texture: textureSand_2_2,
+  item: undefined,
+};
+
+export const G_S_H: TileData = {
+  id: "grassSandHorizontal",
+  texture: textureGrassSandHorizontal,
+  item: undefined,
+};
+export const G_S_H_2: TileData = {
+  id: "grassSandHorizontal",
+  texture: textureGrassSandHorizontal2,
+  item: undefined,
+};
+
+export const G_S_L_D: TileData = {
+  id: "grassSandLeftDown",
+  texture: textureGrassSandLeftDown,
+  item: undefined,
+};
+export const G_S_L_U: TileData = {
+  id: "grassSandLeftUp",
+  texture: textureGrassSandLeftUp,
+  item: undefined,
+};
+export const G_S_R_D: TileData = {
+  id: "grassSandRightDown",
+  texture: textureGrassSandRightDown,
+  item: undefined,
+};
+export const G_S_R_U: TileData = {
+  id: "grassSandRightUp",
+  texture: textureGrassSandRightUp,
+  item: undefined,
+};
+
+export const S_G_L_D: TileData = {
+  id: "sandGrassLeftDown",
+  texture: textureSandGrassLeftDown,
+  item: undefined,
+};
+export const S_G_L_U: TileData = {
+  id: "sandGrassLeftUp",
+  texture: textureSandGrassLeftUp,
+  item: undefined,
+};
+export const S_G_R_D: TileData = {
+  id: "sandGrassRightDown",
+  texture: textureSandGrassRightDown,
+  item: undefined,
+};
+export const S_G_R_U: TileData = {
+  id: "sandGrassRightUp",
+  texture: textureSandGrassRightUp,
+  item: undefined,
+};
+
+
 export const G1: TileData = {
   id: "grass1",
   texture: textureGrassFlowers,
@@ -441,27 +925,30 @@ const chunk0_1: ChunkData = [
 ];
 
 const chunk1_1: ChunkData = [
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,GT,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,GT,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,GT,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G1,G1,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G1,G1,G1,G1,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,S,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G,G],
-  [G,G,G,G,G,G,G,G,S,G,S,S,G,G,GS,S,S,S,G,G,G,G,G,G,G,S,G,G,G,G],
-  [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S],
-  [S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,SHULI,SHU],
-  [SHU,SHU,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,S,SHULI,SHU,SHULO,W],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,GT,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,GT,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,GT,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G1,G1,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G1,G1,G1,G1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_1,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,S_G_L_U,G_S_H_2,S_G_R_U,G_2_2,G_1_2,S_G_L_U,G_S_H_2,G_S_H,S_G_R_U,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
+  
+  [G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_R_D,S_2_1,G_S_L_D,G_S_H_2,G_S_H,G_S_R_D,S_2_1,S_1_1,G_S_L_D,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H],
+  
+  [S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1, SHULI,SHU],
+  
+  [SHU,SHU,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,SHULI,SHU,SHULO,W],
   [W,W,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHULO,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
