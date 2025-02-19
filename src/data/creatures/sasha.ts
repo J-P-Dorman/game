@@ -6,8 +6,9 @@ import imageSad from '../../assets/images/creatures/sasha/sasha_sad.png';
 import imageTalking from '../../assets/images/creatures/sasha/sasha_default.png';
 import { DialogueOptions } from './types';
 
-
-const dialogueOptions: DialogueOptions = {
+// TODO: split dialogue into different exported objects depending what
+// level the player is on
+export const dialogueOptionsSasha: DialogueOptions = {
   hello: {
     messages: [{
       text: 'Hi! This is a nice beach, isn\'t it?',
@@ -24,8 +25,8 @@ const dialogueOptions: DialogueOptions = {
       image: imageSad,
     }],
     playerResponses: [
-      { text: 'I don\'t like them...', onChoose: () => dialogueOptions.bruh },
-      { text: 'Those are nice I guess', onChoose: () => dialogueOptions.iSuppose }
+      { text: 'I don\'t like them...', onChoose: () => dialogueOptionsSasha.bruh },
+      { text: 'Those are nice I guess', onChoose: () => dialogueOptionsSasha.iSuppose }
     ]
   },
   bruh: {
@@ -35,8 +36,8 @@ const dialogueOptions: DialogueOptions = {
       effect: 'shake_small',
     }],
     playerResponses: [
-      { text: 'Yeah, maybe?', onChoose: () => dialogueOptions.ohMan },
-      { text: 'Whoah, sorry..', onChoose: () => dialogueOptions.intro }
+      { text: 'Yeah, maybe?', onChoose: () => dialogueOptionsSasha.ohMan },
+      { text: 'Whoah, sorry..', onChoose: () => dialogueOptionsSasha.intro }
     ]
   },
   ohMan: {
@@ -45,7 +46,7 @@ const dialogueOptions: DialogueOptions = {
       image: imageSad,
 
     }],
-    onEnd: () => dialogueOptions.intro
+    onEnd: () => dialogueOptionsSasha.intro
   },
   betterBe: {
     messages: [{
@@ -53,7 +54,7 @@ const dialogueOptions: DialogueOptions = {
       image: imageHappy,
  
     }],
-    onEnd: () => dialogueOptions.intro
+    onEnd: () => dialogueOptionsSasha.intro
   },
   damnRight: {
     messages: [{
@@ -61,7 +62,7 @@ const dialogueOptions: DialogueOptions = {
       image: imageHappy,
    
     }],
-    onEnd: () => dialogueOptions.intro
+    onEnd: () => dialogueOptionsSasha.intro
   },
   right: {
     messages: [
@@ -76,7 +77,7 @@ const dialogueOptions: DialogueOptions = {
         effect: 'flowers'
       }
     ],
-    onEnd: () => dialogueOptions.intro
+    onEnd: () => dialogueOptionsSasha.intro
   },
   intro: {
     messages: [
@@ -103,24 +104,18 @@ export const sashaData: CreatureData = {
     image: spriteSheet,
     spriteWidth: 20,
     spriteHeight: 30,
-    sheetWidth: 80,
-    sheetHeight: 150,
+    sheetWidth: 60,
+    sheetHeight: 240,
     defaultSprite: 'turnDown',
     sheetMap: [
-      [
-        "turnDown",
-        "turnUp",
-        "turnLeft",
-        "turnRight"
-      ],
-      ["walkDown", "walkDown2"],
-      ["walkUp", "walkUp2"],
-      ["walkLeft", "walkLeft2"],
-      ["walkRight", "walkRight2"],
-      ["runDown", "runDown2"],
-      ["runUp", "runUp2"],
-      ["runLeft", "runLeft2"],
-      ["runRight", "runRight2"],
+      ["turnDown", "walkDown", "walkDown2"],
+      ["turnUp", "walkUp", "walkUp2"],
+      ["turnLeft", "walkLeft"],
+      ["turnRight", "walkRight"],
+      ["turnDownLeft", "walkDownLeft"],
+      ["turnDownRight", "walkDownRight"],
+      ["turnUpLeft", "walkUpLeft"],
+      ["turnUpRight", "walkUpRight"],
     ],
     animationMap: {
       walkDown: {
@@ -132,15 +127,30 @@ export const sashaData: CreatureData = {
         end: "turnUp",
       },
       walkLeft: {
-        frames: ["walkLeft", "walkLeft2"],
+        frames: ["walkLeft", "turnLeft"],
         end: "turnLeft",
       },
       walkRight: {
-        frames: ["walkRight", "walkRight2"],
+        frames: ["walkRight", "turnRight"],
         end: "turnRight",
+      },
+      walkDownLeft: {
+        frames: ["walkDownLeft", "turnDownLeft"],
+        end: "turnDownLeft",
+      },
+      walkDownRight: {
+        frames: ["walkDownRight", "turnDownRight"],
+        end: "turnDownRight",
+      },
+      walkUpLeft: {
+        frames: ["walkUpLeft", "turnUpLeft"],
+        end: "turnUpLeft",
+      },
+      walkUpRight: {
+        frames: ["walkUpight", "turnUpRight"],
+        end: "turnUpRight",
       }
     }
   },
-  dialogue: dialogueOptions,
   onInteract: () => {}
 };
