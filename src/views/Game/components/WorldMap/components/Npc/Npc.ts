@@ -81,6 +81,9 @@ const Npc = () => {
     state.height = height;
     state.onInteract = onInteract;
 
+    console.log('yoyoyo');
+    console.log('image: ', image);
+
     loadSvgSheet(
       image,
       sheetWidth,
@@ -89,6 +92,7 @@ const Npc = () => {
       spriteHeight,
       true,
       (svgGroup) => {
+        console.log('svg callback');
         const spriteGroup = new THREE.Group();
         const sprites = svgGroup
           .flat()
@@ -108,8 +112,10 @@ const Npc = () => {
         state.currentSpriteKey = keys[0];
         state.currentSprite = sprites[0];
 
-        spriteGroup.position.set(-2, -2, -2);
+        // spriteGroup.position.set(-2, -2, -2);
         spriteGroup.scale.set((1 / spriteHeight) * width, (1 / spriteHeight) * height, 0.05);
+
+        console.log('spriteGroup: ', spriteGroup);
 
         state.spriteGroup = spriteGroup;
         state.spriteList = spriteList;
@@ -126,10 +132,17 @@ const Npc = () => {
         const { payload } = action;
         const [ x, y ] = payload;
 
+        console.log('x: ', x);
+        console.log('y: ', y);
+
         state.position.x += x;
         state.position.y += y;
 
+        console.log('aaaaaaa');
+
         dispatchRender(renderActions.npcPlace);
+
+        console.log('bbbbbbbb');
       }
     }),
     npcNewPath: createLogicAction({
@@ -210,8 +223,27 @@ const Npc = () => {
     npcPlace: createRenderAction({
       id: "npcPlace",
       func: ({ action }) => {
+        // console.log('==========================================');
+        // console.log('RENDER');
+        // console.log('==========================================');
+
+        // console.log('state.spriteGroup: ', state.spriteGroup);
+        // console.log('x: ', state.position.x);
+        // console.log('y: ', state.position.y);
+
+        // console.log('==========================================');
         // If item hasn't loaded yet, do nothing
-        if(!state.spriteGroup) return;
+        if(!state.spriteGroup) return [false];
+
+
+        // console.log('==========================================');
+        // console.log('RENDER');
+        // console.log('==========================================');
+
+        // console.log('x: ', state.position.x);
+        // console.log('y: ', state.position.y);
+
+        // console.log('==========================================');
   
         state.spriteGroup.position.x = state.position.x;
         state.spriteGroup.position.z = state.position.y;
@@ -220,7 +252,13 @@ const Npc = () => {
         state.spriteGroup.rotation.set(-THREE.MathUtils.degToRad(90), 0, 0);
     
         window.scene.add(state.spriteGroup);
-      }
+
+        return [true];
+      },
+      repeat: ([hasRun]) => {
+        return !hasRun;
+      },
+      maxTime: 2000
     }),
     npcMove: createRenderAction({
       id: "npcMove",

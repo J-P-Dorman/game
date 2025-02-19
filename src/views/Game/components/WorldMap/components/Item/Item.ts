@@ -6,6 +6,7 @@ import {
   dispatchRender,
   renderNow,
 } from "../../../GameLoops/RenderLoop/utils";
+import { LevelItem } from "./types";
 
 type SpriteSheet = {
   image: string;
@@ -14,7 +15,7 @@ type SpriteSheet = {
   sheetWidth: number;
   sheetHeight: number;
   defaultSprite: string;
-  defaultAnimation: string;
+  defaultAnimation?: string;
   sheetMap: string[][];
   animationMap: Record<
     string,
@@ -58,7 +59,10 @@ const Item = () => {
     spriteList: undefined,
   };
 
-  const load = ({ spriteSheet, width, height, onInteract }: Item) => {
+  const load = (item: LevelItem) => {
+    const { spriteSheet, width, height, onInteract } = item;
+    console.log('item: ', item);
+    
     const {
       image,
       spriteWidth,
