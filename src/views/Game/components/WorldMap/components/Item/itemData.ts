@@ -1,7 +1,7 @@
 import bucketSpriteSheet from "../../../../../../assets/sprites/Items/bucket.svg";
-import Item from "./Item";
+import { ItemData } from "./types";
 
-export const bucketData: Item = {
+export const bucketData: ItemData = {
   width: 0.5,
   height: 0.5,
   spriteSheet: {

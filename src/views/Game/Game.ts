@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { mapStart } from "../../data/mapData";
 import { getElementSize } from "../../utils";
 import { Camera } from "./components/Camera/Camera";
 import Controls from "./components/Controls/Controls";
@@ -13,6 +12,7 @@ import { disableRightClick } from "./helpers";
 import { LogicAction, LogicActionId, LogicActionList } from "./components/GameLoops/LogicLoop/types";
 import { RenderAction, RenderActionId, RenderActionList } from "./components/GameLoops/RenderLoop/types";
 import { dispatchLogic, logicNow } from "./components/GameLoops/LogicLoop/utils";
+import { levels } from '../../data/levels'; 
 
 export const Game = (): any => {
   // Components
@@ -56,7 +56,8 @@ export const Game = (): any => {
     axesHelper.rotation.x = Math.PI / 2;
 
     // Create game map
-    worldMap.load({ scene, mapData: mapStart });
+    // TODO: choose a level to load dynamically
+    worldMap.load({ scene, levelData: levels.tutorialIsland });
 
     // Add a camera to the scene
     const { camera: cameraObj } = camera.load(gameEl);

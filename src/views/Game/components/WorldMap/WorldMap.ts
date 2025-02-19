@@ -13,10 +13,11 @@ import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
 import { AttachToCamera } from "../Camera/types";
 import { bucketData } from './components/Item/itemData'
 import { sashaData } from "../../../../data/creatures/sasha";
+import { ItemData, LevelItem } from "./components/Item/types";
 
 interface Props {
   scene: THREE.Scene;
-  mapData: MapData;
+  levelData: any;
 }
 
 type State = {
@@ -30,44 +31,59 @@ const WorldMap = () => {
     chunkComponents: []
   };
 
-  
+  const load = ({ scene, levelData }: Props) => {
+    const { playerStart, map, items, creatures } = levelData;
 
-  const load = ({ scene, mapData }: Props) => {
     const rows: any = [];
 
-    // TEST - load test item
-    const bucket = Item();
-    bucket.load(bucketData);
-    dispatchRender(bucket.renderActions.itemPlace, [40, 40]);
-    dispatchRender(bucket.renderActions.itemAnimateDefault);
+    // Load Items and start default animations
+    const renderedItems = items.reduce((acc: Record<string, any>, itemData: LevelItem) => {
+      const { id, position } = itemData;
+      const item = Item();
+      item.load(itemData);
+      dispatchRender(item.renderActions.itemPlace, position);
+      dispatchRender(item.renderActions.itemAnimateDefault);
 
-    // TEST - load test npc
-    const sasha = Npc();
-    sasha.load({creatureData: sashaData});
-    dispatchLogic(sasha.logicActions.npcPlace, [42, 42]);
-    dispatchLogic(sasha.logicActions.npcNewPath, [
-      [
-        {x: 42, y: 43},
-        {x: 42, y: 44},
-        {x: 42, y: 45},
-        {x: 43, y: 45},
-        {x: 44, y: 45},
-        {x: 45, y: 45},
-        {x: 45, y: 44},
-        {x: 45, y: 43},
-        {x: 45, y: 42},
-        {x: 44, y: 42},
-        {x: 43, y: 42},
-        {x: 42, y: 42}
-      ],
-      0.15,
-      true
-    ]);
-    dispatchLogic(sasha.logicActions.npcMove);
-    dispatchRender(sasha.renderActions.npcMove);
+      return { ...acc, [id]: item };
+    }, {});
+
+    console.log('creatures: ', creatures);
+
+    // Load creatures and start default actions
+    const renderedCreatures = creatures.reduce((
+      acc: Record<string, any>,
+      creatureData: any
+    ) => {
+      const { id, position } = creatureData;
+      const creature = Npc();
+      creature.load({creatureData});
+      dispatchLogic(creature.logicActions.npcPlace, [42, 42]);
+      dispatchLogic(creature.logicActions.npcNewPath, [
+        [
+          {x: 42, y: 43},
+          {x: 42, y: 44},
+          {x: 42, y: 45},
+          {x: 43, y: 45},
+          {x: 44, y: 45},
+          {x: 45, y: 45},
+          {x: 45, y: 44},
+          {x: 45, y: 43},
+          {x: 45, y: 42},
+          {x: 44, y: 42},
+          {x: 43, y: 42},
+          {x: 42, y: 42}
+        ],
+        0.15,
+        true
+      ]);
+      dispatchLogic(creature.logicActions.npcMove);
+      dispatchRender(creature.renderActions.npcMove);
+
+      return { ...acc, [id]: creature };
+    }, {});
 
     // Loop through each row of chunks in the map
-    mapData.forEach((chunksData: ChunkData[], chunkIndexY: number) => {
+    map.forEach((chunksData: ChunkData[], chunkIndexY: number) => {
 
       // Loop through each chunk in the row of chunks
       chunksData.forEach((chunkData: ChunkData, chunkIndexX: number) => {
