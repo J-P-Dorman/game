@@ -128,7 +128,7 @@ export const loadSvgSheet = async (
     // called when loading is in progresses
     function (xhr: any) {},
     // called when loading has errors
-    function (error: any) {}
+    function (error: any) { console.error(`Error loading svg: ${imageUrl}`) }
   );
 
   return result;
