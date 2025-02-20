@@ -229,8 +229,7 @@ const Npc = () => {
       },
       repeat: ([isLastTick]) => {
         return !isLastTick;
-      },
-      maxTime: 20
+      }
     })
   };
 

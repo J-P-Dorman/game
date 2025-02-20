@@ -1,8 +1,6 @@
 import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
 
-
-
 export type State = {
   spriteSheet: any;
   width: number;
@@ -20,15 +18,6 @@ export type State = {
     speed: number;
     loop: boolean;
   };
-  // data?: CreatureData;
-  // spriteGroup?: THREE.Group;
-  // sprites: Record<string, THREE.Group>;
-  // currentSpriteKey: string;
-  // currentSprite?: THREE.Group;
-  // isWalking: boolean;
-  // isRunning: boolean;
-  // position: { x: number, y: number },
-  // direction: 'down' | 'up' | 'left' | 'right';
 };
 
 export type LoadArgs = {
@@ -36,14 +25,14 @@ export type LoadArgs = {
 };
 
 export type Direction =
-| "left"
-| "right"
-| "up"
-| "down"
-| "downLeft"
-| "downRight"
-| "upLeft"
-| "upRight";
+  | "left"
+  | "right"
+  | "up"
+  | "down"
+  | "downLeft"
+  | "downRight"
+  | "upLeft"
+  | "upRight";
 
 export type AnimationKey =
   | "walkDown"
