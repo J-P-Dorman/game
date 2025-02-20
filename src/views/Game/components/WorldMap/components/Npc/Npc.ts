@@ -152,6 +152,8 @@ const Npc = () => {
         const { x, y } = position;
         const { path, currentIndex, speed, loop } = movement;
 
+        const currentDirection = state.movement.direction;
+
         // If item hasn't loaded yet, do nothing
         if(!state.spriteGroup) return;
 
@@ -187,12 +189,19 @@ const Npc = () => {
           leftoverSpeed
         );
 
-        const direction = (() => {
-          const isMovingLeft = nextX < startingPoint.x;
-          const isMovingRight = nextX > startingPoint.x;
-          const isMovingDown = nextY > startingPoint.y;
-          const isMovingUp = nextY < startingPoint.y;
+        const index = lastReachableIndex &&
+          lastReachableIndex > 0 ? lastReachableIndex : 0;
 
+        const direction = ((): Direction => {
+          const lastX = reachablePoints.at(-1)?.x ?? startingPoint.x;
+          const lastY = reachablePoints.at(-1)?.y ?? startingPoint.y;
+
+          const isMovingLeft = nextX < lastX;
+          const isMovingRight = nextX > lastX;
+          const isMovingDown = nextY > lastY;
+          const isMovingUp = nextY < lastY;
+
+          // Figure out what direction you're moving in
           if(isMovingDown && !isMovingLeft && !isMovingRight) return 'down';
           if(isMovingUp && !isMovingLeft && !isMovingRight) return 'up';
           if(isMovingLeft && !isMovingUp && !isMovingDown) return 'left';
@@ -204,22 +213,13 @@ const Npc = () => {
           if(isMovingUp && isMovingRight) return 'upRight';
         })();
 
-        // ["turnDown", "walkDown", "walkDown2"],
-        // ["turnUp", "walkUp", "walkUp2"],
-        // ["turnLeft", "walkLeft"],
-        // ["turnRight", "walkRight"],
-        // ["turnDownLeft", "walkDownLeft"],
-        // ["turnDownRight", "walkDownRight"],
-        // ["turnUpLeft", "walkUpLeft"],
-        // ["turnUpRight", "walkUpRight"],
-
-        const index = lastReachableIndex &&
-        lastReachableIndex > 0 ? lastReachableIndex : 0;
-
         state.position.x = nextX;
         state.position.y = nextY;
         state.movement.currentIndex = index;
         state.movement.direction = direction;
+
+        // Render snap turn so the character doesn't ski
+        if(currentDirection !== direction) renderNow(renderActions.npcTurn);
 
         const isLastTickHighSpeed = speed >= 1 && index + speed > path.length -1;
         const isLastTickLowSpeed = speed < 1 && index === path.length -1 && leftoverSpeed === 0;
@@ -265,6 +265,28 @@ const Npc = () => {
         state.spriteGroup.position.z = state.position.y;
       },
       repeat: true
+    }),
+    npcTurn: createRenderAction({
+      id: "npcTurn",
+      func: ({ action }) => {
+        if(!state.spriteGroup) return;
+
+        const { spriteSheet, movement } = state;
+        const { animationMap } = spriteSheet;
+        const { direction } = movement;
+
+        const spriteKeyPartial = direction[0].toLocaleUpperCase() + direction.slice(1);
+        const nextSpriteKey = `turn${spriteKeyPartial}`;
+        const nextSprite = state.spriteList[nextSpriteKey];
+
+        if(state.currentSpriteKey !== nextSpriteKey) {
+          state.currentSprite.visible = false;
+          nextSprite.visible = true;
+
+          state.currentSpriteKey = nextSpriteKey;
+          state.currentSprite = nextSprite;
+        }
+      }
     }),
     npcWalk: createRenderAction({
       id: "npcWalk",

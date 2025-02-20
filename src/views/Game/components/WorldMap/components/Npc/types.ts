@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
 
+
+
 export type State = {
   spriteSheet: any;
   width: number;
@@ -12,15 +14,7 @@ export type State = {
   spriteList: Record<string, THREE.Group>;
   position: { x: number; y: number };
   movement: {
-    direction:
-      | "left"
-      | "right"
-      | "up"
-      | "down"
-      | "downLeft"
-      | "downRight"
-      | "upLeft"
-      | "upRight";
+    direction: Direction;
     path: { x: number; y: number }[];
     currentIndex: number;
     speed: number;
@@ -42,14 +36,14 @@ export type LoadArgs = {
 };
 
 export type Direction =
-  | "down"
-  | "up"
-  | "left"
-  | "right"
-  | "leftDown"
-  | "leftUp"
-  | "rightDown"
-  | "rightUp";
+| "left"
+| "right"
+| "up"
+| "down"
+| "downLeft"
+| "downRight"
+| "upLeft"
+| "upRight";
 
 export type AnimationKey =
   | "walkDown"
