@@ -47,8 +47,6 @@ const WorldMap = () => {
       return { ...acc, [id]: item };
     }, {});
 
-    console.log('creatures: ', creatures);
-
     // Load creatures and start default actions
     const renderedCreatures = creatures.reduce((
       acc: Record<string, any>,
@@ -78,6 +76,7 @@ const WorldMap = () => {
       ]);
       dispatchLogic(creature.logicActions.npcMove);
       dispatchRender(creature.renderActions.npcMove);
+      dispatchRender(creature.renderActions.npcWalk);
 
       return { ...acc, [id]: creature };
     }, {});

@@ -48,6 +48,7 @@ const Npc = () => {
     spriteList: undefined,
     position: { x: 0, y: 0 },
     movement: {
+      direction: 'down',
       path: [],
       currentIndex: 0,
       speed: 0,
@@ -81,9 +82,6 @@ const Npc = () => {
     state.height = height;
     state.onInteract = onInteract;
 
-    console.log('yoyoyo');
-    console.log('image: ', image);
-
     loadSvgSheet(
       image,
       sheetWidth,
@@ -92,7 +90,6 @@ const Npc = () => {
       spriteHeight,
       true,
       (svgGroup) => {
-        console.log('svg callback');
         const spriteGroup = new THREE.Group();
         const sprites = svgGroup
           .flat()
@@ -115,8 +112,6 @@ const Npc = () => {
         // spriteGroup.position.set(-2, -2, -2);
         spriteGroup.scale.set((1 / spriteHeight) * width, (1 / spriteHeight) * height, 0.05);
 
-        console.log('spriteGroup: ', spriteGroup);
-
         state.spriteGroup = spriteGroup;
         state.spriteList = spriteList;
       }
@@ -132,17 +127,10 @@ const Npc = () => {
         const { payload } = action;
         const [ x, y ] = payload;
 
-        console.log('x: ', x);
-        console.log('y: ', y);
-
         state.position.x += x;
         state.position.y += y;
 
-        console.log('aaaaaaa');
-
         dispatchRender(renderActions.npcPlace);
-
-        console.log('bbbbbbbb');
       }
     }),
     npcNewPath: createLogicAction({
@@ -199,12 +187,39 @@ const Npc = () => {
           leftoverSpeed
         );
 
+        const direction = (() => {
+          const isMovingLeft = nextX < startingPoint.x;
+          const isMovingRight = nextX > startingPoint.x;
+          const isMovingDown = nextY > startingPoint.y;
+          const isMovingUp = nextY < startingPoint.y;
+
+          if(isMovingDown && !isMovingLeft && !isMovingRight) return 'down';
+          if(isMovingUp && !isMovingLeft && !isMovingRight) return 'up';
+          if(isMovingLeft && !isMovingUp && !isMovingDown) return 'left';
+          if(isMovingRight && !isMovingUp && !isMovingDown) return 'right';
+
+          if(isMovingDown && isMovingLeft) return 'downLeft';
+          if(isMovingDown && isMovingRight) return 'downRight';
+          if(isMovingUp && isMovingLeft) return 'upLeft';
+          if(isMovingUp && isMovingRight) return 'upRight';
+        })();
+
+        // ["turnDown", "walkDown", "walkDown2"],
+        // ["turnUp", "walkUp", "walkUp2"],
+        // ["turnLeft", "walkLeft"],
+        // ["turnRight", "walkRight"],
+        // ["turnDownLeft", "walkDownLeft"],
+        // ["turnDownRight", "walkDownRight"],
+        // ["turnUpLeft", "walkUpLeft"],
+        // ["turnUpRight", "walkUpRight"],
+
         const index = lastReachableIndex &&
         lastReachableIndex > 0 ? lastReachableIndex : 0;
 
         state.position.x = nextX;
         state.position.y = nextY;
         state.movement.currentIndex = index;
+        state.movement.direction = direction;
 
         const isLastTickHighSpeed = speed >= 1 && index + speed > path.length -1;
         const isLastTickLowSpeed = speed < 1 && index === path.length -1 && leftoverSpeed === 0;
@@ -223,27 +238,8 @@ const Npc = () => {
     npcPlace: createRenderAction({
       id: "npcPlace",
       func: ({ action }) => {
-        // console.log('==========================================');
-        // console.log('RENDER');
-        // console.log('==========================================');
-
-        // console.log('state.spriteGroup: ', state.spriteGroup);
-        // console.log('x: ', state.position.x);
-        // console.log('y: ', state.position.y);
-
-        // console.log('==========================================');
         // If item hasn't loaded yet, do nothing
         if(!state.spriteGroup) return [false];
-
-
-        // console.log('==========================================');
-        // console.log('RENDER');
-        // console.log('==========================================');
-
-        // console.log('x: ', state.position.x);
-        // console.log('y: ', state.position.y);
-
-        // console.log('==========================================');
   
         state.spriteGroup.position.x = state.position.x;
         state.spriteGroup.position.z = state.position.y;
@@ -271,15 +267,37 @@ const Npc = () => {
       repeat: true
     }),
     npcWalk: createRenderAction({
-      id: "npcMove",
+      id: "npcWalk",
       func: ({ action }) => {
         if(!state.spriteGroup) return;
-  
-        state.spriteGroup.position.x = state.position.x;
-        state.spriteGroup.position.z = state.position.y;
+
+        const { spriteSheet, movement } = state;
+        const { animationMap } = spriteSheet;
+        const { direction } = movement;
+
+        const animationKeyPartial = direction[0].toLocaleUpperCase() + direction.slice(1);
+        const animationKey = `walk${animationKeyPartial}`;
+        const animation = animationMap[animationKey];
+        const { frames, end } = animation;
+        
+        const currentFrameIndex = frames.indexOf(state.currentSpriteKey);
+        const currentFrameIndex2 = currentFrameIndex > 0 ? currentFrameIndex : 0;
+        const nextFrameIndex = currentFrameIndex2 + 1 > frames.length - 1 ? 0 : currentFrameIndex2 + 1;
+
+        const nextFrameKey = frames[nextFrameIndex];
+        const nextFrame = state.spriteList[nextFrameKey];
+
+        if(state.currentSpriteKey !== nextFrameKey) {
+          state.currentSprite.visible = false;
+          nextFrame.visible = true;
+
+          state.currentSpriteKey = nextFrameKey;
+          state.currentSprite = nextFrame;
+        }
       },
-      repeat: true
-    })
+      repeat: true,
+      maxTime: 100
+    }),
   };
 
   return { load, logicActions, renderActions };

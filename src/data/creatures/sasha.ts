@@ -147,7 +147,7 @@ export const sashaData: CreatureData = {
         end: "turnUpLeft",
       },
       walkUpRight: {
-        frames: ["walkUpight", "turnUpRight"],
+        frames: ["walkUpRight", "turnUpRight"],
         end: "turnUpRight",
       }
     }
