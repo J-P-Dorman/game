@@ -10,10 +10,7 @@ import {
   renderNow,
 } from "../GameLoops/RenderLoop/utils";
 import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
-import { AttachToCamera } from "../Camera/types";
-import { bucketData } from './components/Item/itemData'
-import { sashaData } from "../../../../data/creatures/sasha";
-import { ItemData, LevelItem } from "./components/Item/types";
+import { LevelItem } from "./components/Item/types";
 
 interface Props {
   scene: THREE.Scene;
@@ -52,28 +49,12 @@ const WorldMap = () => {
       acc: Record<string, any>,
       creatureData: any
     ) => {
-      const { id, position } = creatureData;
+      const { id, position, defaultPath } = creatureData;
+      const { path, speed, loop } = defaultPath;
       const creature = Npc();
       creature.load({creatureData});
-      dispatchLogic(creature.logicActions.npcPlace, [42, 42]);
-      dispatchLogic(creature.logicActions.npcNewPath, [
-        [
-          {x: 42, y: 43},
-          {x: 42, y: 44},
-          {x: 42, y: 45},
-          {x: 43, y: 45},
-          {x: 44, y: 45},
-          {x: 45, y: 45},
-          {x: 45, y: 44},
-          {x: 45, y: 43},
-          {x: 45, y: 42},
-          {x: 44, y: 42},
-          {x: 43, y: 42},
-          {x: 42, y: 42}
-        ],
-        0.15,
-        true
-      ]);
+      dispatchLogic(creature.logicActions.npcPlace, position);
+      dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
       dispatchLogic(creature.logicActions.npcMove);
       dispatchRender(creature.renderActions.npcMove);
       dispatchRender(creature.renderActions.npcWalk);

@@ -27,7 +27,7 @@ const tutorialIsland = {
           { x: 43, y: 42 },
           { x: 42, y: 42 },
         ],
-        speed: 0.15,
+        speed: 0.07,
         loop: true,
       },
     },
