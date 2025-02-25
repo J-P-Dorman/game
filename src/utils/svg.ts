@@ -4,6 +4,7 @@ import { SVGLoader } from "three/addons/loaders/SVGLoader";
 import { forIncrement } from "./loops";
 import { SpriteSheet } from "../types";
 import { arrayToObject } from "./arrays";
+import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
 
 export const loadSvg = (
   imageUrl: string,
@@ -22,8 +23,11 @@ export const loadSvg = (
 
         const material = new THREE.MeshBasicMaterial({
           color: path.color,
-          side: THREE.DoubleSide,
-          depthWrite: false,
+          side: THREE.FrontSide,
+          // depthWrite: false,
+          // combine: THREE.AddOperation,
+          // reflectivity: 0,
+          // refractionRatio: 0
         });
 
         const shapes = SVGLoader.createShapes(path);
@@ -47,92 +51,98 @@ export const loadSvg = (
   );
 };
 
-export const loadSvgSheet = async (
+export const loadSvgSheet = (
   imageUrl: string,
   sheetWidth: number,
   sheetHeight: number,
   spriteWidth: number,
   spriteHeight: number,
   shouldCollapse = true,
-  callback: (svgGroup: THREE.Group[][]) => void
-): Promise<any> => {
-  let result = undefined;
-  const svgLoader = new SVGLoader();
+  callback: (svgGroup: any[][]) => void
+): Promise<any> => new Promise((resolve, reject) => {
+  const sprites: Array<Array<Record<
+    string, {color: any, geometries: THREE.BufferGeometry[]}
+  >>> = [];
 
-  await svgLoader.load(
-    imageUrl,
-    (data: any) => {
-      const paths = data.paths;
-      const group = new THREE.Group();
-      const spriteCountHorizontal = Math.floor(sheetWidth / spriteWidth);
-      const spriteCountVertical = Math.floor(sheetHeight / spriteHeight);
+  const onSuccess = (data: {paths: any}) => {
+    const { paths } = data;
+  
+    // Loop through the SVG paths
+    for(let i = 0; i < paths.length; i++) {
+      const path = paths[i];
+      const { x, y } = path.currentPath.currentPoint;
+      const { color } = path;
 
-      // Create a parent group for each sprite in the sheet
-      const sprites = forIncrement((i, acc: any[][] = []) => {
+      const spriteIndexX = Math.floor(x / spriteWidth);
+      const spriteIndexY = Math.floor(y / spriteHeight);
+      const spriteOffsetX = spriteWidth * spriteIndexX;
+      const spriteOffsetY = spriteHeight * spriteIndexY;
 
-        const row = forIncrement((j, accRow: any[] = []) => {  
-          return [...accRow, undefined];
-        }, spriteCountHorizontal);
+      // Create THREE shape data from SVG path
+      const shapes = SVGLoader.createShapes(path);
 
-        return [...acc, row];
-      }, spriteCountVertical);
+      // Loop through the shapes in the current path
+      const geometries = shapes.map((shape: any) => {
 
-      // Draw sprites to groups
-      for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-        const { x, y } = path.currentPath.currentPoint;
-
-        const spriteIndexX = Math.floor(x / spriteWidth);
-        const spriteIndexY = Math.floor(y / spriteHeight);
-
-        const spriteOffsetX = spriteWidth * spriteIndexX;
-        const spriteOffsetY = spriteHeight * spriteIndexY;
-
-        const material = new THREE.MeshBasicMaterial({
-          color: path.color,
-          side: THREE.DoubleSide,
-          depthWrite: false,
+        // Collapse sprite spacing, make them render on top of each other
+        if(shouldCollapse) shape.curves.forEach((curve: any) => {
+          curve.v1.x -= spriteOffsetX;
+          curve.v1.y -= spriteOffsetY;
+          curve.v2.x -= spriteOffsetX;
+          curve.v2.y -= spriteOffsetY;
         });
 
-        const shapes = SVGLoader.createShapes(path);
+        const geometry = new THREE.ShapeGeometry(shape, 0);
 
-        for (let j = 0; j < shapes.length; j++) {
-          const shape = shapes[j];
+        return geometry;
+      });
 
-          // Collapse sprite spacing, make then render on top of each other
-          if(shouldCollapse) {
-            shape.curves.forEach((curve: any) => {
-              curve.v1.x -= spriteOffsetX;
-              curve.v1.y -= spriteOffsetY;
-              curve.v2.x  -= spriteOffsetX;
-              curve.v2.y  -= spriteOffsetY;
-            });
-          }
+      const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries);
 
-          const geometry = new THREE.ShapeGeometry(shape);
+      // Flip svg which will otherwise render upside down
+      mergedGeometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1));
+ 
+      const colorKey = JSON.stringify(color);
+      if(!sprites[spriteIndexY]) sprites[spriteIndexY] = [];
+      if(!sprites[spriteIndexY][spriteIndexX]) sprites[spriteIndexY][spriteIndexX] = {};
+      if(!sprites[spriteIndexY][spriteIndexX][colorKey]) sprites[spriteIndexY][spriteIndexX][colorKey] = {color, geometries: []};
+      sprites[spriteIndexY][spriteIndexX][colorKey].geometries.push(mergedGeometry);
+    }
 
-          // Flip svg which will render upside down
-          geometry.applyMatrix4(new THREE.Matrix4().makeScale(1, -1, 1));
-
+    const spritesMerged = sprites.map((row) => {
+      return row.map((colours) => {
+        return Object.values(colours).reduce((acc, {color, geometries}) => {
+          const geometry = BufferGeometryUtils.mergeGeometries(geometries);
+          const material = new THREE.MeshBasicMaterial({
+            color: color,
+            side: THREE.DoubleSide,
+            depthWrite: false,
+            combine: THREE.AddOperation,
+            reflectivity: 0,
+            refractionRatio: 0
+          });
           const mesh = new THREE.Mesh(geometry, material);
 
-          // If group is undefinded, define it
-          if(sprites[spriteIndexY][spriteIndexX] === undefined) sprites[spriteIndexY][spriteIndexX] = new THREE.Group();
+          acc.add(mesh);
+          return acc;
+        }, new THREE.Group())
+      })
+    })
 
-          // Add svg shape to sprite group
-          sprites[spriteIndexY][spriteIndexX].add(mesh);
-        }
-      }
-      result = callback(sprites);
-    },
-    // called when loading is in progresses
-    function (xhr: any) {},
-    // called when loading has errors
-    function (error: any) { console.error(`Error loading svg: ${imageUrl}`) }
-  );
+    const result = callback(spritesMerged);
+    resolve(result);
+  }
 
-  return result;
-};
+  const onProgress = () => {}
+
+  const onFail = () => {
+    console.error(`Error loading svg: ${imageUrl}`);
+    reject();
+  }
+
+  const svgLoader = new SVGLoader();
+  svgLoader.load(imageUrl, onSuccess, onProgress, onFail);
+});
 
 export const flattenSpriteSheet = (spriteSheet: SpriteSheet) => spriteSheet.flat().filter((sprite) => sprite !== undefined);
 
