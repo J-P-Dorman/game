@@ -1,16 +1,14 @@
 import { LogicAction, LogicActionId } from "../../../GameLoops/LogicLoop/types";
 import {
   dispatchLogic,
-  isInLogicQueue,
   logicNow,
-  pushToLogicQueue,
   removeAllFromLogicQueue,
 } from "../../../GameLoops/LogicLoop/utils";
-import { RenderAction } from "../../../GameLoops/RenderLoop/types";
-import { dispatchRender, isInRenderQueue, pushToRenderQueue, removeAllFromRenderQueue } from "../../../GameLoops/RenderLoop/utils";
+import {
+  dispatchRender,
+  removeAllFromRenderQueue,
+} from "../../../GameLoops/RenderLoop/utils";
 import { playerRunSpeed, playerWalkSpeed } from "../../../Player/constants";
-
-
 
 const movementKeys = ["w", "a", "s", "d"];
 
@@ -25,7 +23,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['up']);
+    logicNow(logicActions.playerTurn, ["up"]);
     dispatchLogic(logicActions.playerMove, [0, playerWalkSpeed, false]);
     dispatchLogic(logicActions.cameraMove, [0, playerWalkSpeed]);
   }
@@ -34,16 +32,16 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['up']);
+    logicNow(logicActions.playerTurn, ["up"]);
     dispatchLogic(logicActions.playerMove, [0, playerRunSpeed, true]);
-    dispatchLogic(logicActions.cameraMove, [0, playerRunSpeed,]);
+    dispatchLogic(logicActions.cameraMove, [0, playerRunSpeed]);
   }
 
   if (key === "a" && !isShift) {
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['left']);
+    logicNow(logicActions.playerTurn, ["left"]);
     dispatchLogic(logicActions.playerMove, [-playerWalkSpeed, 0, false]);
     dispatchLogic(logicActions.cameraMove, [-playerWalkSpeed, 0]);
   }
@@ -52,7 +50,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['left']);
+    logicNow(logicActions.playerTurn, ["left"]);
     dispatchLogic(logicActions.playerMove, [-playerRunSpeed, 0, true]);
     dispatchLogic(logicActions.cameraMove, [-playerRunSpeed, 0]);
   }
@@ -61,7 +59,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['down']);
+    logicNow(logicActions.playerTurn, ["down"]);
     dispatchLogic(logicActions.playerMove, [0, -playerWalkSpeed, false]);
     dispatchLogic(logicActions.cameraMove, [0, -playerWalkSpeed]);
   }
@@ -70,7 +68,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['down']);
+    logicNow(logicActions.playerTurn, ["down"]);
     dispatchLogic(logicActions.playerMove, [0, -playerRunSpeed, true]);
     dispatchLogic(logicActions.cameraMove, [0, -playerRunSpeed]);
   }
@@ -79,7 +77,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove, playerTurn"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['right']);
+    logicNow(logicActions.playerTurn, ["right"]);
     dispatchLogic(logicActions.playerMove, [playerWalkSpeed, 0, false]);
     dispatchLogic(logicActions.cameraMove, [playerWalkSpeed, 0]);
   }
@@ -88,7 +86,7 @@ const move = (
     removeAllFromLogicQueue(["playerMove"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
-    logicNow(logicActions.playerTurn, ['right']);
+    logicNow(logicActions.playerTurn, ["right"]);
     dispatchLogic(logicActions.playerMove, [playerRunSpeed, 0, true]);
     dispatchLogic(logicActions.cameraMove, [playerRunSpeed, 0]);
   }
@@ -102,14 +100,12 @@ export const decideAction = (
   logicActions: Record<LogicActionId, LogicAction>,
   renderActions: any
 ) => {
-  const { playerMove } = logicActions;
-  const { playerTurn, playerWalk, playerStopWalk } = renderActions;
   const isKeyUp = !isKeyDown;
   const isShift = shiftKey || allPressedKeys.includes("shift");
   const lastMovementKey = allPressedKeys.findLast((pressedKey) =>
     movementKeys.includes(pressedKey)
   );
-  const lastPressedKey = allPressedKeys[allPressedKeys.length - 1]
+  const lastPressedKey = allPressedKeys[allPressedKeys.length - 1];
   const isDoublePress = allPressedKeys.includes(key);
 
   // Move player
@@ -119,7 +115,7 @@ export const decideAction = (
   // Restore previous direction
   if (isKeyUp && movementKeys.includes(key)) {
     removeAllFromLogicQueue(["playerMove"]);
-    removeAllFromRenderQueue(["playerWalk", 'playerRun']);
+    removeAllFromRenderQueue(["playerWalk", "playerRun"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
 
@@ -129,7 +125,7 @@ export const decideAction = (
   // Stop player
   if (isKeyUp && movementKeys.includes(key) && !isDoublePress) {
     removeAllFromLogicQueue(["playerMove"]);
-    removeAllFromRenderQueue(["playerWalk", 'playerRun']);
+    removeAllFromRenderQueue(["playerWalk", "playerRun"]);
     removeAllFromLogicQueue(["cameraMove"]);
     removeAllFromRenderQueue(["cameraMove"]);
     move(lastMovementKey, isShift, allPressedKeys, logicActions, renderActions);
