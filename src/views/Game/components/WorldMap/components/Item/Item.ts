@@ -37,8 +37,7 @@ type Item = {
 
 type State = {
   spriteSheet: SpriteSheet | undefined;
-  width: number;
-  height: number;
+  size: number;
   onInteract: () => void;
   currentSpriteKey: string | undefined;
   currentSprite: THREE.Group | undefined;
@@ -50,8 +49,7 @@ type State = {
 const Item = () => {
   const state: State = {
     spriteSheet: undefined,
-    width: 0,
-    height: 0,
+    size: 0,
     onInteract: () => {},
     currentSpriteKey: undefined,
     currentSprite: undefined,
@@ -60,8 +58,7 @@ const Item = () => {
   };
 
   const load = (item: LevelItem) => {
-    const { spriteSheet, width, height, onInteract } = item;
-    
+    const { spriteSheet, size, onInteract } = item;
     const {
       image,
       spriteWidth,
@@ -75,8 +72,7 @@ const Item = () => {
     } = spriteSheet;
 
     state.spriteSheet = spriteSheet;
-    state.width = width;
-    state.height = height;
+    state.size = size;
     state.onInteract = onInteract;
 
     loadSvgSheet(
@@ -106,8 +102,12 @@ const Item = () => {
         state.currentSpriteKey = keys[0];
         state.currentSprite = sprites[0];
 
-        spriteGroup.position.set(-2, -2, -2);
-        spriteGroup.scale.set(0.05, 0.05, 0.05);
+        const maxPixels =
+          spriteWidth > spriteHeight ? spriteWidth : spriteHeight;
+        const size1 = 1 / maxPixels;
+        const newSize = size1 * size;
+
+        spriteGroup.scale.set(newSize, newSize, newSize);
 
         state.spriteGroup = spriteGroup;
         state.spriteList = spriteList;
