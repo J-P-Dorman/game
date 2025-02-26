@@ -1,39 +1,7 @@
 import * as THREE from "three";
 import { arrayToObject, loadSvgSheet } from "../../../../../../utils";
-import { createLogicAction } from "../../../GameLoops/LogicLoop/utils";
-import {
-  createRenderAction,
-  dispatchRender,
-  renderNow,
-} from "../../../GameLoops/RenderLoop/utils";
-import { LevelItem } from "./types";
-
-type SpriteSheet = {
-  image: string;
-  spriteWidth: number;
-  spriteHeight: number;
-  sheetWidth: number;
-  sheetHeight: number;
-  defaultSprite: string;
-  defaultAnimation?: string;
-  sheetMap: string[][];
-  animationMap: Record<
-    string,
-    {
-      frames: string[];
-      loop: boolean;
-      fps: number;
-      end?: string;
-    }
-  >;
-};
-
-type Item = {
-  spriteSheet: SpriteSheet;
-  width: number;
-  height: number;
-  onInteract: () => void;
-};
+import { createRenderAction } from "../../../GameLoops/RenderLoop/utils";
+import { LevelItem, SpriteSheet } from "./types";
 
 type State = {
   spriteSheet: SpriteSheet | undefined;
