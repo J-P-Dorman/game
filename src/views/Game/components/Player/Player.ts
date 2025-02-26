@@ -58,8 +58,6 @@ const Player = () => {
           spriteGroup.add(sprite);
         });
 
-        console.log('sprites: ', sprites);
-
         // Initialise the player as the top left sprite
         sprites.forEach((sprite, i) => {
           if (i !== 0) sprite.visible = false;

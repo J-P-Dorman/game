@@ -54,11 +54,6 @@ export const calculateReachablePoints = ({ x, y, path, startIndex, speed, loop }
   // If we reach here, we've run out of points in the path, but still have speed to spend
 
   // If not looping, return the last point in the path, as the npc has reached the end
-  // console.log('points: ', points);
-  // console.log('path.length - 1: ', path.length - 1);
-  // console.log('path.at(-1): ', path.at(-1));
-
-  console.log('bababa: ')
   if(!loop) return [points, path.length - 1, 0, path.at(-1)];
 
   // If looping, keep going, starting from the beginning of the path

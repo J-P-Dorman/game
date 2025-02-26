@@ -13,11 +13,7 @@ export const renderChunk = (chunkData: any) => {
   pushToRenderQueue(
     createRenderAction({
       id: "renderMapChunk",
-      func: ({ action, actionQueue }) => {
-        console.log("chunkData: ", chunkData);
-        console.log("action: ", action);
-        console.log("actionQueue: ", actionQueue);
-      },
+      func: ({ action, actionQueue }) => {},
     })
   );
 };
