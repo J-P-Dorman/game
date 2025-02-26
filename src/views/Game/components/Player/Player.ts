@@ -33,7 +33,7 @@ const Player = () => {
   // Public Methods
   // ===========================================================================
   const load = ({attachToCamera}: { attachToCamera: AttachToCamera } ) => {
-    const { id, spriteSheet } = playerData;
+    const { id, spriteSheet, size } = playerData;
     const { image, spriteWidth, spriteHeight, sheetWidth, sheetHeight } =
       spriteSheet;
     const { defaultSprite } = spriteSheet;
@@ -65,8 +65,14 @@ const Player = () => {
         currentSpriteKey = keys[0];
         currentSprite = sprites[0];
 
-        spriteGroup.position.set(-2, -2, -2);
-        spriteGroup.scale.set(0.05, 0.05, 0.05);
+        const maxPixels =
+          spriteWidth > spriteHeight ? spriteWidth : spriteHeight;
+        const size1 = 1 / maxPixels;
+        const newSize = size1 * size;
+
+        spriteGroup.position.set(0, 0, -2);
+        spriteGroup.scale.set(newSize, newSize, newSize);
+        
         attachToCamera(() => spriteGroup);
 
         playerSpriteGroup = spriteGroup;

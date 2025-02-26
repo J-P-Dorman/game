@@ -15,8 +15,7 @@ export type MapData = ChunkData[][];
 
 export type CreatureData = {
   id: string;
-  width: number;
-  height: number;
+  size: number;
   spriteSheet: {
     image: string;
     spriteWidth: number;
