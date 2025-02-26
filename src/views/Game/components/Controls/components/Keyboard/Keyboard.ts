@@ -14,21 +14,36 @@ const Keyboard = () => {
     const onKeyDown = (event: KeyboardEvent) => {
       const { key, shiftKey } = event;
       const keyLower = key.toLowerCase();
-      
-      decideAction(keyLower, shiftKey, true, allPressedKeys, logicActions, renderActions);
+
+      decideAction(
+        keyLower,
+        shiftKey,
+        true,
+        allPressedKeys,
+        logicActions,
+        renderActions
+      );
 
       // Don't stack multiple of the same key for easy chronology
-      if(!allPressedKeys.includes(keyLower)) allPressedKeys.push(keyLower);
-    }
+      if (!allPressedKeys.includes(keyLower)) allPressedKeys.push(keyLower);
+    };
 
     const onKeyUp = (event: KeyboardEvent) => {
       const { key } = event;
       const keyLower = key.toLowerCase();
 
-      allPressedKeys = allPressedKeys.filter((pressedKey) => pressedKey !== keyLower);
-      decideAction(keyLower, false, false, allPressedKeys, logicActions, renderActions);
- 
-    }
+      allPressedKeys = allPressedKeys.filter(
+        (pressedKey) => pressedKey !== keyLower
+      );
+      decideAction(
+        keyLower,
+        false,
+        false,
+        allPressedKeys,
+        logicActions,
+        renderActions
+      );
+    };
 
     // Save functions to parent scope so we can removeEventListener later
     saveOnKeyDown = onKeyDown;
