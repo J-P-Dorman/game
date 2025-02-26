@@ -252,8 +252,7 @@ const Npc = () => {
       },
       repeat: ([hasRun]) => {
         return !hasRun;
-      },
-      maxTime: 2000
+      }
     }),
     npcMove: createRenderAction({
       id: "npcMove",
