@@ -1,6 +1,5 @@
 export type ItemData = {
-  width: number; // Width of item in game world, in abstract THREE units
-  height: number; // Height of item in game world, in abstract THREE units
+  size: number; // Size of item in game world, in floor tiles
   spriteSheet: {
     image: string; // Link to spritesheet image (should be an svg)
     spriteWidth: number; // Width of each sprite
