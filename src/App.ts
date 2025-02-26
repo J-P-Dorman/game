@@ -1,7 +1,9 @@
 import "./index.scss";
 import { State } from "./types";
 import Debug from "./views/Debug/Debug";
+import { createRenderAction, dispatchRender } from "./views/Game/components/GameLoops/RenderLoop/utils";
 import { Game } from "./views/Game/Game";
+import Stats from 'three/addons/libs/stats.module.js';
 
 const App = () => {
   window.state = {
@@ -35,6 +37,19 @@ const App = () => {
   window.onload = () => {
     const gameEl = document.querySelector("div#root") as HTMLDivElement;
     const debugEl = document.querySelector("div#debug") as HTMLDivElement;
+
+    const stats = new Stats();
+    gameEl.appendChild(stats.dom);
+
+    dispatchRender(createRenderAction({
+      id: "stats",
+      func: () => {
+        stats.update();
+      },
+      repeat: true,
+      stack: false
+    }))
+
 
     const game = Game();
     const debug = Debug();
