@@ -167,7 +167,7 @@ const Item = () => {
         state.currentSprite = nextSprite;
       },
       repeat: true,
-      stack: false,
+      stack: true,
       maxTime: () => {
         const { defaultAnimation, animationMap } = state.spriteSheet;
         const animation = animationMap[defaultAnimation];
