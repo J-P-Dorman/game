@@ -49,7 +49,6 @@ const DialogueBox = () => {
     state.dialogueBoxGroup.add(state.textGroup);
 
     const font = await loadFont();
-    console.log("font: ", font);
     const textGeometry = new TextGeometry("Hello World", {
       font,
       size: 0.1,
