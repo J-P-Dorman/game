@@ -98,8 +98,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
 
 export const sashaData: CreatureData = {
   id: "sasha",
-  width: 1.8,
-  height: 1.6,
+  size: 1.5,
   spriteSheet: {
     image: spriteSheet,
     spriteWidth: 20,

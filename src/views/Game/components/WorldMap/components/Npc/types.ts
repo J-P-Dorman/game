@@ -3,8 +3,7 @@ import { CreatureData } from "../../../../../../types";
 
 export type State = {
   spriteSheet: any;
-  width: number;
-  height: number;
+  size: number;
   onInteract: () => void;
   currentSpriteKey: string;
   currentSprite: THREE.Group;

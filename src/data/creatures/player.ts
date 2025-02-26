@@ -3,8 +3,7 @@ import spriteSheet from "../../assets/sprites/creatures/player/player.svg";
 
 export const playerData: CreatureData = {
   id: "player",
-  width: 1,
-  height: 1,
+  size: 1.5,
   spriteSheet: {
     image: spriteSheet,
     spriteWidth: 20,
