@@ -129,8 +129,6 @@ const Npc = () => {
 
         state.position.x += x;
         state.position.y += y;
-
-        dispatchRender(renderActions.npcPlace);
       }
     }),
     npcNewPath: createLogicAction({
