@@ -53,7 +53,11 @@ const WorldMap = () => {
       const { path, speed, loop } = defaultPath;
       const creature = Npc();
       creature.load({creatureData});
+      
+      // Add the creature in their starting position
       dispatchLogic(creature.logicActions.npcPlace, position);
+      dispatchRender(creature.renderActions.npcPlace);
+
       dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
       dispatchLogic(creature.logicActions.npcMove);
       dispatchRender(creature.renderActions.npcMove);
