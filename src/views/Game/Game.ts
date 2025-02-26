@@ -1,18 +1,16 @@
 import * as THREE from "three";
+import { levels } from "../../data/levels";
 import { getElementSize } from "../../utils";
 import { Camera } from "./components/Camera/Camera";
 import Controls from "./components/Controls/Controls";
+import Dialogue from "./components/Dialogue/Dialogue";
 import LogicLoop from "./components/GameLoops/LogicLoop/LogicLoop";
+import { logicNow } from "./components/GameLoops/LogicLoop/utils";
 import RenderLoop from "./components/GameLoops/RenderLoop/RenderLoop";
 import PauseMenu from "./components/PauseMenu/PauseMenu";
 import Player from "./components/Player/Player";
-import Dialogue from "./components/Dialogue/Dialogue";
 import WorldMap from "./components/WorldMap/WorldMap";
 import { disableRightClick } from "./helpers";
-import { LogicAction, LogicActionId, LogicActionList } from "./components/GameLoops/LogicLoop/types";
-import { RenderAction, RenderActionId, RenderActionList } from "./components/GameLoops/RenderLoop/types";
-import { dispatchLogic, logicNow } from "./components/GameLoops/LogicLoop/utils";
-import { levels } from '../../data/levels'; 
 
 export const Game = (): any => {
   // Components
@@ -41,7 +39,7 @@ export const Game = (): any => {
     // Start renderer
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
-      powerPreference: 'high-performance'
+      powerPreference: "high-performance",
     });
     renderer.setSize(gameWidth, gameHeight);
 
@@ -77,7 +75,7 @@ export const Game = (): any => {
     logicLoop.start();
     renderLoop.start({ renderer, scene, camera: cameraObj });
 
-    player.load({attachToCamera: camera.attachToCamera});
+    player.load({ attachToCamera: camera.attachToCamera });
     pauseMenu.load();
 
     return { scene };
@@ -87,8 +85,8 @@ export const Game = (): any => {
     worldMap.animate();
 
     controls.start(
-      {...player.logicActions, ...camera.logicActions},
-      {...player.renderActions, ...camera.renderActions}
+      { ...player.logicActions, ...camera.logicActions },
+      { ...player.renderActions, ...camera.renderActions }
     );
   };
 
