@@ -61,7 +61,6 @@ const Item = () => {
 
   const load = (item: LevelItem) => {
     const { spriteSheet, width, height, onInteract } = item;
-    console.log('item: ', item);
     
     const {
       image,
@@ -132,7 +131,7 @@ const Item = () => {
         const [x, y] = payload;
 
         // If item hasn't loaded yet, do nothing this cycle
-        if (!state.spriteGroup) return;
+        if (!state.spriteGroup) return [true];
 
         state.spriteGroup.position.x = x;
         state.spriteGroup.position.z = y;
@@ -141,8 +140,10 @@ const Item = () => {
         state.spriteGroup.rotation.set(-THREE.MathUtils.degToRad(90), 0, 0);
 
         window.scene.add(state.spriteGroup);
+
+        return [false];
       },
-      repeat: false,
+      repeat: ([shouldRepeat]) => shouldRepeat,
       stack: true,
     }),
     itemAnimateDefault: createRenderAction({
