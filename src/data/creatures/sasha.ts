@@ -151,5 +151,5 @@ export const sashaData: CreatureData = {
       }
     }
   },
-  onInteract: () => {}
+  onInteract: () => { console.log('I did it!') }
 };

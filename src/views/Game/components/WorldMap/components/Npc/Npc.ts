@@ -15,6 +15,7 @@ import {
 } from "../../../GameLoops/RenderLoop/utils";
 import { AnimationKey, Direction, LoadArgs, State } from "./types";
 import { calculateReachablePoints, getBetweenCoordinates } from './helpers';
+import { Area } from "../../../../types";
 
 type SpriteSheet = {
 	image: string;
@@ -38,6 +39,7 @@ type SpriteSheet = {
 
 const Npc = () => {
   const state: State = {
+    id: undefined,
     spriteSheet: undefined,
     size: 0,
     onInteract: () => {},
@@ -46,6 +48,7 @@ const Npc = () => {
     spriteGroup: undefined,
     spriteList: undefined,
     position: { x: 0, y: 0 },
+    colliders: {},
     movement: {
       direction: 'down',
       path: [],
@@ -63,7 +66,7 @@ const Npc = () => {
   // Public Methods
   // ===========================================================================
   const load = async ({creatureData}: LoadArgs) => {
-    const { spriteSheet, size, onInteract } = creatureData;
+    const { id, spriteSheet, size, onInteract } = creatureData;
     const {
       image,
       spriteWidth,
@@ -76,10 +79,13 @@ const Npc = () => {
       animationMap
     } = spriteSheet;
 
+    // Sync to local state
+    state.id = id;
     state.spriteSheet = spriteSheet;
     state.size = size;
     state.onInteract = onInteract;
 
+    // Load sprites
     loadSvgSheet(
       image,
       sheetWidth,
@@ -120,6 +126,27 @@ const Npc = () => {
     );
   };
 
+  const calculateCollider = (
+    positionX: number,
+    positionY: number,
+    size: number,
+    padding: number
+  ): Area => {
+    const fullPadding = padding * 2;
+    const mod = (size / 2) + fullPadding;
+
+    return {
+      x1y1: { x: positionX - mod, y: positionY - mod },
+      x2y1: { x: positionX + mod, y: positionY - mod },
+      x1y2: { x: positionX - mod, y: positionY + mod },
+      x2y2: { x: positionX + mod, y: positionY + mod }
+    };
+  }
+
+  const syncState = () => {
+    window.state.creatures[state.id] = state;
+  }
+
   // Actions
   // ===========================================================================
   const logicActions = {
@@ -127,11 +154,32 @@ const Npc = () => {
       id: "npcPlace",
       func: ({ action }) => {
         const { payload } = action;
-        const [ x, y ] = payload;
+        const [ x, y ]: number[] = payload;
 
+        const { id, size, spriteSheet } = state;
+        const {spriteWidth, spriteHeight } = spriteSheet;
+
+        if(!id) return [true];
+
+        // Update position
         state.position.x += x;
         state.position.y += y;
-      }
+
+        // Update collision
+        const maxPixels =
+        spriteWidth > spriteHeight ? spriteWidth : spriteHeight;
+        const size1 = 1 / maxPixels;
+        const newSize = size1 * size;
+
+        const interactTrigger = calculateCollider(x, y, newSize, 1);
+
+        state.colliders.interact = interactTrigger;
+        
+        syncState();
+
+        return [false];
+      },
+      repeat: ([repeat]) => repeat
     }),
     npcNewPath: createLogicAction({
       id: "npcNewPath",
@@ -224,6 +272,8 @@ const Npc = () => {
         const isLastTickHighSpeed = speed >= 1 && index + speed > path.length -1;
         const isLastTickLowSpeed = speed < 1 && index === path.length -1 && leftoverSpeed === 0;
         const isLastTick = !loop && (isLastTickHighSpeed || isLastTickLowSpeed);
+
+        
 
         return [isLastTick];
       },

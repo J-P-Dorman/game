@@ -2,6 +2,7 @@ export type LogicActionId =
   | "playerMove"
   | "playerTurn"
   | "playerStop"
+  | 'playerInteract'
   | "cameraMove"
   | "cameraSnap"
   | "cameraStopMove"
