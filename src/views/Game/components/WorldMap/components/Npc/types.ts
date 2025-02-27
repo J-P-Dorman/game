@@ -1,7 +1,9 @@
 import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
+import { Area } from '../../../../types';
 
 export type State = {
+  id: string;
   spriteSheet: any;
   size: number;
   onInteract: () => void;
@@ -10,6 +12,7 @@ export type State = {
   spriteGroup: THREE.Group;
   spriteList: Record<string, THREE.Group>;
   position: { x: number; y: number };
+  colliders: Record<string, Area>,
   movement: {
     direction: Direction;
     path: { x: number; y: number }[];

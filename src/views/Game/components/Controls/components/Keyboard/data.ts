@@ -92,6 +92,10 @@ const move = (
     dispatchLogic(logicActions.playerMove, [playerRunSpeed, 0, true]);
     dispatchLogic(logicActions.cameraMove, [playerRunSpeed, 0]);
   }
+
+  if (key === " ") {
+    dispatchLogic(logicActions.playerInteract);
+  }
 };
 
 export const decideAction = (

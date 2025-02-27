@@ -16,6 +16,7 @@ import {
 } from "../GameLoops/RenderLoop/utils";
 import { playerRunSpeed } from "./constants";
 import { AttachToCamera } from "../Camera/types";
+import { Area } from "../../types";
 
 const Player = () => {
   // Local state
@@ -72,7 +73,7 @@ const Player = () => {
 
         spriteGroup.position.set(0, 0, -2);
         spriteGroup.scale.set(newSize, newSize, newSize);
-        
+
         attachToCamera(() => spriteGroup);
 
         playerSpriteGroup = spriteGroup;
@@ -140,96 +141,126 @@ const Player = () => {
       stack: false,
       payload: [0, 0],
     }),
+    playerInteract: createLogicAction({
+      id: "playerInteract",
+      func: () => {
+        const { creatures } = window.state;
+
+        Object.values(creatures).forEach((creature) => {
+          const { colliders, onInteract } = creature;
+          const { interact } = colliders;
+
+          if(!interact) return;
+
+          const withinCollider = (collider: Area, x: number, y: number) => {
+            const { x1y1, x2y1, x1y2, x2y2 } = collider;
+            const isWithinXBounds = (x > x1y1.x && x > x1y2.x)
+              && (x < x2y1.x && x < x2y2.x);
+            const isWithinYBounds = (y > x1y1.y && y > x2y1.y)
+            && (y < x2y2.y && y < x2y2.y);
+
+            return isWithinXBounds && isWithinYBounds;
+          }
+
+          const isWithinCollider = withinCollider(
+            interact,
+            Math.abs(window.state.player.position.x),
+            Math.abs(window.state.player.position.y)
+          );
+
+          if(isWithinCollider) onInteract();
+        });
+      },
+      repeat: false,
+      stack: false,
+      payload: [0, 0],
+    }),
   };
 
-  const playerTurnAction = createRenderAction({
-    id: "playerTurn",
-    func: () => {
-      const direction = window.state.player.direction;
-      const key = directionToKey(direction, "turn");
 
-      currentSprite.visible = false;
-
-      currentSpriteKey = key;
-      currentSprite = playerSprites[key];
-
-      playerSprites[key].visible = true;
-    },
-    stack: false,
-    payload: [],
-    maxTime: 0,
-  });
-
-  const playerWalkAction = createRenderAction({
-    id: "playerWalk",
-    func: () => {
-      const direction = window.state.player.direction;
-      const keyPartial = directionToKey(direction, "walk") as AnimationKey;
-      const animation = playerData.spriteSheet.animationMap[keyPartial];
-      const { frames, end } = animation;
-
-      const currentFrameIndex = frames.findIndex(
-        (frame: any) => frame === currentSpriteKey
-      );
-      const nextFrameIndex = frames[currentFrameIndex + 1]
-        ? currentFrameIndex + 1
-        : 0;
-      const nextFrameKey = frames[nextFrameIndex];
-
-      // Don't double up running and walking
-      removeAllFromRenderQueue(["playerRun", "playerStopWalk"]);
-
-      // Hide current frame
-      currentSprite.visible = false;
-
-      // Add next frame
-      currentSpriteKey = nextFrameKey;
-      currentSprite = playerSprites[nextFrameKey];
-      playerSprites[nextFrameKey].visible = true;
-    },
-    repeat: true,
-    stack: false,
-    payload: [],
-    maxTime: 150,
-  });
-
-  const playerRunAction = createRenderAction({
-    id: "playerRun",
-    func: () => {
-      const direction = window.state.player.direction;
-      const keyPartial = directionToKey(direction, "run") as AnimationKey;
-      const animation = playerData.spriteSheet.animationMap[keyPartial];
-      const { frames, end } = animation;
-
-      const currentFrameIndex = frames.findIndex(
-        (frame: any) => frame === currentSpriteKey
-      );
-      const nextFrameIndex = frames[currentFrameIndex + 1]
-        ? currentFrameIndex + 1
-        : 0;
-      const nextFrameKey = frames[nextFrameIndex];
-
-      // Don't double up running and walking
-      removeAllFromRenderQueue(["playerWalk", "playerStopWalk"]);
-
-      // Hide current frame
-      currentSprite.visible = false;
-
-      // Add next frame
-      currentSpriteKey = nextFrameKey;
-      currentSprite = playerSprites[nextFrameKey];
-      playerSprites[nextFrameKey].visible = true;
-    },
-    repeat: true,
-    stack: false,
-    payload: [],
-    maxTime: 80,
-  });
 
   const renderActions = {
-    playerTurn: playerTurnAction,
-    playerWalk: playerWalkAction,
-    playerRun: playerRunAction,
+    playerTurn: createRenderAction({
+      id: "playerTurn",
+      func: () => {
+        const direction = window.state.player.direction;
+        const key = directionToKey(direction, "turn");
+  
+        currentSprite.visible = false;
+  
+        currentSpriteKey = key;
+        currentSprite = playerSprites[key];
+  
+        playerSprites[key].visible = true;
+      },
+      stack: false,
+      payload: [],
+      maxTime: 0,
+    }),
+    playerWalk: createRenderAction({
+      id: "playerWalk",
+      func: () => {
+        const direction = window.state.player.direction;
+        const keyPartial = directionToKey(direction, "walk") as AnimationKey;
+        const animation = playerData.spriteSheet.animationMap[keyPartial];
+        const { frames, end } = animation;
+  
+        const currentFrameIndex = frames.findIndex(
+          (frame: any) => frame === currentSpriteKey
+        );
+        const nextFrameIndex = frames[currentFrameIndex + 1]
+          ? currentFrameIndex + 1
+          : 0;
+        const nextFrameKey = frames[nextFrameIndex];
+  
+        // Don't double up running and walking
+        removeAllFromRenderQueue(["playerRun", "playerStopWalk"]);
+  
+        // Hide current frame
+        currentSprite.visible = false;
+  
+        // Add next frame
+        currentSpriteKey = nextFrameKey;
+        currentSprite = playerSprites[nextFrameKey];
+        playerSprites[nextFrameKey].visible = true;
+      },
+      repeat: true,
+      stack: false,
+      payload: [],
+      maxTime: 150,
+    }),
+    playerRun: createRenderAction({
+      id: "playerRun",
+      func: () => {
+        const direction = window.state.player.direction;
+        const keyPartial = directionToKey(direction, "run") as AnimationKey;
+        const animation = playerData.spriteSheet.animationMap[keyPartial];
+        const { frames, end } = animation;
+  
+        const currentFrameIndex = frames.findIndex(
+          (frame: any) => frame === currentSpriteKey
+        );
+        const nextFrameIndex = frames[currentFrameIndex + 1]
+          ? currentFrameIndex + 1
+          : 0;
+        const nextFrameKey = frames[nextFrameIndex];
+  
+        // Don't double up running and walking
+        removeAllFromRenderQueue(["playerWalk", "playerStopWalk"]);
+  
+        // Hide current frame
+        currentSprite.visible = false;
+  
+        // Add next frame
+        currentSpriteKey = nextFrameKey;
+        currentSprite = playerSprites[nextFrameKey];
+        playerSprites[nextFrameKey].visible = true;
+      },
+      repeat: true,
+      stack: false,
+      payload: [],
+      maxTime: 80,
+    }),
     playerStopWalk: createRenderAction({
       id: "playerStopWalk",
       func: () => {

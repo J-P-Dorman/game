@@ -29,6 +29,8 @@ const App = () => {
       isWalking: false,
       isRunning: false
     },
+    items: {},
+    creatures: {},
     flags: {
       hasSpokenToSasha: false
     }

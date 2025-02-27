@@ -1,5 +1,6 @@
 import { RenderAction } from "./views/Game/components/GameLoops/RenderLoop/types";
 import { LogicAction } from "./views/Game/components/GameLoops/LogicLoop/types";
+import { State as creatureState } from './views/Game/components/WorldMap/components/Npc/types';
 import * as THREE from "three";
 
 export type TileData = any;
@@ -58,6 +59,8 @@ export type State = {
     isWalking: boolean,
     isRunning: boolean
   };
+  items: Record<string, any>;
+  creatures: Record<string, creatureState>;
   flags: {
     hasSpokenToSasha: boolean;
   }
