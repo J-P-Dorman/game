@@ -22,7 +22,6 @@ export const Game = (): any => {
   const renderLoop = RenderLoop();
   const player = Player();
   const pauseMenu = PauseMenu();
-  const dialogue = Dialogue();
 
   // Methods
   // ===========================================================================
@@ -53,20 +52,19 @@ export const Game = (): any => {
     scene.add(axesHelper);
     axesHelper.rotation.x = Math.PI / 2;
 
-    // Create game map
-    // TODO: choose a level to load dynamically
-    worldMap.load({ scene, levelData: levels.tutorialIsland });
-
     // Add a camera to the scene
     const { camera: cameraObj } = camera.load(gameEl);
     scene.add(cameraObj);
     logicNow(camera.logicActions.cameraSnap, [40, -42]);
 
-    // Load the dialogue box
-    // dialogue.load({
-    //   attachToCamera: camera.attachToCamera,
-    //   fitToCamera: camera.fitToCamera
-    // });
+    // Create game map
+    // TODO: choose a level to load dynamically
+    worldMap.load({
+      scene,
+      levelData: levels.tutorialIsland,
+      attachToCamera: camera.attachToCamera,
+      fitToCamera: camera.fitToCamera
+    });
 
     // Start input controls
     controls.load({ camera: cameraObj });

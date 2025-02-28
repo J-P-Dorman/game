@@ -11,10 +11,13 @@ import {
 } from "../GameLoops/RenderLoop/utils";
 import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
 import { LevelItem } from "./components/Item/types";
+import { AttachToCamera, FitToCamera } from "../Camera/types";
 
 interface Props {
   scene: THREE.Scene;
   levelData: any;
+  attachToCamera: AttachToCamera;
+  fitToCamera: FitToCamera;
 }
 
 type State = {
@@ -28,7 +31,7 @@ const WorldMap = () => {
     chunkComponents: []
   };
 
-  const load = ({ scene, levelData }: Props) => {
+  const load = ({ scene, levelData, attachToCamera, fitToCamera }: Props) => {
     const { playerStart, map, items, creatures } = levelData;
 
     const rows: any = [];
@@ -52,7 +55,7 @@ const WorldMap = () => {
       const { id, position, defaultPath } = creatureData;
       const { path, speed, loop } = defaultPath;
       const creature = Npc();
-      creature.load({creatureData});
+      creature.load({creatureData, attachToCamera, fitToCamera});
       
       // Add the creature in their starting position
       dispatchLogic(creature.logicActions.npcPlace, position);
