@@ -28,8 +28,9 @@ export type CreatureData = {
     sheetMap: string[][];
     animationMap: Record<string, {frames: string[]; end: string;}>;
   };
+  images: Record<string, string>,
   dialogue?: {},
-  onInteract?: () => void;
+  onInteract?: <Props extends Record<string, any>>(props: Props) => void;
 };
 
 export type Tag = any;
