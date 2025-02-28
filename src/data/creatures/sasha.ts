@@ -3,8 +3,11 @@ import { CreatureData } from "../../types";
 import imageAngry from '../../assets/images/creatures/sasha/sasha_angry.png';
 import imageHappy from '../../assets/images/creatures/sasha/sasha_laugh.png';
 import imageSad from '../../assets/images/creatures/sasha/sasha_sad.png';
-import imageTalking from '../../assets/images/creatures/sasha/sasha_default.png';
+import imageDefault from '../../assets/images/creatures/sasha/sasha_default.png';
+import imageConfused from '../../assets/images/creatures/sasha/sasha_confused.png';
+import imageLaugh from '../../assets/images/creatures/sasha/sasha_laugh.png';
 import { DialogueOptions } from './types';
+import { AttachToCamera, FitToCamera } from "../../views/Game/components/Camera/types";
 
 // TODO: split dialogue into different exported objects depending what
 // level the player is on
@@ -12,7 +15,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   hello: {
     messages: [{
       text: 'Hi! This is a nice beach, isn\'t it?',
-      image: imageTalking,
+      imageKey: 'default',
     }],
     playerResponses: [
       { text:'Not really...', onChoose: function () { return this.iSuppose }},
@@ -22,7 +25,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   iSuppose: {
     messages: [{
       text: 'Oh, okay. I suppose the beach isn\'t for everyone. What about those flowers over there?',
-      image: imageSad,
+      imageKey: 'confused',
     }],
     playerResponses: [
       { text: 'I don\'t like them...', onChoose: () => dialogueOptionsSasha.bruh },
@@ -32,7 +35,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   bruh: {
     messages: [{
       text: 'Bruh. Who doesn\'t like flowers?? Are you broken or something?',
-      image: imageAngry,
+      imageKey: 'angry',
       effect: 'shake_small',
     }],
     playerResponses: [
@@ -43,7 +46,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   ohMan: {
     messages: [{
       text: 'Oh man, okay this got heavy.. Let\'s start again.',
-      image: imageSad,
+      imageKey: 'sad',
 
     }],
     onEnd: () => dialogueOptionsSasha.intro
@@ -51,7 +54,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   betterBe: {
     messages: [{
       text: 'Yeah, you better be! Flowers are cool as hell!',
-      image: imageHappy,
+      imageKey: 'happy',
  
     }],
     onEnd: () => dialogueOptionsSasha.intro
@@ -59,7 +62,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   damnRight: {
     messages: [{
       text: 'Damn right! Flowers are cool as hell!',
-      image: imageHappy,
+      imageKey: 'happy',
    
     }],
     onEnd: () => dialogueOptionsSasha.intro
@@ -68,12 +71,12 @@ export const dialogueOptionsSasha: DialogueOptions = {
     messages: [
       {
         text: 'Right?? This place is great!',
-        image: imageHappy,
+        imageKey: 'happy',
         effect: 'flowers'
       },
       {
         text: 'Always so peaceful to come out here and feel the breeze... Oh! By the way..',
-        image: imageHappy,
+        imageKey: 'happy',
         effect: 'flowers'
       }
     ],
@@ -83,12 +86,12 @@ export const dialogueOptionsSasha: DialogueOptions = {
     messages: [
       {
         text: 'I\'m Sasha, what\'s your name?',
-        image: imageTalking,
+        imageKey: 'default',
         onNext: () => { console.log('Name input goes here!') }
       },
       {
         text: 'Kidding, that feature hasn\'t been added yet!',
-        image: imageTalking,
+        imageKey: 'laugh',
       }
     ],
     playerResponses: [],
@@ -151,5 +154,16 @@ export const sashaData: CreatureData = {
       }
     }
   },
-  onInteract: () => { console.log('I did it!') }
+  images: {
+    default: imageDefault,
+    happy: imageHappy,
+    sad: imageSad,
+    angry: imageAngry,
+    confused: imageConfused,
+    laugh: imageLaugh
+  },
+  onInteract: ({dialogue}) => {
+    console.log('I did it!');
+    dialogue.write({text: 'Hey what\'s up? fdssosj csahh oashcjxhcjxhczj hxzh cxzj hcxzjchsc jxbczkc bxkcj cxjichxaih', imageKey: 'default'});
+  }
 };

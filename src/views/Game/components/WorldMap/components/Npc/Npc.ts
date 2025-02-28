@@ -16,6 +16,8 @@ import {
 import { AnimationKey, Direction, LoadArgs, State } from "./types";
 import { calculateReachablePoints, getBetweenCoordinates } from './helpers';
 import { Area } from "../../../../types";
+import Dialogue from "../../../Dialogue/Dialogue";
+import { levels } from "../../../../../../data/levels";
 
 type SpriteSheet = {
 	image: string;
@@ -58,6 +60,10 @@ const Npc = () => {
     }
   };
 
+  // Components
+  // ===========================================================================
+  const dialogue = Dialogue();
+
   // Private Methods
   // ===========================================================================
   const directionToKey = (direction: Direction, prefix?: string) =>
@@ -65,7 +71,7 @@ const Npc = () => {
   
   // Public Methods
   // ===========================================================================
-  const load = async ({creatureData}: LoadArgs) => {
+  const load = async ({creatureData, attachToCamera, fitToCamera}: LoadArgs) => {
     const { id, spriteSheet, size, onInteract } = creatureData;
     const {
       image,
@@ -83,7 +89,9 @@ const Npc = () => {
     state.id = id;
     state.spriteSheet = spriteSheet;
     state.size = size;
-    state.onInteract = onInteract;
+    state.onInteract = () => {
+      onInteract({dialogue});
+    }
 
     // Load sprites
     loadSvgSheet(
@@ -124,6 +132,15 @@ const Npc = () => {
         state.spriteList = spriteList;
       }
     );
+
+    // Load npc dialogue
+    levels.tutorialIsland.creatures.forEach((creatureData) => {
+      dialogue.load({
+        attachToCamera: attachToCamera,
+        fitToCamera: fitToCamera,
+        creatureData
+      });
+    });
   };
 
   const calculateCollider = (

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
 import { Area } from '../../../../types';
+import { AttachToCamera, FitToCamera } from "../../../Camera/types";
 
 export type State = {
   id: string;
@@ -24,6 +25,8 @@ export type State = {
 
 export type LoadArgs = {
   creatureData: CreatureData;
+  attachToCamera: AttachToCamera;
+  fitToCamera: FitToCamera;
 };
 
 export type Direction =
