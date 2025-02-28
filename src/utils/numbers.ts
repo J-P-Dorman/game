@@ -16,7 +16,7 @@ export const getClosestIndex = (options: number[], goal: number) => {
  * @example
  * const part = 20;
  * const total = 200;
- * const percent = calcPercentOfTotal(part, total);
+ * const percent = numberToPercent(part, total);
  * console.log(percent) // 10
  *
  * @param part the number you're trying to find the % of
@@ -29,10 +29,10 @@ export const numberToPercent = (part: number, total: number) => (part / total) *
  * @example
  * const percent = 10;
  * const total = 200;
- * const part = calcPercentOfTotal(percent, total);
- * console.log(percent) // 20
+ * const value = percentToNumber(percent, total);
+ * console.log(value) // 20
  * 
  * @param percent the percent value
  * @param total the number representing 100%
  */
-export const percentToNumber = (percent: number, total: number) => (percent / 100) * total;
+export const percentToNumber = (total: number, percent: number) => (percent / 100) * total;
