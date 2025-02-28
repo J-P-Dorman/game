@@ -1,7 +1,7 @@
 import { CreatureData } from "../../types";
 import spriteSheet from "../../assets/sprites/creatures/player/player.svg";
 
-export const playerData: CreatureData = {
+export const playerData = {
   id: "player",
   size: 1.5,
   spriteSheet: {
