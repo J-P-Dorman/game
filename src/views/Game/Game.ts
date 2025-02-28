@@ -66,9 +66,6 @@ export const Game = (): any => {
       fitToCamera: camera.fitToCamera
     });
 
-    // Start input controls
-    controls.load({ camera: cameraObj });
-
     // Start the core game loops
     logicLoop.start();
     renderLoop.start({ renderer, scene, camera: cameraObj });
