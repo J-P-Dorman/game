@@ -98,24 +98,17 @@ const move = (
   }
 };
 
-export const decideAction = (
-  key: string,
-  shiftKey: boolean,
+const overworldControls = (
+  isKeyUp: boolean,
   isKeyDown: boolean,
+  isDoublePress: boolean,
   allPressedKeys: string[],
-  logicActions: Record<LogicActionId, LogicAction>,
-  renderActions: any
+  lastMovementKey: string,
+  key: string,
+  isShift: boolean,
+  logicActions: Record<string, LogicAction>,
+  renderActions: Record<string, RenderAction>,
 ) => {
-  const { playerMove } = logicActions;
-  const { playerTurn, playerWalk, playerStopWalk } = renderActions;
-  const isKeyUp = !isKeyDown;
-  const isShift = shiftKey || allPressedKeys.includes("shift");
-  const lastMovementKey = allPressedKeys.findLast((pressedKey) =>
-    movementKeys.includes(pressedKey)
-  );
-  const lastPressedKey = allPressedKeys[allPressedKeys.length - 1]
-  const isDoublePress = allPressedKeys.includes(key);
-
   // Move player
   if (isKeyDown && !isDoublePress)
     move(key, isShift, allPressedKeys, logicActions, renderActions);
@@ -152,4 +145,61 @@ export const decideAction = (
     removeAllFromLogicQueue(["playerMove"]);
     move(lastMovementKey, false, allPressedKeys, logicActions, renderActions);
   }
+}
+
+const dialogueControls = (
+  key: string,
+  logicActions: Record<string, LogicAction>
+) => {
+  if (key === "w") {
+    logicNow(logicActions.dialogueDown);
+  }
+  if (key === "s") {
+    logicNow(logicActions.dialogueUp);
+  }
+  if (key === " ") {
+    logicNow(logicActions.confirm);
+  }
+}
+
+export const decideAction = (
+  key: string,
+  shiftKey: boolean,
+  isKeyDown: boolean,
+  allPressedKeys: string[],
+  logicActions: Record<LogicActionId, LogicAction>,
+  renderActions: any
+) => {
+  const { playerMove } = logicActions;
+  const { playerTurn, playerWalk, playerStopWalk } = renderActions;
+  const isKeyUp = !isKeyDown;
+  const isShift = shiftKey || allPressedKeys.includes("shift");
+  const lastMovementKey = allPressedKeys.findLast((pressedKey) =>
+    movementKeys.includes(pressedKey)
+  );
+  const lastPressedKey = allPressedKeys[allPressedKeys.length - 1]
+  const isDoublePress = allPressedKeys.includes(key);
+
+
+  if(window.state.flags.isInDialogue) {
+    dialogueControls(key, logicActions);
+  } else {
+    overworldControls(
+      isKeyUp,
+      isKeyDown,
+      isDoublePress,
+      allPressedKeys,
+      lastMovementKey,
+      key,
+      isShift,
+      logicActions,
+      renderActions,
+    );
+  }
+
+
+
+
+
+
 };

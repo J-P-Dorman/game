@@ -11,27 +11,27 @@ const Controls = () => {
   // Components
   // ===========================================================================
   const keyboard = Keyboard();
+  const mouse = Mouse();
+  const touch = Touch();
+  const gamepad = Gamepad();
 
   // Methods
   // ===========================================================================
-  const load = ({ camera }: { camera: THREE.OrthographicCamera }) => {
-    Mouse({ camera });
-    Gamepad({ camera });
-    Touch({ camera });
-  };
-
   const start = (
     logicActions: LogicActionList,
     renderActions: RenderActionList
   ) => {
     keyboard.start(logicActions, renderActions);
+    mouse.start();
+    gamepad.start();
+    touch.start();
   };
 
   const stop = () => {
     keyboard.stop();
   };
 
-  return { load, start, stop };
+  return { start, stop };
 };
 
 export default Controls;

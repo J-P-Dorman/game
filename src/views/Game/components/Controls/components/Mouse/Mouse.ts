@@ -1,17 +1,15 @@
-import * as THREE from "three";
+const Mouse = () => {
+  const start = () => {
+    const onMouseUp = (event: MouseEvent) => {};
+    const onMouseDown = (event: MouseEvent) => {};
+    const onMouseMove = (event: MouseEvent) => {};
+  
+    document.addEventListener("mousedown", onMouseDown);
+    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("mousemove", onMouseMove);
+  }
 
-interface Props {
-  camera: THREE.OrthographicCamera;
-}
-
-const Mouse = ({ camera }: Props) => {
-  const onMouseUp = (event: MouseEvent) => {};
-  const onMouseDown = (event: MouseEvent) => {};
-  const onMouseMove = (event: MouseEvent) => {};
-
-  document.addEventListener("mousedown", onMouseDown);
-  document.addEventListener("mouseup", onMouseUp);
-  document.addEventListener("mousemove", onMouseMove);
+  return { start };
 };
 
 export default Mouse;
