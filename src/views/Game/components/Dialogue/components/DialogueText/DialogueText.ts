@@ -2,69 +2,25 @@ import * as THREE from "three";
 import { State } from "./types";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { forIncrement, loadFont } from "../../../../../../utils";
+import { DialogueOption } from "../../../../../../data/creatures/types";
+import { createRenderAction, dispatchRender } from "../../../GameLoops/RenderLoop/utils";
 
 const DialogueText = () => {
   const state: State = {
+    text: undefined,
+    color: '#000000',
+    fontSize: 1,
+    font: undefined,
+    containerSize: 0,
+    clock: undefined,
     textGroup: new THREE.Group(),
     letterMeshes: [],
-    letterPause: 40,
-    wordPause: 50,
+    letterPause: 40
   };
 
   // Private Methods
   // ===========================================================================
   const delay = (time: number) => new Promise(response => setTimeout(response, time));
-
-  const reveal = () => {
-    const clock = new THREE.Clock();
-
-    window.addEventListener('keydown', () => { state.letterPause =  0.7 })
-
-    const showLetter = async (index: number, delta: number) => {
-      // If there's no next letter, stop
-      if (!state.letterMeshes[index]) return;
-  
-      // Wait for a bit so the text doesn't slam in together
-      await delay(state.letterPause);
-
-      // Figure out what letters should be there by now
-      // The promise could take longer than specified based on cpu load
-      // So make sure the correct number of letters get rendered each cycle
-      const newDelta = delta + clock.getDelta();
-      const letterCount = Math.ceil(delta / state.letterPause);
-      const startIndex = index;
-      const endIndex = index + letterCount;
-      
-      // Render the letters
-      for(let i = startIndex; i <= endIndex; i++) {
-        if(!state.letterMeshes[i]) break;
-        state.letterMeshes[i].visible = true;
-      }
-
-      // Keep looping
-      showLetter(endIndex, newDelta);
-    }
-    
-    showLetter(0, 0);
-  }
-
-  // const reveal = async () => {
-  //   const showLetter = (index: number) => {
-
-  //     if (!state.letterMeshes[index]) return;
-
-      
-
-  //     window.setTimeout(() => {
-  //       state.letterMeshes[index].visible = true;
-  //       showLetter(index + 1);
-  //     }, 1);
-  //   };
-
-  //   showLetter(0);
-
-  //   window.addEventListener('keydown', () => { state.letterPause =  1 })
-  // };
   
   const renderLetter = (
     letter: string,
@@ -97,12 +53,11 @@ const DialogueText = () => {
 
   const loadText = async (
     text: string,
+    font: any,
     color: string,
     size: number,
     containerSize: number
   ) => {
-    const font = await loadFont("fonts/Reddit_Mono_Regular.json");
-
     const lettersPerLine = containerSize / size - 7 / size;
     const words = text.split(" ").map((word) => `${word} `);
     const lineGap = 1.3;
@@ -140,12 +95,12 @@ const DialogueText = () => {
       });
     });
 
-    reveal();
+    return true;
   };
 
   // Public Methods
   // ===========================================================================
-  const load = ({
+  const load = async ({
     color,
     fontSize,
     containerSize,
@@ -154,21 +109,83 @@ const DialogueText = () => {
     fontSize: number;
     containerSize: number;
   }) => {
-    const text =
-      "Hello world, this is some long text that needs to line break. Filler text. Mary had a little lamb";
-    loadText(text, color, fontSize, containerSize);
+    state.color = color;
+    state.fontSize = fontSize;
+    state.containerSize = containerSize;
+
+    const font = await loadFont("fonts/Reddit_Mono_Regular.json");
+    state.font = font;
 
     return state.textGroup;
   };
 
-  const startText = () => {};
+  const write = ({text}: { text: string; }) => {
+    state.text = text;
+
+    dispatchRender(renderActions.updateText);
+    dispatchRender(renderActions.showText);
+  };
+
+  const clear = () => {
+    state.text = '';
+    dispatchRender(renderActions.updateText);
+  };
 
   const speedUpText = () => {
     state.letterPause = 8;
-    state.wordPause = 20;
   };
 
-  return { load, reveal };
+  const renderActions = {
+    updateText: createRenderAction({
+      id: 'updateText',
+      func: () => {
+        loadText(
+          state.text,
+          state.font,
+          state.color,
+          state.fontSize,
+          state.containerSize
+        );
+      },
+      stack: false
+    }),
+    showText: createRenderAction({
+      id: 'showText',
+      func: () => {
+        const showLetter = async (index: number, delta: number) => {
+          // If there's no next letter, stop
+          if (!state.letterMeshes[index]) return;
+      
+          // Wait for a bit so the text doesn't slam in together
+          await delay(state.letterPause);
+    
+          // Figure out what letters should be there by now
+          // The promise could take longer than specified based on cpu load
+          // So make sure the correct number of letters get rendered each cycle
+          const newDelta = delta + state.clock.getDelta();
+          const letterCount = Math.ceil(delta / state.letterPause);
+          const startIndex = index;
+          const endIndex = index + letterCount;
+          
+          // Render the letters
+          for(let i = startIndex; i <= endIndex; i++) {
+            if(!state.letterMeshes[i]) break;
+            state.letterMeshes[i].visible = true;
+          }
+    
+          // Keep looping
+          showLetter(endIndex, newDelta);
+        }
+
+        state.clock = new THREE.Clock();
+        showLetter(0, 0);
+      },
+      maxTime: state.letterPause,
+      stack: false
+    })
+  }
+
+  return { load, write, clear };
 };
 
 export default DialogueText;
