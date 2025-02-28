@@ -60,8 +60,8 @@ export const Camera = () => {
     return { camera: state.camera };
   };
 
-  const attachToCamera: AttachToCamera = (callback) => {
-    const group = callback({
+  const attachToCamera: AttachToCamera = async (callback) => {
+    const group = await callback({
       camera: state.camera,
       left: state.left,
       right: state.right,
