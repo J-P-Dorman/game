@@ -114,7 +114,11 @@ const DialogueImage = () => {
     state.currentImage = imageMesh;
   };
 
-  return { load, show };
+  const hide = () => {
+    state.imageGroup.visible = false;
+  }
+
+  return { load, show, hide };
 };
 
 export default DialogueImage;

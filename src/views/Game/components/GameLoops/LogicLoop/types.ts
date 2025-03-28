@@ -12,7 +12,8 @@ export type LogicActionId =
   | 'initMap'
   | 'placeItem'
   | 'npcPlace'
-  | 'npcMove';
+  | 'npcMove'
+  | 'showLetter';
 
 /**
  * Each logic action is something to be done on a tick of the logic cycle

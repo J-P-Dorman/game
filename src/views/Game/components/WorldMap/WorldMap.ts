@@ -9,15 +9,18 @@ import {
   pushToRenderQueue,
   renderNow,
 } from "../GameLoops/RenderLoop/utils";
-import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
+import { createLogicAction, dispatchLogic, logicNow } from "../GameLoops/LogicLoop/utils";
 import { LevelItem } from "./components/Item/types";
 import { AttachToCamera, FitToCamera } from "../Camera/types";
+import { LogicAction } from "../GameLoops/LogicLoop/types";
+import { dialogueOptionsSasha } from "../../../../data/creatures/sasha";
 
 interface Props {
   scene: THREE.Scene;
   levelData: any;
   attachToCamera: AttachToCamera;
   fitToCamera: FitToCamera;
+  logicActions: Record<string, LogicAction>
 }
 
 type State = {
@@ -31,7 +34,7 @@ const WorldMap = () => {
     chunkComponents: []
   };
 
-  const load = ({ scene, levelData, attachToCamera, fitToCamera }: Props) => {
+  const load = ({ scene, levelData, attachToCamera, fitToCamera, logicActions }: Props) => {
     const { playerStart, map, items, creatures } = levelData;
 
     const rows: any = [];
@@ -55,16 +58,19 @@ const WorldMap = () => {
       const { id, position, defaultPath } = creatureData;
       const { path, speed, loop } = defaultPath;
       const creature = Npc();
-      creature.load({creatureData, attachToCamera, fitToCamera});
+      const onInteract = () => {
+        logicNow(logicActions.dialogueStart, [dialogueOptionsSasha]);
+      }
+      creature.load({creatureData, attachToCamera, fitToCamera, onInteract});
       
       // Add the creature in their starting position
       dispatchLogic(creature.logicActions.npcPlace, position);
       dispatchRender(creature.renderActions.npcPlace);
 
-      dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
-      dispatchLogic(creature.logicActions.npcMove);
-      dispatchRender(creature.renderActions.npcMove);
-      dispatchRender(creature.renderActions.npcWalk);
+      // dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
+      // dispatchLogic(creature.logicActions.npcMove);
+      // dispatchRender(creature.renderActions.npcMove);
+      // dispatchRender(creature.renderActions.npcWalk);
 
       return { ...acc, [id]: creature };
     }, {});

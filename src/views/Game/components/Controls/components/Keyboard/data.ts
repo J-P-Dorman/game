@@ -149,16 +149,23 @@ const overworldControls = (
 
 const dialogueControls = (
   key: string,
+  isKeyDown: boolean,
   logicActions: Record<string, LogicAction>
 ) => {
-  if (key === "w") {
-    logicNow(logicActions.dialogueDown);
+  if (isKeyDown && key === "w") {
+    // logicNow(logicActions.dialogueDown);
   }
-  if (key === "s") {
-    logicNow(logicActions.dialogueUp);
+  if (isKeyDown && key === "s") {
+    // logicNow(logicActions.dialogueUp);
   }
-  if (key === " ") {
-    logicNow(logicActions.confirm);
+  if (isKeyDown && key === " ") {
+    // wrong, this has to come from the player
+    // which in turn comes from the npc
+    // which in turn comes from the level
+    // this is how we manage the dilogue state
+    // logicNow(logicActions.dialogueConfirm);
+
+    logicNow(logicActions.dialogueNext);
   }
 }
 
@@ -180,9 +187,8 @@ export const decideAction = (
   const lastPressedKey = allPressedKeys[allPressedKeys.length - 1]
   const isDoublePress = allPressedKeys.includes(key);
 
-
   if(window.state.flags.isInDialogue) {
-    dialogueControls(key, logicActions);
+    dialogueControls(key, isKeyDown, logicActions);
   } else {
     overworldControls(
       isKeyUp,
@@ -196,10 +202,4 @@ export const decideAction = (
       renderActions,
     );
   }
-
-
-
-
-
-
 };

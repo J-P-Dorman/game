@@ -22,6 +22,7 @@ export const Game = (): any => {
   const renderLoop = RenderLoop();
   const player = Player();
   const pauseMenu = PauseMenu();
+  const dialogue = Dialogue();
 
   // Methods
   // ===========================================================================
@@ -63,7 +64,15 @@ export const Game = (): any => {
       scene,
       levelData: levels.tutorialIsland,
       attachToCamera: camera.attachToCamera,
-      fitToCamera: camera.fitToCamera
+      fitToCamera: camera.fitToCamera,
+      logicActions: {...dialogue.logicActions}
+    });
+
+    // Add dialogue system
+    dialogue.load({
+      attachToCamera: camera.attachToCamera,
+      fitToCamera: camera.fitToCamera,
+      creatureData: levels.tutorialIsland.creatures[0]
     });
 
     // Start the core game loops
@@ -80,7 +89,7 @@ export const Game = (): any => {
     worldMap.animate();
 
     controls.start(
-      { ...player.logicActions, ...camera.logicActions },
+      { ...player.logicActions, ...camera.logicActions, ...dialogue.logicActions },
       { ...player.renderActions, ...camera.renderActions }
     );
   };

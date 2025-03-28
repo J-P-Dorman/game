@@ -3,7 +3,8 @@ import { State } from "./types";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { forIncrement, loadFont } from "../../../../../../utils";
 import { DialogueOption } from "../../../../../../data/creatures/types";
-import { createRenderAction, dispatchRender } from "../../../GameLoops/RenderLoop/utils";
+import { createRenderAction, dispatchRender, removeAllFromRenderQueue2 } from "../../../GameLoops/RenderLoop/utils";
+import { removeAllFromLogicQueue2 } from "../../../GameLoops/LogicLoop/utils";
 
 const DialogueText = () => {
   const state: State = {
@@ -15,7 +16,8 @@ const DialogueText = () => {
     clock: undefined,
     textGroup: new THREE.Group(),
     letterMeshes: [],
-    letterPause: 40
+    letterPause: 5,
+    letterIndex: 0
   };
 
   // Private Methods
@@ -120,19 +122,57 @@ const DialogueText = () => {
   };
 
   const write = ({text}: { text: string; }) => {
-    state.text = text;
+    clear();
 
-    dispatchRender(renderActions.updateText);
-    dispatchRender(renderActions.showText);
+    // Removing timeout causes race condition with previous
+    // showLetter action in render queue
+    setTimeout(() => {
+      state.clock = new THREE.Clock();
+      state.text = text;
+  
+      dispatchRender(renderActions.updateText);
+      dispatchRender(renderActions.showLetter);
+    }, 20);
   };
 
   const clear = () => {
+    removeAllFromRenderQueue2([{ id: 'showLetter' }]);
+    
+    state.textGroup.clear();
+    state.letterMeshes = [];
     state.text = '';
-    dispatchRender(renderActions.updateText);
+    state.letterIndex = 0;
   };
 
+  const hide = () => {
+    state.textGroup.visible = false;
+    clear();
+  }
+
   const speedUpText = () => {
-    state.letterPause = 8;
+    state.letterPause = 3;
+  };
+
+  const showLetter = async (index: number, delta: number) => {
+    // If there's no next letter, stop
+    if (!state.letterMeshes[index]) return;
+
+    // Wait for a bit so the text doesn't slam in together
+    await delay(state.letterPause);
+
+    // Figure out what letters should be there by now
+    // The promise could take longer than specified based on cpu load
+    // So make sure the correct number of letters get rendered each cycle
+    const newDelta = delta;
+    const letterCount = Math.ceil(delta / state.letterPause);
+    const startIndex = index;
+    const endIndex = index + letterCount;
+    
+    // Render the letters
+    for(let i = startIndex; i <= endIndex; i++) {
+      if(!state.letterMeshes[i]) break;
+      state.letterMeshes[i].visible = true;
+    }
   };
 
   const renderActions = {
@@ -149,43 +189,19 @@ const DialogueText = () => {
       },
       stack: false
     }),
-    showText: createRenderAction({
-      id: 'showText',
+    showLetter: createRenderAction({
+      id: 'showLetter',
       func: () => {
-        const showLetter = async (index: number, delta: number) => {
-          // If there's no next letter, stop
-          if (!state.letterMeshes[index]) return;
-      
-          // Wait for a bit so the text doesn't slam in together
-          await delay(state.letterPause);
-    
-          // Figure out what letters should be there by now
-          // The promise could take longer than specified based on cpu load
-          // So make sure the correct number of letters get rendered each cycle
-          const newDelta = delta + state.clock.getDelta();
-          const letterCount = Math.ceil(delta / state.letterPause);
-          const startIndex = index;
-          const endIndex = index + letterCount;
-          
-          // Render the letters
-          for(let i = startIndex; i <= endIndex; i++) {
-            if(!state.letterMeshes[i]) break;
-            state.letterMeshes[i].visible = true;
-          }
-    
-          // Keep looping
-          showLetter(endIndex, newDelta);
-        }
-
-        state.clock = new THREE.Clock();
-        showLetter(0, 0);
+        showLetter(state.letterIndex, state.clock.getDelta());
+        state.letterIndex += 1;
       },
       maxTime: state.letterPause,
-      stack: false
+      stack: false,
+      repeat: () => state.text[state.letterIndex] !== undefined
     })
   }
 
-  return { load, write, clear };
+  return { load, write, clear, hide };
 };
 
 export default DialogueText;

@@ -63,8 +63,9 @@ export type State = {
   items: Record<string, any>;
   creatures: Record<string, creatureState>;
   flags: {
+    isInDialogue: boolean;
     hasSpokenToSasha: boolean;
-  }
+  };
 };
 
 declare global {

@@ -32,6 +32,7 @@ const App = () => {
     items: {},
     creatures: {},
     flags: {
+      isInDialogue: false,
       hasSpokenToSasha: false
     }
   };

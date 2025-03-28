@@ -11,4 +11,5 @@ export type State = {
 	textGroup: THREE.Group;
 	letterMeshes: THREE.Mesh[];
 	letterPause: number;
+	letterIndex: number;
 };
