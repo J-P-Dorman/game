@@ -9,8 +9,10 @@ export type DialogueOption = {
     // The responses the player has when the npc stops their paragraph
     playerResponses?: Array<{
       text: string; // The text displayed in the dialogue option
-      onChoose: () => DialogueOption // Do something extra when the user chooses this dialogue option
+      nextOptionKey?: string; // The key for the dialogue option to trigger from this response
+      onChoose?: () => DialogueOption // Do something extra when the user chooses this dialogue option
     }>;
+    nextOptionKey?: string; // If there are no choices, put a key here to lead into the next option
     onEnd?: () => any;
   };
   

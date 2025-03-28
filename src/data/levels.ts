@@ -1,8 +1,32 @@
+import { CreatureData } from "../types";
 import { bucketData, houseLightData, treeData } from "../views/Game/components/WorldMap/components/Item/itemData";
+import { ItemData } from "../views/Game/components/WorldMap/components/Item/types";
 import { dialogueOptionsSasha, sashaData } from "./creatures/sasha";
+import { DialogueOptions } from "./creatures/types";
 import { mapTutorialIsland } from "./mapData";
 
-const tutorialIsland = {
+type LevelData = {
+  playerStart: [x: number, y: number],
+  map: any,
+  items: Array<
+    ItemData & { id: string, position: [x: number, y: number] }
+  >;
+  creatures: Array<
+    CreatureData & {
+      id: string,
+      position: [x: number, y: number],
+      dialogue: DialogueOptions;
+      defaultPath: {
+        path: { x: number, y: number }[],
+        speed: number;
+        loop: boolean;
+      },
+      onInteract: <Props extends Record<string, any>>(props: Props) => void;
+    }
+  >
+};
+
+const tutorialIsland: LevelData = {
   playerStart: [40, -42],
   map: mapTutorialIsland,
   items: [
@@ -37,10 +61,13 @@ const tutorialIsland = {
         speed: 0.07,
         loop: true,
       },
+      onInteract: ({dialogue}) => {
+        dialogue.start(dialogueOptionsSasha);
+      }
     },
   ],
 };
 
 export const levels = {
-  tutorialIsland,
+  tutorialIsland
 };

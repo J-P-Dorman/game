@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { CreatureData } from "../../../../../../types";
 import { Area } from '../../../../types';
 import { AttachToCamera, FitToCamera } from "../../../Camera/types";
+import { LogicAction } from "../../../GameLoops/LogicLoop/types";
 
 export type State = {
   id: string;
@@ -27,6 +28,7 @@ export type LoadArgs = {
   creatureData: CreatureData;
   attachToCamera: AttachToCamera;
   fitToCamera: FitToCamera;
+  onInteract: () => void;
 };
 
 export type Direction =

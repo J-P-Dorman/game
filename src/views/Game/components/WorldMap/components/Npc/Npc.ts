@@ -5,7 +5,7 @@ import {
   initialiseSprites,
   loadSvgSheet
 } from "../../../../../../utils/index";
-import { createLogicAction, removeAllFromLogicQueue, removeAllFromLogicQueue2 } from "../../../GameLoops/LogicLoop/utils";
+import { createLogicAction, logicNow, removeAllFromLogicQueue, removeAllFromLogicQueue2 } from "../../../GameLoops/LogicLoop/utils";
 import {
   createRenderAction,
   dispatchRender,
@@ -18,6 +18,7 @@ import { calculateReachablePoints, getBetweenCoordinates } from './helpers';
 import { Area } from "../../../../types";
 import Dialogue from "../../../Dialogue/Dialogue";
 import { levels } from "../../../../../../data/levels";
+import { LogicAction } from "../../../GameLoops/LogicLoop/types";
 
 type SpriteSheet = {
 	image: string;
@@ -62,7 +63,7 @@ const Npc = () => {
 
   // Components
   // ===========================================================================
-  const dialogue = Dialogue();
+
 
   // Private Methods
   // ===========================================================================
@@ -71,8 +72,8 @@ const Npc = () => {
   
   // Public Methods
   // ===========================================================================
-  const load = async ({creatureData, attachToCamera, fitToCamera}: LoadArgs) => {
-    const { id, spriteSheet, size, onInteract } = creatureData;
+  const load = async ({creatureData, attachToCamera, fitToCamera, onInteract}: LoadArgs) => {
+    const { id, spriteSheet, size } = creatureData;
     const {
       image,
       spriteWidth,
@@ -89,9 +90,7 @@ const Npc = () => {
     state.id = id;
     state.spriteSheet = spriteSheet;
     state.size = size;
-    state.onInteract = () => {
-      onInteract({dialogue});
-    }
+    state.onInteract = onInteract;
 
     // Load sprites
     loadSvgSheet(
@@ -132,15 +131,6 @@ const Npc = () => {
         state.spriteList = spriteList;
       }
     );
-
-    // Load npc dialogue
-    levels.tutorialIsland.creatures.forEach((creatureData) => {
-      dialogue.load({
-        attachToCamera: attachToCamera,
-        fitToCamera: fitToCamera,
-        creatureData
-      });
-    });
   };
 
   const calculateCollider = (
