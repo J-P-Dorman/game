@@ -12,14 +12,14 @@ import { AttachToCamera, FitToCamera } from "../../views/Game/components/Camera/
 // TODO: split dialogue into different exported objects depending what
 // level the player is on
 export const dialogueOptionsSasha: DialogueOptions = {
-  hello: {
+  start: {
     messages: [{
       text: 'Hi! This is a nice beach, isn\'t it?',
       imageKey: 'default',
     }],
     playerResponses: [
-      { text:'Not really...', onChoose: function () { return this.iSuppose }},
-      { text: 'Yeah!', onChoose: function () { return this.right } }
+      { text:'Not really...', nextOptionKey: 'iSuppose' },
+      { text: 'Yeah!', nextOptionKey: 'right' }
     ]
   },
   iSuppose: {
@@ -28,8 +28,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
       imageKey: 'confused',
     }],
     playerResponses: [
-      { text: 'I don\'t like them...', onChoose: () => dialogueOptionsSasha.bruh },
-      { text: 'Those are nice I guess', onChoose: () => dialogueOptionsSasha.iSuppose }
+      { text: 'I don\'t like them...', nextOptionKey: 'bruh' },
+      { text: 'Those are nice I guess', nextOptionKey: 'iSuppose' }
     ]
   },
   bruh: {
@@ -39,8 +39,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
       effect: 'shake_small',
     }],
     playerResponses: [
-      { text: 'Yeah, maybe?', onChoose: () => dialogueOptionsSasha.ohMan },
-      { text: 'Whoah, sorry..', onChoose: () => dialogueOptionsSasha.intro }
+      { text: 'Yeah, maybe?', nextOptionKey: 'ohMan' },
+      { text: 'Whoah, sorry..', nextOptionKey: 'intro' }
     ]
   },
   ohMan: {
@@ -49,7 +49,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
       imageKey: 'sad',
 
     }],
-    onEnd: () => dialogueOptionsSasha.intro
+    nextOptionKey: 'intro',
+    onEnd: () => {}
   },
   betterBe: {
     messages: [{
@@ -57,7 +58,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
       imageKey: 'happy',
  
     }],
-    onEnd: () => dialogueOptionsSasha.intro
+    nextOptionKey: 'intro',
+    onEnd: () => {}
   },
   damnRight: {
     messages: [{
@@ -65,7 +67,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
       imageKey: 'happy',
    
     }],
-    onEnd: () => dialogueOptionsSasha.intro
+    nextOptionKey: 'intro',
+    onEnd: () => {}
   },
   right: {
     messages: [
@@ -80,7 +83,8 @@ export const dialogueOptionsSasha: DialogueOptions = {
         effect: 'flowers'
       }
     ],
-    onEnd: () => dialogueOptionsSasha.intro
+    nextOptionKey: 'intro',
+    onEnd: () => {}
   },
   intro: {
     messages: [
@@ -94,7 +98,6 @@ export const dialogueOptionsSasha: DialogueOptions = {
         imageKey: 'laugh',
       }
     ],
-    playerResponses: [],
     onEnd: () => { window.state.flags.hasSpokenToSasha = true }
   }
 };
@@ -161,9 +164,5 @@ export const sashaData: CreatureData = {
     angry: imageAngry,
     confused: imageConfused,
     laugh: imageLaugh
-  },
-  onInteract: ({dialogue}) => {
-    console.log('I did it!');
-    dialogue.write({text: 'Hey what\'s up? fdssosj csahh oashcjxhcjxhczj hxzh cxzj hcxzjchsc jxbczkc bxkcj cxjichxaih', imageKey: 'default'});
   }
 };
