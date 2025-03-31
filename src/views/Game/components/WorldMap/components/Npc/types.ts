@@ -26,8 +26,6 @@ export type State = {
 
 export type LoadArgs = {
   creatureData: CreatureData;
-  attachToCamera: AttachToCamera;
-  fitToCamera: FitToCamera;
   onInteract: () => void;
 };
 
