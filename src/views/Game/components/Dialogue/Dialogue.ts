@@ -5,8 +5,9 @@ import { AttachToCamera, FitToCamera } from "../Camera/types";
 import DialogueBackground from "./components/DialogueBackground/DialogueBackground";
 import DialogueText from "./components/DialogueText/DialogueText";
 import DialogueImage from "./components/DialogueImage/DialogueImage";
+import DialogueChoices from "./components/DialogueChoices/DialogueChoices";
 import { CreatureData } from "../../../../types";
-import { createLogicAction } from "../GameLoops/LogicLoop/utils";
+import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
 import { DialogueOption } from "../../../../data/creatures/types";
 
 type State = {
@@ -56,6 +57,7 @@ const Dialogue = () => {
   const dialogueBackground = DialogueBackground();
   const dialogueText = DialogueText();
   const dialogueImage = DialogueImage();
+  const dialogueChoices = DialogueChoices();
 
   // Public Methods
   // ===========================================================================
@@ -65,6 +67,9 @@ const Dialogue = () => {
     state.dialogueGroup.visible = false;
 
     dialogueImage.load({ attachToCamera, creatureData });
+    dialogueChoices.load({ attachToCamera });
+
+    dispatchLogic(dialogueChoices.logicActions.dialogueAddOptions, [['Yes', 'No']]);
 
     // Text area
     // ================================================
@@ -143,18 +148,6 @@ const Dialogue = () => {
   }
 
   const logicActions = {
-    dialogueDown: createLogicAction({
-      id: "dialogueDown",
-      func: () => {
-        console.log("dialogueDown");
-      },
-    }),
-    dialogueUp: createLogicAction({
-      id: "dialogueUp",
-      func: () => {
-        console.log("dialogueUp");
-      },
-    }),
     dialogueStart: createLogicAction({
       id: "dialogueStart",
       func: ({ action }) => {
