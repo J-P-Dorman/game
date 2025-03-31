@@ -61,7 +61,7 @@ const WorldMap = () => {
       const onInteract = () => {
         logicNow(logicActions.dialogueStart, [dialogueOptionsSasha]);
       }
-      creature.load({creatureData, attachToCamera, fitToCamera, onInteract});
+      creature.load({creatureData, onInteract});
       
       // Add the creature in their starting position
       dispatchLogic(creature.logicActions.npcPlace, position);
