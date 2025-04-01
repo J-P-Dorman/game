@@ -7,7 +7,7 @@ import DialogueText from "./components/DialogueText/DialogueText";
 import DialogueImage from "./components/DialogueImage/DialogueImage";
 import DialogueChoices from "./components/DialogueChoices/DialogueChoices";
 import { CreatureData } from "../../../../types";
-import { createLogicAction, dispatchLogic } from "../GameLoops/LogicLoop/utils";
+import { createLogicAction, dispatchLogic, logicNow } from "../GameLoops/LogicLoop/utils";
 import { DialogueOption } from "../../../../data/creatures/types";
 
 type State = {
@@ -22,6 +22,7 @@ type State = {
     onConfirm: () => void;
     messageIndex: number;
   };
+  highlightedOption: {option: Record<string, any>, group: THREE.Group}
 };
 
 type Load = {
@@ -43,6 +44,7 @@ const Dialogue = () => {
       onConfirm: () => {},
       messageIndex: 0,
     },
+    highlightedOption: undefined
   };
 
   const textSize = 0.65;
@@ -68,8 +70,6 @@ const Dialogue = () => {
 
     dialogueImage.load({ attachToCamera, creatureData });
     dialogueChoices.load({ attachToCamera });
-
-    dispatchLogic(dialogueChoices.logicActions.dialogueAddOptions, [['Yes', 'No']]);
 
     // Text area
     // ================================================
@@ -115,21 +115,6 @@ const Dialogue = () => {
     );
   };
 
-  const start = (dialogueTree: Record<string, DialogueOption>) => {
-    const { start } = dialogueTree;
-    const { messages, playerResponses } = start;
-
-    window.state.flags.isInDialogue = true;
-
-    state.dialogue.dialogueTree = dialogueTree;
-    state.dialogue.currentDialogue = start;
-    state.dialogue.messageIndex = 0;
-
-    state.dialogue.onConfirm = undefined;
-
-    write({ text: messages[0].text, imageKey: messages[0].imageKey });
-  };
-
   const write = ({ text, imageKey }: { text: string; imageKey: string }) => {
     dialogueText.clear();
 
@@ -145,6 +130,7 @@ const Dialogue = () => {
     dialogueBackground.hide();
     dialogueImage.hide();
     dialogueText.hide();
+    dialogueChoices.hide();
   }
 
   const logicActions = {
@@ -156,6 +142,7 @@ const Dialogue = () => {
         const { start } = dialogueTree;
         const { messages, playerResponses } = start;
         const message = start.messages[0];
+        const isLastMessage = messages.length === 1;
 
         window.state.flags.isInDialogue = true;
 
@@ -163,18 +150,41 @@ const Dialogue = () => {
         state.dialogue.messageIndex = 0;
         state.dialogue.currentDialogue = start;
 
+        if(playerResponses.length) {
+          const highlightedOption = dialogueChoices.start(playerResponses);
+          state.highlightedOption = highlightedOption;
+        }
+
+        if(playerResponses?.length && isLastMessage) dialogueChoices.show();
+
         write({
           text: message.text,
           imageKey: message.imageKey,
         });
       },
     }),
-    dialogueNext: createLogicAction({
-      id: "dialogueNext",
+    dialogueUp: createLogicAction({
+      id: "dialogueUp",
+      func: ({ action }) => {
+        state.highlightedOption = dialogueChoices.up();
+      },
+    }),
+    dialogueDown: createLogicAction({
+      id: "dialogueDown",
+      func: ({ action }) => {
+        state.highlightedOption = dialogueChoices.down();
+      },
+    }),
+    dialogueConfirm: createLogicAction({
+      id: "dialogueConfirm",
       func: () => {
-        const { currentDialogue, messageIndex } = state.dialogue;
+        const { dialogue, highlightedOption } = state;
+        const { currentDialogue, messageIndex } = dialogue;
         const { messages, playerResponses, nextOptionKey } = currentDialogue;
         const isLastMessage = messageIndex >= messages.length - 1;
+
+        dialogueChoices.hide();
+        dialogueChoices.clear();
 
         // Handle next message in list
         // ==========================================
@@ -192,15 +202,15 @@ const Dialogue = () => {
 
         // Handle player choosing a dialogue option
         // ==========================================
-        else if (isLastMessage && playerResponses?.length) {
+        else if (isLastMessage && playerResponses?.length && highlightedOption) {
           // TODO: Allow the player to pick, rather than taking the first
-          const choice = playerResponses[0];
+          const choice = highlightedOption.option;
           const { text, nextOptionKey, onChoose } = choice;
           const nextOption = state.dialogue.dialogueTree[nextOptionKey];
           const message = nextOption.messages?.[0];
 
           state.dialogue.currentDialogue = nextOption;
-          state.dialogue.messageIndex = 0;
+          state.dialogue.messageIndex = 0;      
 
           if (onChoose) onChoose();
 
@@ -208,6 +218,14 @@ const Dialogue = () => {
             text: message.text,
             imageKey: message.imageKey,
           });
+          // Update options
+          if(nextOption.playerResponses?.length) {
+            const highlightedOption = dialogueChoices.start(nextOption.playerResponses);
+            state.highlightedOption = highlightedOption;
+          }
+
+          // Show options
+          if(playerResponses?.length && isLastMessage) dialogueChoices.show();
         }
 
         // Handle running out of messages and moving on to next dialogue
@@ -236,7 +254,7 @@ const Dialogue = () => {
   };
 
 
-  return { load, start, write, logicActions };
+  return { load,  write, logicActions: { ...logicActions } };
 };
 
 export default Dialogue;
