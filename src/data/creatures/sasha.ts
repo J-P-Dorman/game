@@ -29,7 +29,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
     }],
     playerResponses: [
       { text: 'I don\'t like them...', nextOptionKey: 'bruh' },
-      { text: 'Those are nice I guess', nextOptionKey: 'iSuppose' }
+      { text: 'Those are nice I guess', nextOptionKey: 'damnRight' }
     ]
   },
   bruh: {
