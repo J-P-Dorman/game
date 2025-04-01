@@ -67,10 +67,10 @@ const WorldMap = () => {
       dispatchLogic(creature.logicActions.npcPlace, position);
       dispatchRender(creature.renderActions.npcPlace);
 
-      // dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
-      // dispatchLogic(creature.logicActions.npcMove);
-      // dispatchRender(creature.renderActions.npcMove);
-      // dispatchRender(creature.renderActions.npcWalk);
+      dispatchLogic(creature.logicActions.npcNewPath, [ path, speed, loop ]);
+      dispatchLogic(creature.logicActions.npcMove);
+      dispatchRender(creature.renderActions.npcMove);
+      dispatchRender(creature.renderActions.npcWalk);
 
       return { ...acc, [id]: creature };
     }, {});
