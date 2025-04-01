@@ -1,7 +1,7 @@
 import { CreatureData } from "../types";
 import { bucketData, houseLightData, treeData } from "../views/Game/components/WorldMap/components/Item/itemData";
 import { ItemData } from "../views/Game/components/WorldMap/components/Item/types";
-import { dialogueOptionsSasha, sashaData } from "./creatures/sasha";
+import { dialogueOptionsSarah, sarahData } from "./creatures/sarah";
 import { DialogueOptions } from "./creatures/types";
 import { mapTutorialIsland } from "./mapData";
 
@@ -39,10 +39,10 @@ const tutorialIsland: LevelData = {
   ],
   creatures: [
     {
-      id: "sasha",
-			...sashaData,
+      id: "sarah",
+			...sarahData,
       position: [42, 42],
-      dialogue: dialogueOptionsSasha,
+      dialogue: dialogueOptionsSarah,
       defaultPath: {
         path: [
           { x: 42, y: 43 },
@@ -62,7 +62,7 @@ const tutorialIsland: LevelData = {
         loop: true,
       },
       onInteract: ({dialogue}) => {
-        dialogue.start(dialogueOptionsSasha);
+        dialogue.start(dialogueOptionsSarah);
       }
     },
   ],

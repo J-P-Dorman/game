@@ -48,7 +48,7 @@ Queues are a scalable solution that allow all parts of the game to affect each o
 
 
 ## Adding things to queues
-As an example, let's say we want to get an NPC walking around. We'll call this character "Sasha". We can add a logic action to the logic queue that updates their position x amount every tick and a render action to the render queue that outputs their new position to the screen whenever a new frame is ready.
+As an example, let's say we want to get an NPC walking around. We'll call this character "Sarah". We can add a logic action to the logic queue that updates their position x amount every tick and a render action to the render queue that outputs their new position to the screen whenever a new frame is ready.
 
 
 We can create and use that action like so:
@@ -61,8 +61,8 @@ const state = {
 }
 
 // Kick everything off from this line
-// Move the NPC "Sasha" right 0.1, and up 0 every tick
-dispatchLogic(logicNpcMove, ['Sasha', 0.1, 0]);
+// Move the NPC "Sarah" right 0.1, and up 0 every tick
+dispatchLogic(logicNpcMove, ['Sarah', 0.1, 0]);
 
 const logicNpcMove = createLogicAction({
     id: "npcMove",
@@ -105,4 +105,4 @@ removeAllFromRenderQueue('npcWalk')
 But this will stop every walking npc in the game. We need to further specify.
 
 
-We can use the parameters of the action to get more specific. For example, say the player wants to talk to the NPC "Sasha". When we 
+We can use the parameters of the action to get more specific. For example, say the player wants to talk to the NPC "Sarah". When we 

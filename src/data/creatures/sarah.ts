@@ -1,17 +1,17 @@
-import spriteSheet from "../../assets/sprites/creatures/sasha/sasha.svg";
+import spriteSheet from "../../assets/sprites/creatures/sarah/sarah.svg";
 import { CreatureData } from "../../types";
-import imageAngry from '../../assets/images/creatures/sasha/sasha_angry.png';
-import imageHappy from '../../assets/images/creatures/sasha/sasha_laugh.png';
-import imageSad from '../../assets/images/creatures/sasha/sasha_sad.png';
-import imageDefault from '../../assets/images/creatures/sasha/sasha_default.png';
-import imageConfused from '../../assets/images/creatures/sasha/sasha_confused.png';
-import imageLaugh from '../../assets/images/creatures/sasha/sasha_laugh.png';
+import imageAngry from '../../assets/images/creatures/sarah/sarah_angry.png';
+import imageHappy from '../../assets/images/creatures/sarah/sarah_laugh.png';
+import imageSad from '../../assets/images/creatures/sarah/sarah_sad.png';
+import imageDefault from '../../assets/images/creatures/sarah/sarah_default.png';
+import imageConfused from '../../assets/images/creatures/sarah/sarah_confused.png';
+import imageLaugh from '../../assets/images/creatures/sarah/sarah_laugh.png';
 import { DialogueOptions } from './types';
 import { AttachToCamera, FitToCamera } from "../../views/Game/components/Camera/types";
 
 // TODO: split dialogue into different exported objects depending what
 // level the player is on
-export const dialogueOptionsSasha: DialogueOptions = {
+export const dialogueOptionsSarah: DialogueOptions = {
   start: {
     messages: [{
       text: 'Hi! This is a nice beach, isn\'t it?',
@@ -89,7 +89,7 @@ export const dialogueOptionsSasha: DialogueOptions = {
   intro: {
     messages: [
       {
-        text: 'I\'m Sasha, what\'s your name?',
+        text: 'I\'m Sarah, what\'s your name?',
         imageKey: 'default',
         onNext: () => { console.log('Name input goes here!') }
       },
@@ -98,12 +98,12 @@ export const dialogueOptionsSasha: DialogueOptions = {
         imageKey: 'laugh',
       }
     ],
-    onEnd: () => { window.state.flags.hasSpokenToSasha = true }
+    onEnd: () => { window.state.flags.hasSpokenToSarah = true }
   }
 };
 
-export const sashaData: CreatureData = {
-  id: "sasha",
+export const sarahData: CreatureData = {
+  id: "sarah",
   size: 1.5,
   spriteSheet: {
     image: spriteSheet,
