@@ -153,10 +153,10 @@ const dialogueControls = (
   logicActions: Record<string, LogicAction>
 ) => {
   if (isKeyDown && key === "w") {
-    // logicNow(logicActions.dialogueDown);
+    logicNow(logicActions.dialogueUp);
   }
   if (isKeyDown && key === "s") {
-    // logicNow(logicActions.dialogueUp);
+    logicNow(logicActions.dialogueDown);
   }
   if (isKeyDown && key === " ") {
     // wrong, this has to come from the player
@@ -165,7 +165,7 @@ const dialogueControls = (
     // this is how we manage the dilogue state
     // logicNow(logicActions.dialogueConfirm);
 
-    logicNow(logicActions.dialogueNext);
+    logicNow(logicActions.dialogueConfirm);
   }
 }
 
