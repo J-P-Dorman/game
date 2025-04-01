@@ -64,7 +64,7 @@ export type State = {
   creatures: Record<string, creatureState>;
   flags: {
     isInDialogue: boolean;
-    hasSpokenToSasha: boolean;
+    hasSpokenToSarah: boolean;
   };
 };
 

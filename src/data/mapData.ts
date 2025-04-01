@@ -5,7 +5,7 @@ import imageFlowers from '../assets/sprites/scenery/tiling_flowers_daisy.svg';
 import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in.png';
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';
-import { sashaData } from './creatures/sasha';
+import { sarahData } from './creatures/sarah';
 import imageGrass_1_1 from '../assets/sprites/scenery/tiling_grass_1_1.svg';
 import imageGrass_2_1 from '../assets/sprites/scenery/tiling_grass_2_1.svg';
 import imageGrass_1_2 from '../assets/sprites/scenery/tiling_grass_1_2.svg';
@@ -637,12 +637,12 @@ const itemTree: Item = {
   anchor: "topLeft"
 };
 
-const itemSasha: Item & {creatureData: CreatureData} = {
+const itemSarah: Item & {creatureData: CreatureData} = {
   width: 2,
   height: 2,
   anchor: "topLeft",
   creatureData: {
-    ...sashaData
+    ...sarahData
   }
 };
 
@@ -787,9 +787,9 @@ export const H: TileData = {
   item: itemTree,
 };
 export const GS: TileData = {
-  id: "grassSasha",
+  id: "grassSarah",
   texture: textureGrass,
-  item: itemSasha,
+  item: itemSarah,
 };
 
 const chunk0_0: ChunkData = [

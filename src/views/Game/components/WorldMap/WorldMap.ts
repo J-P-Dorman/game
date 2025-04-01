@@ -13,7 +13,7 @@ import { createLogicAction, dispatchLogic, logicNow } from "../GameLoops/LogicLo
 import { LevelItem } from "./components/Item/types";
 import { AttachToCamera, FitToCamera } from "../Camera/types";
 import { LogicAction } from "../GameLoops/LogicLoop/types";
-import { dialogueOptionsSasha } from "../../../../data/creatures/sasha";
+import { dialogueOptionsSarah } from "../../../../data/creatures/sarah";
 
 interface Props {
   scene: THREE.Scene;
@@ -59,7 +59,7 @@ const WorldMap = () => {
       const { path, speed, loop } = defaultPath;
       const creature = Npc();
       const onInteract = () => {
-        logicNow(logicActions.dialogueStart, [dialogueOptionsSasha]);
+        logicNow(logicActions.dialogueStart, [dialogueOptionsSarah]);
       }
       creature.load({creatureData, onInteract});
       

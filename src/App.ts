@@ -33,7 +33,7 @@ const App = () => {
     creatures: {},
     flags: {
       isInDialogue: false,
-      hasSpokenToSasha: false
+      hasSpokenToSarah: false
     }
   };
 

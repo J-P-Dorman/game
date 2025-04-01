@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import sashaImage from "../../../../assets/images/creatures/sasha/sasha_default.png";
+import sarahImage from "../../../../assets/images/creatures/sarah/sarah_default.png";
 import { numberToPercent } from "../../../../utils";
 import { AttachToCamera, FitToCamera } from "../Camera/types";
 import DialogueBackground from "./components/DialogueBackground/DialogueBackground";
