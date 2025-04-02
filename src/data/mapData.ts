@@ -4,6 +4,8 @@ import { Item, Texture } from "../views/Game/components/WorldMap/components/MapC
 import imageFlowers from '../assets/sprites/scenery/tiling_flowers_daisy.svg';
 import imageShoreUpLeftIn from '../assets/sprites/scenery/shore/shore_up_left_in.png';
 import imageShoreUpLeftOut from '../assets/sprites/scenery/shore/shore_up_left_out.png';
+import imageShoreUpRightIn from '../assets/sprites/scenery/shore/shore_up_right_in.png';
+import imageShoreUpRightOut from '../assets/sprites/scenery/shore/shore_up_right_out.png';
 import imageShoreUp from '../assets/sprites/scenery/shore/shore_up.png';
 import { sarahData } from './creatures/sarah';
 import imageGrass_1_1 from '../assets/sprites/scenery/tiling_grass_1_1.svg';
@@ -16,6 +18,10 @@ import imageSand_1_2 from '../assets/sprites/scenery/tiling_sand_1_2.svg';
 import imageSand_2_2 from '../assets/sprites/scenery/tiling_sand_2_2.svg';
 import imageGrassSandHorizontal from '../assets/sprites/scenery/tiling-grass-sand-horizontal.svg';
 import imageGrassSandHorizontal2 from '../assets/sprites/scenery/tiling-grass-sand-horizontal-2.svg';
+import imageGrassSandLeft from '../assets/sprites/scenery/tiling-grass-sand-left.svg';
+import imageGrassSandLeft2 from '../assets/sprites/scenery/tiling-grass-sand-left-2.svg';
+import imageGrassSandRight from '../assets/sprites/scenery/tiling-grass-sand-right.svg';
+import imageGrassSandRight2 from '../assets/sprites/scenery/tiling-grass-sand-right-2.svg';
 import imageGrassSandLeftDown from '../assets/sprites/scenery/tiling-grass-sand-left-down.svg';
 import imageGrassSandLeftUp from '../assets/sprites/scenery/tiling-grass-sand-left-up.svg';
 import imageGrassSandRightDown from '../assets/sprites/scenery/tiling-grass-sand-right-down.svg';
@@ -228,6 +234,90 @@ const textureGrassSandHorizontal2: Texture = {
     animationMap: {
       grassSandHorizontal: {
         frames: ["grassSandHorizontal2"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandLeft: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandLeft,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandLeft',
+    defaultAnimation: 'grassSandLeft',
+    sheetMap: [["grassSandLeft"]],
+    animationMap: {
+      grassSandLeft: {
+        frames: ["grassSandLeft"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandLeft2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandLeft2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandLeft2',
+    defaultAnimation: 'grassSandLeft2',
+    sheetMap: [["grassSandLeft2"]],
+    animationMap: {
+      grassSandLeft: {
+        frames: ["grassSandLeft2"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandRight: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandRight,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandRight',
+    defaultAnimation: 'grassSandRight',
+    sheetMap: [["grassSandRight"]],
+    animationMap: {
+      grassSandRight: {
+        frames: ["grassSandRight"],
+        duration: 0,
+        repeat: true
+      }
+    }
+  }
+};
+
+const textureGrassSandRight2: Texture = {
+  color: "#8ec55a",
+  spriteSheet: {
+    image: imageGrassSandRight2,
+    textureWidth: 16,
+    textureHeight: 16,
+    sheetWidth: 16,
+    sheetHeight: 16,
+    defaultTexture: 'grassSandRight2',
+    defaultAnimation: 'grassSandRight2',
+    sheetMap: [["grassSandRight2"]],
+    animationMap: {
+      grassSandRight: {
+        frames: ["grassSandRight2"],
         duration: 0,
         repeat: true
       }
@@ -628,6 +718,142 @@ export const textureShoreUpLeftOut: Texture = {
   }
 };
 
+export const textureShoreUpRightIn: Texture = {
+  color: "rgb(107 143 247)",
+  spriteSheet: {
+    image: imageShoreUpRightIn,
+    textureWidth: 150,
+    textureHeight: 150,
+    sheetWidth: 9000,
+    sheetHeight: 150,
+    defaultTexture: 'shoreUpRightIn1',
+    defaultAnimation: 'shoreUpRightInDefault',
+    sheetMap: [
+      [
+        "shoreUpRightIn1",
+        "shoreUpRightIn2",
+        "shoreUpRightIn3",
+        "shoreUpRightIn4",
+        "shoreUpRightIn5",
+        "shoreUpRightIn6",
+        "shoreUpRightIn7",
+        "shoreUpRightIn8",
+        "shoreUpRightIn9",
+        "shoreUpRightIn10",
+        "shoreUpRightIn11",
+        "shoreUpRightIn12",
+        "shoreUpRightIn13",
+        "shoreUpRightIn14",
+        "shoreUpRightIn15"
+      ]
+    ],
+    animationMap: {
+      shoreUpRightInDefault: {
+        frames: [
+          "shoreUpRightIn1",
+          "shoreUpRightIn2",
+          "shoreUpRightIn3",
+          "shoreUpRightIn4",
+          "shoreUpRightIn5",
+          "shoreUpRightIn6",
+          "shoreUpRightIn7",
+          "shoreUpRightIn8",
+          "shoreUpRightIn9",
+          "shoreUpRightIn10",
+          "shoreUpRightIn11",
+          "shoreUpRightIn12",
+          "shoreUpRightIn13",
+          "shoreUpRightIn14",
+          "shoreUpRightIn15",
+          "shoreUpRightIn14",
+          "shoreUpRightIn13",
+          "shoreUpRightIn12",
+          "shoreUpRightIn11",
+          "shoreUpRightIn10",
+          "shoreUpRightIn9",
+          "shoreUpRightIn8",
+          "shoreUpRightIn7",
+          "shoreUpRightIn6",
+          "shoreUpRightIn5",
+          "shoreUpRightIn4",
+          "shoreUpRightIn3",
+          "shoreUpRightIn2"
+        ],
+        duration: 2000,
+        repeat: true
+      }
+    }
+  }
+};
+
+export const textureShoreUpRightOut: Texture = {
+  color: "rgb(107 143 247)",
+  spriteSheet: {
+    image: imageShoreUpRightOut,
+    textureWidth: 150,
+    textureHeight: 150,
+    sheetWidth: 9000,
+    sheetHeight: 150,
+    defaultTexture: 'shoreUpRightOut1',
+    defaultAnimation: 'shoreUpRightOutDefault',
+    sheetMap: [
+      [
+        "shoreUpRightOut1",
+        "shoreUpRightOut2",
+        "shoreUpRightOut3",
+        "shoreUpRightOut4",
+        "shoreUpRightOut5",
+        "shoreUpRightOut6",
+        "shoreUpRightOut7",
+        "shoreUpRightOut8",
+        "shoreUpRightOut9",
+        "shoreUpRightOut10",
+        "shoreUpRightOut11",
+        "shoreUpRightOut12",
+        "shoreUpRightOut13",
+        "shoreUpRightOut14",
+        "shoreUpRightOut15"
+      ]
+    ],
+    animationMap: {
+      shoreUpRightOutDefault: {
+        frames: [
+          "shoreUpRightOut1",
+          "shoreUpRightOut2",
+          "shoreUpRightOut3",
+          "shoreUpRightOut4",
+          "shoreUpRightOut5",
+          "shoreUpRightOut6",
+          "shoreUpRightOut7",
+          "shoreUpRightOut8",
+          "shoreUpRightOut9",
+          "shoreUpRightOut10",
+          "shoreUpRightOut11",
+          "shoreUpRightOut12",
+          "shoreUpRightOut13",
+          "shoreUpRightOut14",
+          "shoreUpRightOut15",
+          "shoreUpRightOut14",
+          "shoreUpRightOut13",
+          "shoreUpRightOut12",
+          "shoreUpRightOut11",
+          "shoreUpRightOut10",
+          "shoreUpRightOut9",
+          "shoreUpRightOut8",
+          "shoreUpRightOut7",
+          "shoreUpRightOut6",
+          "shoreUpRightOut5",
+          "shoreUpRightOut4",
+          "shoreUpRightOut3",
+          "shoreUpRightOut2"
+        ],
+        duration: 2000,
+        repeat: true
+      }
+    }
+  }
+};
+
 // Items
 // =================================================================
 const itemTree: Item = {
@@ -706,6 +932,26 @@ export const G_S_H_2: TileData = {
   texture: textureGrassSandHorizontal2,
   item: undefined,
 };
+export const G_S_L: TileData = {
+  id: "grassSandLeft",
+  texture: textureGrassSandLeft,
+  item: undefined,
+};
+export const G_S_L_2: TileData = {
+  id: "grassSandLeft",
+  texture: textureGrassSandLeft2,
+  item: undefined,
+};
+export const G_S_R: TileData = {
+  id: "grassSandRight",
+  texture: textureGrassSandRight,
+  item: undefined,
+};
+export const G_S_R_2: TileData = {
+  id: "grassSandRight2",
+  texture: textureGrassSandRight2,
+  item: undefined,
+};
 
 export const G_S_L_D: TileData = {
   id: "grassSandLeftDown",
@@ -774,6 +1020,16 @@ export const SHULI: TileData = {
 export const SHULO: TileData = {
   id: "shoreUpLeftOut",
   texture: textureShoreUpLeftOut,
+  item: undefined,
+};
+export const SHURI: TileData = {
+  id: "shoreUpRightIn",
+  texture: textureShoreUpRightIn,
+  item: undefined,
+};
+export const SHURO: TileData = {
+  id: "shoreUpRightOut",
+  texture: textureShoreUpRightOut,
   item: undefined,
 };
 export const GT: TileData = {
@@ -908,10 +1164,11 @@ const chunk0_1: ChunkData = [
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
   [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
-  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,SHULI,SHU,SHU,SHU,SHU,SHU,SHULI,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2],
-  [SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,W,W,W,W,W,W,W,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU],
+  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,S_G_L_U,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,S_G_R_U,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G,G_S_L,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,G_S_R,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,S_G_L_U],
+  [G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_R_D,S_1_2,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,G_S_L_D,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_R_D],
+  [S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,SHULI,SHU,SHU,SHU,SHU,SHU,SHURI,S_2_1,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,W,G_S_H],
+  [SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHULO,W,W,W,W,W,SHURO,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
@@ -941,12 +1198,12 @@ const chunk1_1: ChunkData = [
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G1,G1,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
   [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G1,G1,G1,G1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_1,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
-  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,S_G_L_U,G_S_H_2,S_G_R_U,G_2_2,G_1_2,S_G_L_U,G_S_H_2,G_S_H,S_G_R_U,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_R_D,S_2_1,G_S_L_D,G_S_H_2,G_S_H,G_S_R_D,S_2_1,S_1_1,G_S_L_D,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H],
+  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,S_G_L_U,G_S_H_2,S_G_R_U,G_2_2,G_1_2,S_G_L_U,G_S_H_2,G_S_H,S_G_R_U,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,S_G_L_U,G_S_H,G_S_H_2],
+  [G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_R_D,S_2_1,G_S_L_D,G_S_H_2,G_S_H,G_S_R_D,S_2_1,S_1_1,G_S_L_D,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_R_D,S_2_1,S_2_2,S_2_1],
+  [S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1],
   [S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1, SHULI,SHU],
-  [SHU,SHU,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,SHULI,SHU,SHULO,W],
-  [W,W,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHULO,W,W,W],
+  [SHU,SHURI,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,SHULI,SHU,SHULO,W],
+  [W,SHURO,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHULO,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
@@ -974,10 +1231,10 @@ const chunk2_1: ChunkData = [
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
   [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
   [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1,G_1_1,G_2_1],
-  [G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S_1_1,S_2_1,S,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2,G_1_2,G_2_2],
-  [S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,SHULI,SHU,SHU,SHU,SHU,SHU,SHU,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2],
-  [SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,W,W,W,W,W,W,W,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU],
+  [G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2,G_S_H,G_S_H_2],
+  [S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1,S_2_2,S_2_1],
+  [S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,SHULI,SHU,SHU,SHU,SHU,SHU,SHURI,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2,S_1_2,S_2_2],
+  [SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHULO,W,W,W,W,W,SHURO,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU,SHU],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
   [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
