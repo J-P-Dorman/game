@@ -64,16 +64,17 @@ const state = {
 // Move the NPC "Sarah" right 0.1, and up 0 every tick
 dispatchLogic(logicNpcMove, ['Sarah', 0.1, 0]);
 
+// Render the new position
+dispatchRender(renderNpcMove, [npcName]);
+
 const logicNpcMove = createLogicAction({
     id: "npcMove",
     func: ({ action }) => {
         const [npcName, speedX, speedY] = action.payload;
 
+        // Increase x and y every tick
         state.position.x += speedX;
         state.position.y += speedY;
-
-        // Start rendering the new position
-        dispatchRender(renderNpcMove, [npcName]);
     },
     repeat: true // Don't just nudge NPC once, keep moving constantly
 });
@@ -83,12 +84,10 @@ const renderNpcMove = createRenderAction({
     func: ({ action }) => {
         const { x, y } = state.position;
 
-        // THREE.js code goes here
-        // Use x and y to update position of NPC on screen
+        // Use x and y, along with THREE.js to update position
+        // of NPC on screen every frame
     },
     repeat: true, // Don't just render the first step of the animation
-    maxTime: 200 // Move to the next frame of animation every 200ms
-    stack: false // For a simple example don't allow multiple NPCs to move at once
 });
 ```
 
