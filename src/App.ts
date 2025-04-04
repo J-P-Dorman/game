@@ -4,6 +4,7 @@ import Debug from "./views/Debug/Debug";
 import { createRenderAction, dispatchRender } from "./views/Game/components/GameLoops/RenderLoop/utils";
 import { Game } from "./views/Game/Game";
 import Stats from 'three/addons/libs/stats.module.js';
+import iconCode from './assets/icons/code.svg';
 
 const App = () => {
   window.state = {
@@ -62,6 +63,14 @@ const App = () => {
 
     // Game has loaded and painted, start the game
     game.start({ gameEl });
+
+    const fab = document.createElement('a');
+    fab.id = "fab";
+    fab.href = "https://github.com/J-P-Dorman/game";
+    fab.target = "_blank";
+    fab.innerHTML = `<img src="${iconCode}" />` +
+    '<span>See code...</span>';
+    document.querySelector('body').appendChild(fab);
   };
 };
 
