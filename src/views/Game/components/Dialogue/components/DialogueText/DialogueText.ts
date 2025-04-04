@@ -5,6 +5,7 @@ import { forIncrement, loadFont } from "../../../../../../utils";
 import { DialogueOption } from "../../../../../../data/creatures/types";
 import { createRenderAction, dispatchRender, removeAllFromRenderQueue2 } from "../../../GameLoops/RenderLoop/utils";
 import { removeAllFromLogicQueue2 } from "../../../GameLoops/LogicLoop/utils";
+import fontFamily from '../../../../../../assets/fonts/Reddit_Mono_Regular.json'
 
 const DialogueText = () => {
   const state: State = {
@@ -115,7 +116,7 @@ const DialogueText = () => {
     state.fontSize = fontSize;
     state.containerSize = containerSize;
 
-    const font = await loadFont("fonts/Reddit_Mono_Regular.json");
+    const font = await loadFont(fontFamily);
     state.font = font;
 
     return state.textGroup;

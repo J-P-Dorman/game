@@ -3,6 +3,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { loadFont } from "../../../../../../utils/index";
 import { AttachToCamera } from "../../../Camera/types";
 import { PlayerChoice } from "../../../../../../data/creatures/types";
+import fontFamily from '../../../../../../assets/fonts/Reddit_Mono_Regular.json';
 
 type State = {
   font: any;
@@ -145,7 +146,7 @@ const DialogueChoices = () => {
   // Public Methods
   // ===========================================================================
   const load = async ({ attachToCamera }: Load) => {
-    const font = await loadFont("fonts/Reddit_Mono_Regular.json");
+    const font = await loadFont(fontFamily);
     state.font = font;
 
     const dialogueChoiceGroup = new THREE.Group();
