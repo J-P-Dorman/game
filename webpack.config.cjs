@@ -12,7 +12,7 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 const config = {
   entry: "./src/index.ts",
   output: {
-    path: path.join(__dirname, "src"),
+    path: path.join(__dirname, "build"),
     assetModuleFilename: "[name][ext]",
     // publicPath: path.resolve(__dirname, "public"),
     // filename: "./src/index.ts",
