@@ -169,11 +169,11 @@ const Npc = () => {
         const { position, movement } = state;
         const { x, y } = position;
         const { path, currentIndex, speed, loop } = movement;
-
-        const currentDirection = state.movement.direction;
+        const currentDirection = movement.direction;
+        const { isInDialogue } = window.state.flags;
 
         // If item hasn't loaded yet, do nothing
-        if (!state.spriteGroup) return;
+        if (!state.spriteGroup || isInDialogue) return;
 
         if (speed > path.length + 3) {
           console.error(
@@ -311,7 +311,9 @@ const Npc = () => {
     npcWalk: createRenderAction({
       id: "npcWalk",
       func: () => {
-        if (!state.spriteGroup) return;
+        const { isInDialogue } = window.state.flags;
+
+        if (!state.spriteGroup || isInDialogue) return;
 
         const { spriteSheet, movement } = state;
         const { animationMap } = spriteSheet;
