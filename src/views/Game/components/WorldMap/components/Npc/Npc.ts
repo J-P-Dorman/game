@@ -111,6 +111,23 @@ const Npc = () => {
     window.state.creatures[state.id] = state;
   };
 
+  const updateCollision = () => {
+    const { id, size, spriteSheet, position } = state;
+    const { spriteWidth, spriteHeight } = spriteSheet;
+    const { x, y } = position;
+
+    const maxPixels =
+      spriteWidth > spriteHeight ? spriteWidth : spriteHeight;
+    const size1 = 1 / maxPixels;
+    const newSize = size1 * size;
+
+    const interactTrigger = calculateCollider(x, y, newSize, 1);
+
+    state.colliders.interact = interactTrigger;
+
+    syncState();
+  }
+
   // Actions
   // ===========================================================================
   const logicActions = {
@@ -120,8 +137,7 @@ const Npc = () => {
         const { payload } = action;
         const [x, y]: number[] = payload;
 
-        const { id, size, spriteSheet } = state;
-        const { spriteWidth, spriteHeight } = spriteSheet;
+        const { id } = state;
 
         if (!id) return [true];
 
@@ -129,17 +145,7 @@ const Npc = () => {
         state.position.x += x;
         state.position.y += y;
 
-        // Update collision
-        const maxPixels =
-          spriteWidth > spriteHeight ? spriteWidth : spriteHeight;
-        const size1 = 1 / maxPixels;
-        const newSize = size1 * size;
-
-        const interactTrigger = calculateCollider(x, y, newSize, 1);
-
-        state.colliders.interact = interactTrigger;
-
-        syncState();
+        updateCollision();
 
         return [false];
       },
@@ -229,6 +235,8 @@ const Npc = () => {
         state.position.y = nextY;
         state.movement.currentIndex = index;
         state.movement.direction = direction;
+
+        updateCollision();
 
         // Render snap turn so the character doesn't ski
         if (currentDirection !== direction) renderNow(renderActions.npcTurn);
