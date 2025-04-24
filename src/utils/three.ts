@@ -7,6 +7,22 @@ export const loadFont = async (data: any): Promise<any> => {
   return loader.parse(data);
 };
 
+export const createPlaneMesh = ({
+  color = "#ffffff",
+  size = { x: 1, y: 1 },
+  borderRadius = 0
+}: {
+  color?: string;
+  size?: { x: number; y: number };
+  borderRadius?: number;
+}) => {
+  const material = new THREE.MeshBasicMaterial({ color });
+  const geometry = borderRadius > 0 ? createRoundedRectangle(size.x, size.y, borderRadius) :  new THREE.PlaneGeometry(...Object.values(size));
+  const mesh = new THREE.Mesh(geometry, material);
+
+  return mesh;
+};
+
 const createRoundedRectangle = (
   width: number,
   height: number,
