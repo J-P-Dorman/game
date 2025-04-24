@@ -80,12 +80,9 @@ export const Camera = () => {
  * @param group The THREE group to append to camera
  * @param callbaack Add stuff to the group inside this callback
  */
-  const fitToCamera: FitToCamera = (callback) => {
-    const maxWidth = state.right + state.left;
+  const fitToCamera: FitToCamera = (direction, callback) => {
+    const maxWidth = state.right - state.left;
     const maxHeight = state.top - state.bottom;
-
-
-
 
     const group = callback({
       camera: state.camera,
@@ -97,11 +94,15 @@ export const Camera = () => {
       height: state.height
     });
 
-    group.scale.x = state.right - state.left;
-    group.position.x = 0;
+    if(direction === 'x' || direction === 'both') {
+      group.scale.x = state.right - state.left;
+      group.position.x = 0;
+    }
 
-    group.scale.y = state.top - state.bottom;
-    group.position.y = 0;
+    if(direction === 'y' || direction === 'both') {
+      group.scale.y = state.top - state.bottom;
+      group.position.y = 0;
+    }
 
     attachToCamera(() => group);
   }

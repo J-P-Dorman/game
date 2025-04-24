@@ -1,6 +1,7 @@
 import * as THREE from "three";
 
 export type FitToCamera = (
+  direction: 'x' | 'y' | 'both',
   callback: (props: {
     camera: THREE.OrthographicCamera;
     left: number;

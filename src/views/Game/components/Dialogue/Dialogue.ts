@@ -78,7 +78,7 @@ const Dialogue = () => {
     state.textGroup.scale.y = textGroupScaleY;
     state.textGroup.position.y = -0.3;
     state.dialogueGroup.position.z = -2;
-    fitToCamera(() => state.dialogueGroup);
+    fitToCamera('both', () => state.dialogueGroup);
 
     const backgroundMesh = await dialogueBackground.load("#76428a");
 
