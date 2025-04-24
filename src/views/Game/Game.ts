@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { levels } from "../../data/levels";
 import { getElementSize } from "../../utils";
 import { Camera } from "./components/Camera/Camera";
+import Dpad from './components/Controls/components/buttons/Dpad/Dpad';
 import Controls from "./components/Controls/Controls";
 import Dialogue from "./components/Dialogue/Dialogue";
 import LogicLoop from "./components/GameLoops/LogicLoop/LogicLoop";
@@ -23,6 +24,7 @@ export const Game = (): any => {
   const player = Player();
   const pauseMenu = PauseMenu();
   const dialogue = Dialogue();
+  const dpad = Dpad();
 
   // Methods
   // ===========================================================================
@@ -74,6 +76,12 @@ export const Game = (): any => {
       fitToCamera: camera.fitToCamera,
       creatureData: levels.tutorialIsland.creatures[0]
     });
+
+    // Add touch controls
+    dpad.load({
+      attachToCamera: camera.attachToCamera,
+      fitToCamera: camera.fitToCamera,
+    })
 
     // Start the core game loops
     logicLoop.start();
