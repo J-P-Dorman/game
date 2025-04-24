@@ -1,16 +1,12 @@
-import { LogicAction, LogicActionId } from "../../../GameLoops/LogicLoop/types";
+import { LogicAction, LogicActionId } from "../../../../GameLoops/LogicLoop/types";
 import {
   dispatchLogic,
-  isInLogicQueue,
   logicNow,
-  pushToLogicQueue,
-  removeAllFromLogicQueue,
-} from "../../../GameLoops/LogicLoop/utils";
-import { RenderAction } from "../../../GameLoops/RenderLoop/types";
-import { dispatchRender, isInRenderQueue, pushToRenderQueue, removeAllFromRenderQueue } from "../../../GameLoops/RenderLoop/utils";
-import { playerRunSpeed, playerWalkSpeed } from "../../../Player/constants";
-
-
+  removeAllFromLogicQueue
+} from "../../../../GameLoops/LogicLoop/utils";
+import { RenderAction } from "../../../../GameLoops/RenderLoop/types";
+import { dispatchRender, removeAllFromRenderQueue } from "../../../../GameLoops/RenderLoop/utils";
+import { playerRunSpeed, playerWalkSpeed } from "../../../../Player/constants";
 
 const movementKeys = ["w", "a", "s", "d"];
 

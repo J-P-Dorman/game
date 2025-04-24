@@ -1,11 +1,10 @@
-import * as THREE from "three";
 import {
   LogicActionList
 } from "../GameLoops/LogicLoop/types";
 import { RenderActionList } from "../GameLoops/RenderLoop/types";
-import Keyboard from "./components/Keyboard/Keyboard";
-import { default as Gamepad, default as Mouse } from "./components/Mouse/Mouse";
-import Touch from "./components/Touch/Touch";
+import Keyboard from "./components/logic/Keyboard/Keyboard";
+import { default as Gamepad, default as Mouse } from "./components/logic/Mouse/Mouse";
+import Touch from "./components/logic/Touch/Touch";
 
 const Controls = () => {
   // Components
